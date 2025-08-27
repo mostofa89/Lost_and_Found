@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Navbar with Footer</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-pVrrfQkZZi4xguhk1G6sJq/6Q8VbX6b2b+ZB1RzQn8/2tkJt0wFk+Gy0BjfZGvFFgPtG1yR+JQdC1q6xXb/4Uw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Gradient background for main page */
+        .bg-gradient-main {
+            background: linear-gradient(135deg, #1a73e8, #20c997, #4a90e2, #50e3c2);
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen bg-gradient-main text-gray-800">
+
+    <!-- Navbar -->
+    <nav class="bg-transparent bg-opacity-80 backdrop-blur-md shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0">
+                    <a href="#" class="flex items-center space-x-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 16 16"><path fill="currentColor" d="m11.271 11.978l3.872 3.873a.502.502 0 0 0 .708 0a.502.502 0 0 0 0-.708l-3.565-3.564c2.38-2.747 2.267-6.923-.342-9.532c-2.73-2.73-7.17-2.73-9.898 0c-2.728 2.729-2.728 7.17 0 9.9a6.955 6.955 0 0 0 4.949 2.05a.5.5 0 0 0 0-1a5.96 5.96 0 0 1-4.242-1.757a6.01 6.01 0 0 1 0-8.486a6.004 6.004 0 0 1 8.484 0a6.01 6.01 0 0 1 0 8.486a.5.5 0 0 0 .034.738"/></svg>
+                        <span class="text-gray-800 text-xl font-bold tracking-wider">FindIt.com</span>
+                    </a>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-10">
+                    <a href="#" class="text-gray-800 border border-gray-800 rounded-lg px-5 py-2 text-sm font-medium hover:bg-gray-800 hover:text-white transition-colors duration-300">Home</a>
+                    <a href="#" class="text-gray-800 border border-gray-800 rounded-lg px-5 py-2 text-sm font-medium hover:bg-gray-800 hover:text-white transition-colors duration-300">Found Items</a>
+                    <a href="#" class="text-gray-800 border border-gray-800 rounded-lg px-5 py-2 text-sm font-medium hover:bg-gray-800 hover:text-white transition-colors duration-300">Lost Report</a>
+                    <a href="#" class="text-gray-800 border border-gray-800 rounded-lg px-5 py-2 text-sm font-medium hover:bg-gray-800 hover:text-white transition-colors duration-300">Search</a>
+                </div>
+
+                <!-- Login Button -->
+                <div class="hidden md:block">
+                    <a href="#" class="text-white bg-[#20c997] rounded-lg px-6 py-2 hover:bg-[#1a73e8] transition-colors duration-300">
+                        Login
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="-mr-2 flex md:hidden">
+                    <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg id="hamburger-open" class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg id="hamburger-close" class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="hidden md:hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#" class="text-gray-800 block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-200">Home</a>
+                <a href="#" class="text-gray-800 block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-200">Found Items</a>
+                <a href="#" class="text-gray-800 block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-200">Lost Report</a>
+                <a href="#" class="text-gray-800 block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-200">Search</a>
+            </div>
+            <div class="pt-4 pb-3 border-t border-gray-300">
+                <div class="flex items-center px-5">
+                    <a href="#" class="w-full text-center text-white bg-[#20c997] rounded-lg px-6 py-2 hover:bg-[#1a73e8] transition-colors duration-300">
+                        Login
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    {% block content %}
+      <main class="flex-grow px-3 py-3 my-4">
+        <div class="max-w-7xl my-4 mx-auto py-20 px-4 sm:px-6 lg:px-8 bg-transparent bg-opacity-80 backdrop-blur-md rounded-xl"
+            style="box-shadow: 0 -10px 20px rgba(0,0,0,0.25);">
+            <h1 class="text-4xl font-bold text-center mb-8 text-gray-800">Welcome to FindIt.com</h1>
+            <p class="text-center text-gray-700 text-lg">Your one-stop solution for finding lost and found items. Explore, report, and find items easily with our platform.</p>
+        </div>
+
+        <div class="max-w-7xl my-4 mx-auto py-20 px-4 sm:px-6 lg:px-8 bg-transparent bg-opacity-80 backdrop-blur-md rounded-xl"
+            style="box-shadow: 0 -10px 20px rgba(0,0,0,0.25);">
+            <h1 class="text-4xl font-bold text-center mb-8 text-gray-800">Welcome to FindIt.com</h1>
+            <p class="text-center text-gray-700 text-lg">Your one-stop solution for finding lost and found items. Explore, report, and find items easily with our platform.</p>
+        </div>
+
+        <div class="max-w-7xl my-4 mx-auto py-20 px-4 sm:px-6 lg:px-8 bg-transparent bg-opacity-80 backdrop-blur-md rounded-xl"
+            style="box-shadow: 0 -10px 20px rgba(0,0,0,0.25);">
+            <h1 class="text-4xl font-bold text-center mb-8 text-gray-800">Welcome to FindIt.com</h1>
+            <p class="text-center text-gray-700 text-lg">Your one-stop solution for finding lost and found items. Explore, report, and find items easily with our platform.</p>
+        </div>
+    </main>
+    {% endblock %}
+
+    <!-- Footer -->
+   
+<footer class="bg-gradient-main text-white mt-auto">
+    <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col items-center sm:flex-row sm:justify-between">
+            <!-- Logo and Site Name -->
+            <div class="flex-shrink-0">
+                    <a href="#" class="flex items-center space-x-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 16 16"><path fill="currentColor" d="m11.271 11.978l3.872 3.873a.502.502 0 0 0 .708 0a.502.502 0 0 0 0-.708l-3.565-3.564c2.38-2.747 2.267-6.923-.342-9.532c-2.73-2.73-7.17-2.73-9.898 0c-2.728 2.729-2.728 7.17 0 9.9a6.955 6.955 0 0 0 4.949 2.05a.5.5 0 0 0 0-1a5.96 5.96 0 0 1-4.242-1.757a6.01 6.01 0 0 1 0-8.486a6.004 6.004 0 0 1 8.484 0a6.01 6.01 0 0 1 0 8.486a.5.5 0 0 0 .034.738"/></svg>
+                        <span class="text-gray-800 text-xl font-bold tracking-wider">FindIt.com</span>
+                    </a>
+              </div>
+            <!-- Social Media Icons -->
+            <div class="flex space-x-6">
+                <a href="#" class="text-white hover:text-gray-200 transition-colors duration-300">
+                    <i class="fab fa-twitter fa-lg"></i>
+                </a>
+                <a href="#" class="text-white hover:text-gray-200 transition-colors duration-300">
+                    <i class="fab fa-instagram fa-lg"></i>
+                </a>
+                <a href="#" class="text-white hover:text-gray-200 transition-colors duration-300">
+                    <i class="fab fa-linkedin-in fa-lg"></i>
+                </a>
+                <a href="https://github.com/mostofa89" target="_blank" class="text-white hover:text-gray-200 transition-colors duration-300">
+                    <i class="fab fa-github fa-lg"></i>
+                </a>
+            </div>
+        </div>
+        <div class="mt-8 border-t border-gray-700 pt-4 text-center text-sm text-gray-300">
+            <p>&copy; 2024 Clara Thella. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+
+
+    <!-- JavaScript for Mobile Menu Toggle -->
+    <script>
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const hamburgerOpen = document.getElementById('hamburger-open');
+        const hamburgerClose = document.getElementById('hamburger-close');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            hamburgerOpen.classList.toggle('hidden');
+            hamburgerClose.classList.toggle('hidden');
+            const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+            mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+        });
+    </script>
+</body>
+</html>
+
