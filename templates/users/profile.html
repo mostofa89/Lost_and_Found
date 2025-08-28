@@ -1,0 +1,67 @@
+{% extends "users/base.html" %}
+
+{% block content %}
+<div class="min-h-screen py-12 flex items-center justify-center bg-transparent bg-opacity-80 backdrop-blur-md shadow-md">
+  <div class="max-w-2xl w-full bg-transparent bg-opacity-80 backdrop-blur-md shadow-md p-8 rounded-xl">
+
+    <!-- ✅ Messages Section -->
+    {% if messages %}
+      <div class="mb-4">
+        {% for message in messages %}
+          <div class="px-4 py-3 rounded-lg mb-2 
+                      {% if message.tags == 'error' %}
+                        bg-red-500 text-white
+                      {% elif message.tags == 'success' %}
+                        bg-green-500 text-white
+                      {% elif message.tags == 'warning' %}
+                        bg-yellow-500 text-black
+                      {% else %}
+                        bg-blue-500 text-white
+                      {% endif %}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    <!-- ✅ End Messages Section -->
+
+    <!-- Logo -->
+    <div class="flex items-center justify-center">
+      <div class="logo text-5xl">🎓</div>
+    </div>
+    <h2 class="text-3xl font-bold text-center mb-6 text-white">My Profile</h2>
+
+    <!-- Profile Card -->
+    <div class="flex flex-col items-center text-center space-y-4">
+      <!-- Profile Picture -->
+      <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-blue-500 shadow-lg">
+        {% if user.profile_pic %}
+          <img src="{{ user.profile_pic.url }}" alt="Profile Picture" class="w-full h-full object-cover">
+        {% else %}
+          <img src="https://ui-avatars.com/api/?name={{ user.username }}&background=0D8ABC&color=fff&size=128" alt="Default Avatar" class="w-full h-full object-cover">
+        {% endif %}
+      </div>
+
+      <!-- User Info -->
+      <div>
+        <h3 class="text-2xl font-semibold text-white">{{ user.first_name }} {{ user.last_name }}</h3>
+        <p class="text-blue-300">@{{ user.username }}</p>
+      </div>
+
+      <!-- Details -->
+      <div class="w-full text-left mt-6 space-y-3 text-white">
+        <p><span class="font-semibold">Email:</span> {{ user.email }}</p>
+        <p><span class="font-semibold">Student ID:</span> {{ user.student_id }}</p>
+        <p><span class="font-semibold">Phone:</span> {{ user.phone }}</p>
+        <p><span class="font-semibold">Department:</span> {{ user.dept }}</p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex space-x-4 mt-6">
+        <a href="{% url 'edit_profile' %}" class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">Edit Profile</a>
+        <a href="{% url 'logout' %}" class="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">Logout</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
