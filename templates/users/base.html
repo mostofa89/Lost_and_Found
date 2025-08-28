@@ -10,18 +10,44 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-pVrrfQkZZi4xguhk1G6sJq/6Q8VbX6b2b+ZB1RzQn8/2tkJt0wFk+Gy0BjfZGvFFgPtG1yR+JQdC1q6xXb/4Uw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <style>
         body {
-            font-family: 'Inter', sans-serif;
+            background: linear-gradient(-45deg, #1a73e8, #20c997, #4a90e2, #50e3c2);
+            background-size: 400% 400%;
+            animation: gradientMove 10s ease infinite;
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
         }
-        /* Gradient background for main page */
-        .bg-gradient-main {
-            background: linear-gradient(135deg, #1a73e8, #20c997, #4a90e2, #50e3c2);
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .social-icon {
+            border: 2px solid white;
+            border-radius: 50%;
+            padding: 0.5rem;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s, background-color 0.3s, color 0.3s;
+        }
+
+        .social-icon:hover {
+            transform: scale(1.1);
+            background-color: white;
+            color: #1a73e8; /* change icon color on hover */
         }
     </style>
 </head>
-<body class="flex flex-col min-h-screen bg-gradient-main text-gray-800">
+<body class="flex flex-col min-h-screen bg-gradient-main text-gray-50">
 
     <!-- Navbar -->
     <nav class="bg-transparent bg-opacity-80 backdrop-blur-md shadow-md">
@@ -30,17 +56,17 @@
                 <!-- Logo -->
                 <div class="flex-shrink-0">
                     <a href="#" class="flex items-center space-x-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 16 16"><path fill="currentColor" d="m11.271 11.978l3.872 3.873a.502.502 0 0 0 .708 0a.502.502 0 0 0 0-.708l-3.565-3.564c2.38-2.747 2.267-6.923-.342-9.532c-2.73-2.73-7.17-2.73-9.898 0c-2.728 2.729-2.728 7.17 0 9.9a6.955 6.955 0 0 0 4.949 2.05a.5.5 0 0 0 0-1a5.96 5.96 0 0 1-4.242-1.757a6.01 6.01 0 0 1 0-8.486a6.004 6.004 0 0 1 8.484 0a6.01 6.01 0 0 1 0 8.486a.5.5 0 0 0 .034.738"/></svg>
-                        <span class="text-gray-800 text-xl font-bold tracking-wider">FindIt.com</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 16 16" class="hover:scale-110"><path fill="currentColor" d="m11.271 11.978l3.872 3.873a.502.502 0 0 0 .708 0a.502.502 0 0 0 0-.708l-3.565-3.564c2.38-2.747 2.267-6.923-.342-9.532c-2.73-2.73-7.17-2.73-9.898 0c-2.728 2.729-2.728 7.17 0 9.9a6.955 6.955 0 0 0 4.949 2.05a.5.5 0 0 0 0-1a5.96 5.96 0 0 1-4.242-1.757a6.01 6.01 0 0 1 0-8.486a6.004 6.004 0 0 1 8.484 0a6.01 6.01 0 0 1 0 8.486a.5.5 0 0 0 .034.738"/></svg>
+                        <span class="text-gray-50 text-2xl font-bold tracking-wider">FindIt.com</span>
                     </a>
                 </div>
 
                 <!-- Desktop Navigation -->
                 <div class="hidden md:flex items-center space-x-10">
-                    <a href="#" class="text-gray-800 border border-gray-800 rounded-lg px-5 py-2 text-sm font-medium hover:bg-gray-800 hover:text-white transition-colors duration-300">Home</a>
-                    <a href="#" class="text-gray-800 border border-gray-800 rounded-lg px-5 py-2 text-sm font-medium hover:bg-gray-800 hover:text-white transition-colors duration-300">Found Items</a>
-                    <a href="#" class="text-gray-800 border border-gray-800 rounded-lg px-5 py-2 text-sm font-medium hover:bg-gray-800 hover:text-white transition-colors duration-300">Lost Report</a>
-                    <a href="#" class="text-gray-800 border border-gray-800 rounded-lg px-5 py-2 text-sm font-medium hover:bg-gray-800 hover:text-white transition-colors duration-300">Search</a>
+                    <a href="#" class="text-gray-50 border border-gray-50 rounded-lg px-4 py-2 text-md font-medium hover:bg-gradient-to-br from-[#1a73e8] via-[#20c997] via-[#4a90e2] to-[#50e3c2] hover:text-white transition-colors duration-300 hover:scale-110">Home</a>
+                    <a href="#" class="text-gray-50 border border-gray-50 rounded-lg px-4 py-2 text-md font-medium hover:bg-gradient-to-br from-[#1a73e8] via-[#20c997] via-[#4a90e2] to-[#50e3c2] hover:text-white transition-colors duration-300 hover:scale-110">Found Items</a>
+                    <a href="#" class="text-gray-50 border border-gray-50 rounded-lg px-4 py-2 text-md font-medium hover:bg-gradient-to-br from-[#1a73e8] via-[#20c997] via-[#4a90e2] to-[#50e3c2] hover:text-white transition-colors duration-300 hover:scale-110">Lost Report</a>
+                    <a href="#" class="text-gray-50 border border-gray-50 rounded-lg px-4 py-2 text-md font-medium hover:bg-gradient-to-br from-[#1a73e8] via-[#20c997] via-[#4a90e2] to-[#50e3c2] hover:text-white transition-colors duration-300 hover:scale-110">Search</a>
                 </div>
 
                 <!-- Login Button -->
@@ -109,36 +135,41 @@
     <!-- Footer -->
    
 <footer class="bg-gradient-main text-white mt-auto">
-    <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col items-center sm:flex-row sm:justify-between">
-            <!-- Logo and Site Name -->
-            <div class="flex-shrink-0">
-                    <a href="#" class="flex items-center space-x-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 16 16"><path fill="currentColor" d="m11.271 11.978l3.872 3.873a.502.502 0 0 0 .708 0a.502.502 0 0 0 0-.708l-3.565-3.564c2.38-2.747 2.267-6.923-.342-9.532c-2.73-2.73-7.17-2.73-9.898 0c-2.728 2.729-2.728 7.17 0 9.9a6.955 6.955 0 0 0 4.949 2.05a.5.5 0 0 0 0-1a5.96 5.96 0 0 1-4.242-1.757a6.01 6.01 0 0 1 0-8.486a6.004 6.004 0 0 1 8.484 0a6.01 6.01 0 0 1 0 8.486a.5.5 0 0 0 .034.738"/></svg>
-                        <span class="text-gray-800 text-xl font-bold tracking-wider">FindIt.com</span>
-                    </a>
-              </div>
-            <!-- Social Media Icons -->
-            <div class="flex space-x-6">
-                <a href="#" class="text-white hover:text-gray-200 transition-colors duration-300">
-                    <i class="fab fa-twitter fa-lg"></i>
-                </a>
-                <a href="#" class="text-white hover:text-gray-200 transition-colors duration-300">
-                    <i class="fab fa-instagram fa-lg"></i>
-                </a>
-                <a href="#" class="text-white hover:text-gray-200 transition-colors duration-300">
-                    <i class="fab fa-linkedin-in fa-lg"></i>
-                </a>
-                <a href="https://github.com/mostofa89" target="_blank" class="text-white hover:text-gray-200 transition-colors duration-300">
-                    <i class="fab fa-github fa-lg"></i>
-                </a>
-            </div>
-        </div>
-        <div class="mt-8 border-t border-gray-700 pt-4 text-center text-sm text-gray-300">
-            <p>&copy; 2024 Clara Thella. All rights reserved.</p>
-        </div>
+  <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col items-center sm:flex-row sm:justify-between">
+      <!-- Logo and Site Name -->
+      <div class="flex-shrink-0">
+        <a href="#" class="flex items-center space-x-3">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 16 16" class="hover:scale-110 transition duration-300 ease-in-out">
+            <path fill="currentColor" d="m11.271 11.978l3.872 3.873a.502.502 0 0 0 .708 0a.502.502 0 0 0 0-.708l-3.565-3.564c2.38-2.747 2.267-6.923-.342-9.532c-2.73-2.73-7.17-2.73-9.898 0c-2.728 2.729-2.728 7.17 0 9.9a6.955 6.955 0 0 0 4.949 2.05a.5.5 0 0 0 0-1a5.96 5.96 0 0 1-4.242-1.757a6.01 6.01 0 0 1 0-8.486a6.004 6.004 0 0 1 8.484 0a6.01 6.01 0 0 1 0 8.486a.5.5 0 0 0 .034.738"/>
+          </svg>
+          <span class="text-gray-50 text-2xl font-bold tracking-wider">FindIt.com</span>
+        </a>
+      </div>
+
+      <!-- Social Media Icons with border & hover effect -->
+      <div class="flex space-x-4 mt-4 sm:mt-0">
+        <a href="#" class="border-2 border-white rounded-lg py-2 px-3 text-white hover:scale-110 transform transition duration-300">
+          <i class="fab fa-twitter fa-lg"></i>
+        </a>
+        <a href="#" class="border-2 border-white rounded-lg py-2 px-3 text-white hover:scale-110 transform transition duration-300">
+          <i class="fab fa-instagram fa-lg"></i>
+        </a>
+        <a href="#" class="border-2 border-white rounded-lg py-2 px-3 text-white hover:scale-110 transform transition duration-300">
+          <i class="fab fa-linkedin-in fa-lg"></i>
+        </a>
+        <a href="https://github.com/mostofa89" target="_blank" class="border-2 border-white rounded-lg py-2 px-3 text-white hover:scale-110 transform transition duration-300">
+          <i class="fab fa-github fa-lg"></i>
+        </a>
+      </div>
     </div>
+
+    <div class="mt-8 border-t border-gray-50 pt-4 text-center text-md text-gray-50">
+      <p>&copy; 2024 FindIt.com. All rights reserved.</p>
+    </div>
+  </div>
 </footer>
+
 
 
 
