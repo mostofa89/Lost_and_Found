@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
-def register(request):
+def register_view(request):
     if request.method == 'POST':
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
@@ -54,12 +54,11 @@ def register(request):
 
             message.success(request, 'Registration successful.')
             return redirect('user:login')
+    else:
+       return render(request, 'users/register.html')
 
-    return render(request, 'users/register.html')
 
-
-
-def login(request):
+def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -80,10 +79,18 @@ def login(request):
             return redirect('user:login')
     else:
         return render(request, 'users/login.html')
-    
+
+
+
 
 
 @login_required(login_url='user:login')
-def profile(request):
+def profile_view(request):
     user = request.user
     return render(request, 'users/profile.html', {'user': user})
+
+
+def logout_view(request):
+    logout(request)
+    message.success(request, 'Logout successful')
+    return redirect('user:login')

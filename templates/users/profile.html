@@ -35,8 +35,8 @@
     <div class="flex flex-col items-center text-center space-y-4">
       <!-- Profile Picture -->
       <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-blue-500 shadow-lg">
-        {% if user.profile_pic %}
-          <img src="{{ user.profile_pic.url }}" alt="Profile Picture" class="w-full h-full object-cover">
+        {% if user.profile.profile_picture %}
+          <img src="{{ user.profile.profile_picture.url }}" alt="Profile Picture" class="w-full h-full object-cover">
         {% else %}
           <img src="https://ui-avatars.com/api/?name={{ user.username }}&background=0D8ABC&color=fff&size=128" alt="Default Avatar" class="w-full h-full object-cover">
         {% endif %}
@@ -51,15 +51,15 @@
       <!-- Details -->
       <div class="w-full text-left mt-6 space-y-3 text-white">
         <p><span class="font-semibold">Email:</span> {{ user.email }}</p>
-        <p><span class="font-semibold">Student ID:</span> {{ user.student_id }}</p>
-        <p><span class="font-semibold">Phone:</span> {{ user.phone }}</p>
-        <p><span class="font-semibold">Department:</span> {{ user.dept }}</p>
+        <p><span class="font-semibold">Student ID:</span> {{ user.profile.student_id }}</p>
+        <p><span class="font-semibold">Phone:</span> +880{{ user.profile.phone }}</p>
+        <p><span class="font-semibold">Department:</span> {{ user.profile.dept }}</p>
       </div>
 
       <!-- Action Buttons -->
       <div class="flex space-x-4 mt-6">
         <a href="#" class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">Edit Profile</a>
-        <a href="#" class="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">Logout</a>
+        <a href="{% url 'user:logout' %}" class="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">Logout</a>
       </div>
     </div>
   </div>
