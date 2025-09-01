@@ -1,0 +1,66 @@
+{% extends "users/base.html" %}
+{% load widget_tweaks %}
+{% block content %}
+<main class="flex-grow px-3 py-12">
+  <div class="max-w-xl mx-auto bg-transparent bg-opacity-80 backdrop-blur-md rounded-xl shadow-lg p-8">
+    {% if messages %}
+      <div class="space-y-2 mb-4">
+        {% for message in messages %}
+          <div
+            class="px-4 py-3 rounded-lg 
+                  {% if message.tags == 'success' %}bg-green-500 text-white{% endif %}
+                  {% if message.tags == 'error' %}bg-red-500 text-white{% endif %}
+                  {% if message.tags == 'warning' %}bg-yellow-400 text-white{% endif %}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    <h2 class="text-3xl font-bold text-center mb-6 text-gray-50">Report a Lost Item</h2>
+
+    <form action="{% url 'reports:lost_reports' %}" method="POST" enctype="multipart/form-data" class="space-y-4">
+      {% csrf_token %}
+
+      {% for field in form %}
+        <div>
+          <label class="block text-gray-50 font-medium mb-1">{{ field.label }}</label>
+          {{ field|add_class:"w-full px-4 py-3 border border-gray-50 rounded-lg bg-transparent text-gray-50 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" }}
+          {% if field.errors %}
+            <p class="text-red-500 text-sm mt-1">{{ field.errors }}</p>
+          {% endif %}
+        </div>
+      {% endfor %}
+
+      <div>
+        <button type="submit"
+                class="w-full bg-gradient-to-br from-[#1a73e8] via-[#20c997] via-[#4a90e2] to-[#50e3c2] text-white py-3 rounded-lg hover:scale-105 transition transform duration-300">
+          Submit Query
+        </button>
+      </div>
+    </form>
+  </div>
+
+
+  <div class="max-w-4xl my-6 mx-auto bg-transparent bg-opacity-80 backdrop-blur-md rounded-xl shadow-lg p-8 " style="box-shadow: 0 -4px 6px -1px rgba(0,0,0,0.1), 0 -2px 4px -2px rgba(0,0,0,0.6);">
+    <h2 class="text-3xl font-bold text-center mb-6 text-gray-50">Lost Item Reports</h2>
+
+    {% if reports %}
+      <div class="space-y-4 my-4">
+        {% for report in reports %}
+          <div class="bg-gray-800 p-4 rounded-lg shadow-md text-gray-50">
+            <h3 class="text-xl font-semibold">{{ report.item_name }}</h3>
+            <p class="text-gray-300">{{ report.description }}</p>
+            <p class="text-sm mt-1">Lost on: {{ report.date_lost }} | Location: {{ report.location }}</p>
+            <p class="text-sm mt-1">Contact: {{ report.contact }}</p>
+            {% if report.photo %}
+              <img src="{{ report.photo.url }}" alt="{{ report.item_name }}" class="mt-2 w-32 h-32 object-cover rounded">
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-center text-gray-300">No lost reports found.</p>
+    {% endif %}
+  </div>
+</main>
+{% endblock %}
