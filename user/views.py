@@ -94,3 +94,31 @@ def logout_view(request):
     logout(request)
     message.success(request, 'Logout successful')
     return redirect('user:login')
+
+
+@login_required(login_url='user:login')
+def profile_edit_view(request):
+    user = request.user
+    Profile = user.profile  
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        dept = request.POST.get('dept')
+        profile_pic = request.FILES.get('profile_pic')
+        if email:
+            user.email = email
+            user.save()
+
+        # Update Profile model
+        if phone:
+            Profile.phone = phone
+        if dept:
+            Profile.dept = dept
+        if profile_pic:
+            Profile.profile_picture = profile_pic
+        Profile.save()
+
+        message.success(request, 'Profile updated successfully.')
+        return redirect('user:profile')
+
+    return render(request, 'users/edit_profile.html', {'user': user, 'profile': user.profile})
