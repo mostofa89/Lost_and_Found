@@ -1,10 +1,10 @@
 from django.db import models
-from user import models as user_models
-# Create your models here.
+from user.models import User
+
 class Lost_reports(models.Model):
-    user = models.ForeignKey(user_models.User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     item_name = models.CharField(max_length=100)
-    item_description = models.TextField(max_length=30)
+    item_description = models.TextField()
     item_image = models.ImageField(upload_to='lost_items/', blank=True, null=True)
     location = models.CharField(max_length=255)
     date_lost = models.DateField()

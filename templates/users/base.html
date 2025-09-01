@@ -9,6 +9,7 @@
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
@@ -66,14 +67,35 @@
                     <a href="#" class="text-gray-50 border border-gray-50 rounded-lg px-4 py-2 text-md font-medium hover:bg-gradient-to-br from-[#1a73e8] via-[#20c997] via-[#4a90e2] to-[#50e3c2] hover:text-white transition-colors duration-300 hover:scale-110">Home</a>
                     <a href="#" class="text-gray-50 border border-gray-50 rounded-lg px-4 py-2 text-md font-medium hover:bg-gradient-to-br from-[#1a73e8] via-[#20c997] via-[#4a90e2] to-[#50e3c2] hover:text-white transition-colors duration-300 hover:scale-110">Found Items</a>
                     <a href="{% url 'reports:lost_reports' %}" class="text-gray-50 border border-gray-50 rounded-lg px-4 py-2 text-md font-medium hover:bg-gradient-to-br from-[#1a73e8] via-[#20c997] via-[#4a90e2] to-[#50e3c2] hover:text-white transition-colors duration-300 hover:scale-110">Lost Report</a>
-                    <a href="#" class="text-gray-50 border border-gray-50 rounded-lg px-4 py-2 text-md font-medium hover:bg-gradient-to-br from-[#1a73e8] via-[#20c997] via-[#4a90e2] to-[#50e3c2] hover:text-white transition-colors duration-300 hover:scale-110">Search</a>
+                    <a href="{% url 'user:logout' %}" class="text-gray-50 border border-gray-50 rounded-lg px-4 py-2 text-md font-medium hover:bg-gradient-to-br from-[#1a73e8] via-[#20c997] via-[#4a90e2] to-[#50e3c2] hover:text-white transition-colors duration-300 hover:scale-110">Logout</a>
                 </div>
 
                 <!-- Login Button -->
                 <div class="hidden md:block">
-                    <a href="{% url 'user:login' %}" class="text-white bg-gradient-to-br from-[#1a73e8] border border-gray-50 rounded-lg px-6 py-2 hover:bg-green-400 transition-colors duration-300">
-                        Login
-                    </a>
+                    {% if user.is_authenticated == False %}
+                        <a href="{% url 'user:login' %}" class="text-white bg-gradient-to-br from-[#1a73e8] border border-gray-50 rounded-lg px-6 py-2 hover:bg-green-400 transition-colors duration-300">
+                            Login
+                        </a>
+                    {% else %}
+                        {% if user.profile %}
+                            <img id="profile-button" src="{{ user.profile.profile_picture.url|default:'/static/images/default-avatar.png' }}" 
+                                alt="{{ user.username }}" 
+                                class="w-10 h-10 rounded-full object-cover">
+                        {% else %}
+                            <div id="profile-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="40" height="40" class="text-blue-50">
+                                    <path fill="currentColor" d="M463 448.2C440.9 409.8 399.4 384 352 384L288 384C240.6 384 199.1 409.8 177 448.2C212.2 487.4 263.2 512 320 512C376.8 512 427.8 487.3 463 448.2zM64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320zM320 336C359.8 336 392 303.8 392 264C392 224.2 359.8 192 320 192C280.2 192 248 224.2 248 264C248 303.8 280.2 336 320 336z"/>
+                                </svg>
+                            </div>   
+                            <div class="hidden md:flex items-center space-x-10">
+                                <a href="#" class="text-gray-50 border border-gray-50 rounded-lg px-4 py-2 text-md font-medium hover:bg-gradient-to-br from-[#1a73e8] via-[#20c997] via-[#4a90e2] to-[#50e3c2] hover:text-white transition-colors duration-300 hover:scale-110">Profile</a>
+                                <a href="#" class="text-gray-50 border border-gray-50 rounded-lg px-4 py-2 text-md font-medium hover:bg-gradient-to-br from-[#1a73e8] via-[#20c997] via-[#4a90e2] to-[#50e3c2] hover:text-white transition-colors duration-300 hover:scale-110">Dashboard</a>
+                                <a href="{% url 'reports:lost_reports' %}" class="text-gray-50 border border-gray-50 rounded-lg px-4 py-2 text-md font-medium hover:bg-gradient-to-br from-[#1a73e8] via-[#20c997] via-[#4a90e2] to-[#50e3c2] hover:text-white transition-colors duration-300 hover:scale-110">Lost Report</a>
+                                <a href="#" class="text-gray-50 border border-gray-50 rounded-lg px-4 py-2 text-md font-medium hover:bg-gradient-to-br from-[#1a73e8] via-[#20c997] via-[#4a90e2] to-[#50e3c2] hover:text-white transition-colors duration-300 hover:scale-110">Search</a>
+                            </div>
+
+                        {% endif %}
+                    {% endif %}
                 </div>
 
                 <!-- Mobile Menu Button -->
@@ -175,6 +197,13 @@
 
     <!-- JavaScript for Mobile Menu Toggle -->
     <script>
+
+        const profileButton = document.getElementById('profile-button');
+        const profileFileInput = document.getElementById('profile-file');
+
+        profileButton.addEventListener('click', () => {
+        profileFileInput.click(); // trigger file input click
+        });
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
         const hamburgerOpen = document.getElementById('hamburger-open');
@@ -188,6 +217,8 @@
             mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
         });
     </script>
+
+    
 </body>
 </html>
 
