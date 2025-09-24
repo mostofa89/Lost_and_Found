@@ -6,7 +6,7 @@
     
     <!-- ✅ Messages Section -->
     {% if messages %}
-      <div class="mb-4">
+      <div class="message mb-4">
         {% for message in messages %}
           <div class="px-4 py-3 rounded-lg mb-2 
                       {% if message.tags == 'error' %}
@@ -46,7 +46,7 @@
 
       <!-- Submit Button -->
       <div>
-        <button type="submit" class="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition">Login</button>
+        <button type="submit" class="w-full text-white bg-gradient-to-br from-[#1a73e8] border border-gray-50 rounded-lg px-6 py-3 hover:bg-green-400 transition-colors duration-300">Login</button>
       </div>
 
       <!-- Extra Links -->
@@ -58,4 +58,14 @@
     </form>
   </div>
 </div>
+
+  <script>
+      setTimeout(() => {
+        document.querySelectorAll('.message').forEach(el => {
+          el.style.transition = "opacity 0.6s ease";
+          el.style.opacity = "0";
+          setTimeout(() => el.remove(), 600); // remove fully after fade-out
+        });
+      }, 5000);
+  </script>
 {% endblock %}

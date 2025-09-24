@@ -6,7 +6,7 @@
 
     <!-- ✅ Messages Section -->
     {% if messages %}
-      <div class="mb-4">
+      <div class="message mb-4">
         {% for message in messages %}
           <div class="px-4 py-3 rounded-lg mb-2 
                       {% if message.tags == 'error' %}
@@ -33,20 +33,32 @@
 
     <!-- Profile Card -->
     <div class="flex flex-col items-center text-center space-y-4">
-      <!-- Profile Picture -->
-      <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-blue-500 shadow-lg">
-        {% if user.profile.profile_picture %}
-          <img src="{{ user.profile.profile_picture.url }}" alt="Profile Picture" class="w-full h-full object-cover">
-        {% else %}
-                <label for="profile-button" class="cursor-pointer w-full h-full flex items-center justify-center rounded-full bg-gray-800 hover:scale-110 transition duration-300 ease-in-out">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="w-full h-full object-cover text-zinc-50">
-                    <path fill="currentColor" d="M463 448.2C440.9 409.8 399.4 384 352 384L288 384C240.6 384 199.1 409.8 177 448.2C212.2 487.4 263.2 512 320 512C376.8 512 427.8 487.3 463 448.2zM64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320zM320 336C359.8 336 392 303.8 392 264C392 224.2 359.8 192 320 192C280.2 192 248 224.2 248 264C248 303.8 280.2 336 320 336z"/>
-                  </svg>
-                </label>
+      
+      <!-- Profile Picture Upload -->
+      <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-blue-500 shadow-lg relative">
+        <form method="post" enctype="multipart/form-data" action="#">
+          {% csrf_token %}
+          
+          {% if user.profile.profile_picture %}
+            <!-- Show existing profile picture -->
+            <label for="profile-pic" class="cursor-pointer block w-full h-full">
+              <img src="{{ user.profile.profile_picture.url }}" 
+                   alt="Profile Picture" 
+                   class="w-full h-full object-cover">
+            </label>
+          {% else %}
+            <!-- Show upload icon if no profile picture -->
+            <label for="profile-pic" 
+                  class="cursor-pointer w-full h-full flex items-center justify-center rounded-full bg-gray-800 hover:scale-110 transition duration-300 ease-in-out">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="w-full h-full text-zinc-50">
+                <path fill="currentColor" d="M463 448.2C440.9 409.8 399.4 384 352 384L288 384C240.6 384 199.1 409.8 177 448.2C212.2 487.4 263.2 512 320 512C376.8 512 427.8 487.3 463 448.2zM64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320zM320 336C359.8 336 392 303.8 392 264C392 224.2 359.8 192 320 192C280.2 192 248 224.2 248 264C248 303.8 280.2 336 320 336z"/>
+              </svg>
+            </label>
+          {% endif %}
 
-                <!-- Hidden File Input -->
-                <input type="file" id="profile-button" class="hidden">
-        {% endif %}
+          <!-- Hidden File Input -->
+          <input type="file" id="profile-pic" name="profile_picture" class="hidden" accept="image/*" onchange="this.form.submit()">
+        </form>
       </div>
 
       <!-- User Info -->
@@ -56,7 +68,7 @@
       </div>
 
       <!-- Details -->
-      <div class="w-full text-left mt-6 space-y-3 text-white">
+      <div class="w-full text-left mt-6 space-y-3 text-white text-center">
         <p><span class="font-semibold">Email:</span> {{ user.email }}</p>
         <p><span class="font-semibold">Student ID:</span> {{ user.profile.student_id }}</p>
         <p><span class="font-semibold">Phone:</span> +880{{ user.profile.phone }}</p>
@@ -71,4 +83,15 @@
     </div>
   </div>
 </div>
+
+<!-- Fade-out messages -->
+<script>
+  setTimeout(() => {
+    document.querySelectorAll('.message').forEach(el => {
+      el.style.transition = "opacity 0.6s ease";
+      el.style.opacity = "0";
+      setTimeout(() => el.remove(), 600);
+    });
+  }, 5000);
+</script>
 {% endblock %}

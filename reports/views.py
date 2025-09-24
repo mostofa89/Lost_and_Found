@@ -35,6 +35,7 @@ def lost_reports_view(request):
             return redirect('reports:lost_reports')
        
 
-    reports = Lost_reports.objects.all().order_by('-reported_at')
+    reports = Lost_reports.objects.filter(user=request.user).order_by('-reported_at')
+    
     return render(request, 'reports/lost_reports.html', {'reports': reports})
 

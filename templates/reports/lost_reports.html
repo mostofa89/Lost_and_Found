@@ -2,67 +2,70 @@
 {% load widget_tweaks %}
 {% block content %}
 <main class="flex-grow px-3 py-12">
-  <div class="max-w-2xl mx-auto bg-transparent bg-opacity-80 backdrop-blur-md rounded-xl shadow-lg p-8">
-    {% if messages %}
-      <div class="space-y-2 mb-4">
-        {% for message in messages %}
-          <div
-            class="px-4 py-3 rounded-lg 
-                  {% if message.tags == 'success' %}bg-green-500 text-white{% endif %}
-                  {% if message.tags == 'error' %}bg-red-500 text-white{% endif %}
-                  {% if message.tags == 'warning' %}bg-yellow-400 text-white{% endif %}">
-            {{ message }}
-          </div>
-        {% endfor %}
-      </div>
-    {% endif %}
-    <h2 class="text-3xl font-bold text-center mb-6 text-gray-50">Report a Lost Item</h2>
+  {% if user is not authenticate %}
+    <div class="max-w-2xl mx-auto bg-transparent bg-opacity-80 backdrop-blur-md rounded-xl shadow-lg p-8">
+      {% if messages %}
+        <div class="message space-y-2 mb-4">
+          {% for message in messages %}
+            <div
+              class="px-4 py-3 rounded-lg 
+                    {% if message.tags == 'success' %}bg-green-500 text-white{% endif %}
+                    {% if message.tags == 'error' %}bg-red-500 text-white{% endif %}
+                    {% if message.tags == 'warning' %}bg-yellow-400 text-white{% endif %}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+      <h2 class="text-3xl font-bold text-center mb-6 text-gray-50">Report a Lost Item</h2>
 
-    <form action="{% url 'reports:lost_reports' %}" method="POST" enctype="multipart/form-data" class="space-y-4">
-      {% csrf_token %}
+      <form action="{% url 'reports:lost_reports' %}" method="POST" enctype="multipart/form-data" class="space-y-4">
+        {% csrf_token %}
 
-      <div>
-        <label class="block text-white py-1">Item Name</label>
-        <input type="text" name="item_name" placeholder="Item Name" class="w-full px-4 py-3 border border-white rounded-lg bg-transparent text-white placeholder-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
-      </div>
+        <div>
+          <label class="block text-white py-1">Item Name</label>
+          <input type="text" name="item_name" placeholder="Item Name" class="w-full px-4 py-3 border border-white rounded-lg bg-transparent text-white placeholder-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
 
-      <!-- Items Description -->
-      <div>
-        <label class="block text-white py-1">Items Description</label>
-        <input type="text" name="item_description" placeholder="Items Description" class="w-full px-4 py-3 border border-white rounded-lg bg-transparent text-white placeholder-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
-      </div>
+        <!-- Items Description -->
+        <div>
+          <label class="block text-white py-1">Items Description</label>
+          <input type="text" name="item_description" placeholder="Items Description" class="w-full px-4 py-3 border border-white rounded-lg bg-transparent text-white placeholder-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
 
-      <!-- Date -->
-      <div>
-        <label class="block text-white py-1">Date Lost</label>
-        <input type="date" name="date_lost" class="w-full px-4 py-3 border border-white rounded-lg bg-transparent text-white placeholder-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
-      </div>
+        <!-- Date -->
+        <div>
+          <label class="block text-white py-1">Date Lost</label>
+          <input type="date" name="date_lost" class="w-full px-4 py-3 border border-white rounded-lg bg-transparent text-white placeholder-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
 
-      <!-- Location -->
-      <div>
-        <label class="block text-white py-1">Location</label>
-        <input type="text" name="location" placeholder="Location" class="w-full px-4 py-3 border border-white rounded-lg bg-transparent text-white placeholder-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
-      </div>
-      <!-- Contact -->
-      <div>
-        <label class="block text-white py-1">Contact</label>
-        <input type="text" name="contact" placeholder="Contact" class="w-full px-4 py-3 border border-white rounded-lg bg-transparent text-white placeholder-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
-      </div>
+        <!-- Location -->
+        <div>
+          <label class="block text-white py-1">Location</label>
+          <input type="text" name="location" placeholder="Location" class="w-full px-4 py-3 border border-white rounded-lg bg-transparent text-white placeholder-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
+        <!-- Contact -->
+        <div>
+          <label class="block text-white py-1">Contact</label>
+          <input type="text" name="contact" placeholder="Contact" class="w-full px-4 py-3 border border-white rounded-lg bg-transparent text-white placeholder-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
 
-      <!----Image-->
-      <div>
-        <label class="block text-white py-1">Image</label>
-        <input type="file" name="item_image" class="w-full px-4 py-3 border border-white rounded-lg bg-transparent text-white placeholder-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
-      </div>
+        <!----Image-->
+        <div>
+          <label class="block text-white py-1">Image</label>
+          <input type="file" name="item_image" class="w-full px-4 py-3 border border-white rounded-lg bg-transparent text-white placeholder-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
 
-      <div>
-        <button type="submit"
-                class="w-full bg-gradient-to-br from-[#1a73e8] via-[#20c997] via-[#4a90e2] to-[#50e3c2] text-white py-3 rounded-lg hover:scale-105 transition transform duration-300">
-          Submit Query
-        </button>
-      </div>
-    </form>
-  </div>
+        <div>
+          <button type="submit"
+                  class="w-full bg-gradient-to-br from-[#1a73e8] via-[#20c997] via-[#4a90e2] to-[#50e3c2] text-white py-3 rounded-lg hover:scale-105 transition transform duration-300">
+            Submit Query
+          </button>
+        </div>
+      </form>
+    </div>
+
+  {% endif %}
 
 
   <div class="max-w-4xl my-6 mx-auto bg-transparent bg-opacity-80 backdrop-blur-md rounded-xl shadow-lg p-8 " style="box-shadow: 0 -4px 6px -1px rgba(0,0,0,0.1), 0 -2px 4px -2px rgba(0,0,0,0.6);">
@@ -87,4 +90,14 @@
     {% endif %}
   </div>
 </main>
+
+  <script>
+      setTimeout(() => {
+        document.querySelectorAll('.message').forEach(el => {
+          el.style.transition = "opacity 0.6s ease";
+          el.style.opacity = "0";
+          setTimeout(() => el.remove(), 600); // remove fully after fade-out
+        });
+      }, 5000);
+  </script>
 {% endblock %}
