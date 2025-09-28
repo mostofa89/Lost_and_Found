@@ -50,9 +50,9 @@
         <!-- Desktop Navigation -->
         <div class="hidden md:flex items-center space-x-10">
           <a href="#" class="nav-btn px-4 py-2 hover:border-b-2 text-lg">Home</a>
-          <a href="#" class="nav-btn px-4 py-2 hover:border-b-2 text-lg">Found Items</a>
+          <a href="{% url 'reports:found_reports' %}" class="nav-btn px-4 py-2 hover:border-b-2 text-lg">Found Items</a>
           <a href="{% url 'reports:lost_reports' %}" class="nav-btn px-4 py-2 hover:border-b-2 text-lg">Lost Report</a>
-          <a href="#" class="nav-btn px-4 py-2 hover:border-b-2 text-lg">Inventory</a>
+          <a href="{% url 'reports:inventory' %}" class="nav-btn px-4 py-2 hover:border-b-2 text-lg">Inventory</a>
         </div>
 
         <!-- Desktop Profile/Login -->

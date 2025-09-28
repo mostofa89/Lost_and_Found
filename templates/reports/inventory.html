@@ -1,0 +1,45 @@
+{% extends "users/base.html" %}
+{% block content %}
+<main class="flex-grow px-3 py-12">
+
+  <!-- Lost Item Reports -->
+  <div class="max-w-4xl my-6 mx-auto bg-transparent bg-opacity-80 rounded-xl shadow-lg p-8 " style="box-shadow: 0 -4px 6px -1px rgba(0,0,0,0.1), 0 -2px 4px -2px rgba(0,0,0,0.6);">
+    <h2 class="text-3xl font-bold text-center mb-6 text-red-400">Lost Item Reports</h2>
+
+    {% if lost_reports %}
+      <div class="space-y-4 my-4">
+        {% for report in lost_reports %}
+          <div class="mx-auto bg-transparent text-center bg-opacity-80 backdrop-blur-md p-4 rounded-lg shadow-md text-gray-50">
+            <h3 class="text-xl font-semibold">{{ report.item_name }}</h3>
+            <p class="text-sm mt-1">{{ report.item_description }}</p>
+            <p class="text-sm mt-1">Lost on: {{ report.date_lost }} | Location: {{ report.location }}</p>
+            <p class="text-sm mt-1">Contact: {{ report.contact }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-center text-gray-300">No lost reports found.</p>
+    {% endif %}
+  </div>
+
+  <!-- Found Item Reports -->
+  <div class="max-w-4xl my-6 mx-auto bg-transparent bg-opacity-80 backdrop-blur-md rounded-xl shadow-lg p-8 " style="box-shadow: 0 -4px 6px -1px rgba(0,0,0,0.1), 0 -2px 4px -2px rgba(0,0,0,0.6);">
+    <h2 class="text-3xl font-bold text-center mb-6 text-green-400">Found Item Reports</h2>
+
+    {% if found_reports %}
+      <div class="space-y-4 my-4">
+        {% for report in found_reports %}
+          <div class="mx-auto bg-transparent text-center bg-opacity-80 backdrop-blur-md p-4 rounded-lg shadow-md text-gray-50">
+            <h3 class="text-xl font-semibold">{{ report.item_name }}</h3>
+            <p class="text-sm mt-1">{{ report.item_description }}</p>
+            <p class="text-sm mt-1">Found on: {{ report.date_found }} | Location: {{ report.location_found }}</p>
+            <p class="text-sm mt-1">Contact: {{ report.contact }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-center text-gray-300">No found reports found.</p>
+    {% endif %}
+  </div>
+</main>
+{% endblock %}

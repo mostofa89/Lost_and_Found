@@ -1,0 +1,74 @@
+{% extends "users/base.html" %}
+{% load widget_tweaks %}
+{% block content %}
+<main class="flex-grow px-3 py-12">
+  {% if user.is_authenticated %}
+    <div class="max-w-2xl mx-auto bg-transparent bg-opacity-80 backdrop-blur-md rounded-xl shadow-lg p-8">
+      {% if messages %}
+        <div class="message space-y-2 mb-4">
+          {% for message in messages %}
+            <div
+              class="px-4 py-3 rounded-lg 
+                    {% if message.tags == 'success' %}bg-green-500 text-white{% endif %}
+                    {% if message.tags == 'error' %}bg-red-500 text-white{% endif %}
+                    {% if message.tags == 'warning' %}bg-yellow-400 text-white{% endif %}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <h2 class="text-3xl font-bold text-center mb-6 text-gray-50">Claim an Item</h2>
+
+      <form action="#" method="POST" enctype="multipart/form-data" class="space-y-4">
+        {% csrf_token %}
+
+        <!-- Claimant Name -->
+        <div>
+          <label class="block text-white py-1">Your Name</label>
+          <input type="text" name="claimant_name" placeholder="Enter your full name" 
+                 class="w-full px-4 py-3 border border-white rounded-lg bg-transparent text-white placeholder-white focus:ring-2 focus:ring-green-500 focus:outline-none">
+        </div>
+
+        <!-- Claimant Contact -->
+        <div>
+          <label class="block text-white py-1">Your Contact</label>
+          <input type="text" name="claimant_contact" placeholder="Phone or Email" 
+                 class="w-full px-4 py-3 border border-white rounded-lg bg-transparent text-white placeholder-white focus:ring-2 focus:ring-green-500 focus:outline-none">
+        </div>
+
+        <!-- Item Details Confirmation -->
+        <div>
+          <label class="block text-white py-1">Item Details</label>
+          <textarea name="item_details" placeholder="Provide details to prove ownership (e.g., color, unique marks, where you lost it)" 
+                 class="w-full px-4 py-3 border border-white rounded-lg bg-transparent text-white placeholder-white focus:ring-2 focus:ring-green-500 focus:outline-none"></textarea>
+        </div>
+
+        <!-- Evidence (optional) -->
+        <div>
+          <label class="block text-white py-1">Upload Evidence (optional)</label>
+          <input type="file" name="evidence" 
+                 class="w-full px-4 py-3 border border-white rounded-lg bg-transparent text-white focus:ring-2 focus:ring-green-500 focus:outline-none">
+        </div>
+
+        <div>
+          <button type="submit"
+                  class="w-full bg-gradient-to-br from-[#1a73e8] via-[#20c997] via-[#4a90e2] to-[#50e3c2] text-white py-3 rounded-lg hover:transition transform duration-300">
+            Submit Claim
+          </button>
+        </div>
+      </form>
+    </div>
+  {% endif %}
+</main>
+
+<script>
+  setTimeout(() => {
+    document.querySelectorAll('.message').forEach(el => {
+      el.style.transition = "opacity 0.6s ease";
+      el.style.opacity = "0";
+      setTimeout(() => el.remove(), 600);
+    });
+  }, 5000);
+</script>
+{% endblock %}
