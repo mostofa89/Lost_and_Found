@@ -126,6 +126,7 @@ def user_list(request):
     return render(request, 'users/user_list.html', {'users': users})
 
 
+
 @login_required(login_url='user:login')
 def profile_edit_view(request):
     user = request.user

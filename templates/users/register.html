@@ -1,48 +1,210 @@
 {% extends "users/base.html" %}
 
 {% block content %}
-<div class="min-h-screen py-12 flex items-center justify-center bg-transparent bg-opacity-80 backdrop-blur-md shadow-md">
-  <div class="max-w-xl w-full bg-transparent bg-opacity-80 backdrop-blur-md shadow-md p-8 rounded-xl">
+<style>
+  .register-container {
+    animation: fadeInUp 0.6s ease-out;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  }
+
+  .logo-badge {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    animation: pulse 2s infinite, float 3s ease-in-out infinite;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+    }
+    50% {
+      box-shadow: 0 0 0 15px rgba(255, 255, 255, 0);
+    }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .message-alert {
+    animation: slideIn 0.5s ease-out;
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .icon-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+  }
+
+  .login-link {
+    transition: all 0.3s ease;
+    display: inline-block;
+  }
+
+  .login-link:hover {
+    transform: translateX(5px);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  }
+
+  /* Override form styles to match design */
+  .input-field {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+    transition: all 0.3s ease;
+  }
+
+  .input-field:focus {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.6) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3) !important;
+  }
+
+  .label-text {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.95);
+  }
+
+  @media (max-width: 640px) {
+    .glass-card {
+      padding: 1.5rem;
+    }
+  }
+</style>
+
+<div class="min-h-screen py-8 sm:py-12 flex items-center justify-center px-4">
+  <div class="max-w-4xl w-full glass-card p-6 sm:p-10 rounded-3xl register-container">
+    
+    <!-- Messages Section -->
     {% if messages %}
-      <div class="message mb-4">
+      <div class="mb-6 space-y-3">
         {% for message in messages %}
-          <div class="px-4 py-3 rounded-lg mb-2 
+          <div class="message-alert px-5 py-4 rounded-xl shadow-lg flex items-start gap-3
                       {% if message.tags == 'error' %}
-                        bg-red-500 text-white
+                        bg-gradient-to-r from-red-500 to-red-600 text-white
                       {% elif message.tags == 'success' %}
-                        bg-green-500 text-white
+                        bg-gradient-to-r from-green-500 to-green-600 text-white
                       {% elif message.tags == 'warning' %}
-                        bg-yellow-500 text-black
+                        bg-gradient-to-r from-yellow-500 to-yellow-600 text-white
                       {% else %}
-                        bg-blue-500 text-white
+                        bg-gradient-to-r from-blue-500 to-blue-600 text-white
                       {% endif %}">
-            {{ message }}
+            <div class="icon-wrapper flex-shrink-0 mt-0.5">
+              {% if message.tags == 'error' %}
+                <i class="fa-solid fa-circle-xmark"></i>
+              {% elif message.tags == 'success' %}
+                <i class="fa-solid fa-circle-check"></i>
+              {% elif message.tags == 'warning' %}
+                <i class="fa-solid fa-triangle-exclamation"></i>
+              {% else %}
+                <i class="fa-solid fa-circle-info"></i>
+              {% endif %}
+            </div>
+            <span class="font-medium">{{ message }}</span>
           </div>
         {% endfor %}
       </div>
     {% endif %}
-    <div class="flex items-center justify-center">
-        <div class="logo text-4xl">🎓</div>
-    </div>
-    <h2 class="text-3xl font-bold text-center mb-6 text-white">Register</h2>
 
+    <!-- Logo Badge -->
+    <div class="flex items-center justify-center mb-6">
+      <div class="logo-badge">
+        🎓
+      </div>
+    </div>
+
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-2 flex items-center justify-center gap-3">
+        <i class="fa-solid fa-user-plus text-cyan-200"></i>
+        Create Account
+      </h2>
+      <p class="text-white/80 text-sm sm:text-base">Join FindIt.com and start your journey</p>
+    </div>
+
+    <!-- Include Form -->
     {% include "users/form.html" %}
 
-    <div class="text-center mt-4">
-        <p class="text-white">Already have an account?
-          <a href="{% url 'user:login' %}" class="text-cyan-50 hover:font-bold">Login here</a>
-        </p>
+    <!-- Divider -->
+    <div class="flex items-center my-8">
+      <div class="flex-1 border-t border-white/20"></div>
+      <span class="px-4 text-white/60 text-sm font-medium">OR</span>
+      <div class="flex-1 border-t border-white/20"></div>
     </div>
+
+    <!-- Login Link -->
+    <div class="text-center">
+      <p class="text-white/90 flex items-center justify-center gap-2 flex-wrap">
+        <span>Already have an account?</span>
+        <a href="{% url 'user:login' %}" class="login-link text-cyan-200 hover:text-cyan-100 font-semibold inline-flex items-center gap-2">
+          Sign In
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </p>
+    </div>
+
+    <!-- Additional Info -->
+    <div class="mt-8 pt-6 border-t border-white/20 text-center">
+      <p class="text-white/60 text-xs sm:text-sm flex items-center justify-center gap-2 flex-wrap">
+        <i class="fa-solid fa-shield-halved"></i>
+        <span>By registering, you agree to our Terms of Service and Privacy Policy</span>
+      </p>
+    </div>
+
   </div>
 </div>
 
-  <script>
-      setTimeout(() => {
-        document.querySelectorAll('.message').forEach(el => {
-          el.style.transition = "opacity 0.6s ease";
-          el.style.opacity = "0";
-          setTimeout(() => el.remove(), 600); // remove fully after fade-out
-        });
-      }, 5000);
-  </script>
+<script>
+  // Auto-hide messages
+  setTimeout(() => {
+    document.querySelectorAll('.message-alert').forEach(el => {
+      el.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+      el.style.opacity = "0";
+      el.style.transform = "translateX(20px)";
+      setTimeout(() => el.remove(), 600);
+    });
+  }, 5000);
+</script>
 {% endblock %}

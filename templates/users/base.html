@@ -4,90 +4,260 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FindIt.com</title>
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts: Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <!-- FontAwesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 
   <style>
-    body {
-      background: linear-gradient(-45deg, #1a73e8, #20c997, #4a90e2, #50e3c2);
-      background-size: 400% 400%;
-      animation: gradientMove 10s ease infinite;
-      min-height: 100vh;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
+    * {
+      font-family: 'Inter', sans-serif;
     }
 
-    @keyframes gradientMove {
-      0% { background-position: 0% 50%; }
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+      background-size: 200% 200%;
+      animation: gradientShift 15s ease infinite;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(240, 147, 251, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(118, 75, 162, 0.2) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    }
+
+    .glass-nav {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-btn {
+      position: relative;
+      transition: all 0.3s ease;
+      color: white;
+      font-weight: 500;
+    }
+
+    .nav-btn::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: white;
+      transition: width 0.3s ease;
+    }
+
+    .nav-btn:hover::after {
+      width: 100%;
+    }
+
+    .nav-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .logo-pulse {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    .mobile-link {
+      display: block;
+      padding: 0.5rem 0.75rem;
+      color: white;
+      font-weight: 500;
+      border-radius: 0.5rem;
+      transition: all 0.3s;
+    }
+
+    .mobile-link:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateX(5px);
+    }
+
+    .dropdown-glass {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(25px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .profile-ring {
+      position: relative;
+      animation: rotate 3s linear infinite;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .social-icon {
+      transition: all 0.3s ease;
+    }
+
+    .social-icon:hover {
+      transform: scale(1.2) rotate(10deg);
+    }
+
+    .content-wrapper {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 10px;
+    }
+
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .floating {
+      animation: floating 3s ease-in-out infinite;
+    }
+
+    @keyframes floating {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+    }
+
+    .shimmer {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .shimmer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { left: -100%; }
+      100% { left: 100%; }
     }
   </style>
 </head>
-<body class="flex flex-col min-h-screen bg-gradient-main text-gray-50">
+<body class="flex flex-col min-h-screen text-gray-50">
 
   <!-- Navbar -->
-  <nav class="bg-transparent bg-opacity-80 backdrop-blur-md shadow-md">
+  <nav class="glass-nav relative z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-20">
         <!-- Logo -->
         <div class="flex-shrink-0">
-          <a href="#" class="flex items-center space-x-3">
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 16 16" class="hover:scale-110">
+          <a href="#" class="flex items-center space-x-3 group">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 16 16" class="logo-pulse group-hover:scale-110 transition-transform duration-300">
               <path fill="currentColor" d="m11.271 11.978l3.872 3.873a.502.502 0 0 0 .708 0a.502.502 0 0 0 0-.708l-3.565-3.564c2.38-2.747 2.267-6.923-.342-9.532c-2.73-2.73-7.17-2.73-9.898 0c-2.728 2.729-2.728 7.17 0 9.9a6.955 6.955 0 0 0 4.949 2.05a.5.5 0 0 0 0-1a5.96 5.96 0 0 1-4.242-1.757a6.01 6.01 0 0 1 0-8.486a6.004 6.004 0 0 1 8.484 0a6.01 6.01 0 0 1 0 8.486a.5.5 0 0 0 .034.738"/>
             </svg>
-            <span class="text-gray-50 text-2xl font-bold tracking-wider">FindIt.com</span>
+            <span class="text-white text-2xl font-bold tracking-wider group-hover:text-cyan-200 transition-colors">FindIt.com</span>
           </a>
         </div>
 
         <!-- Desktop Navigation -->
         <div class="hidden md:flex items-center space-x-10">
-          <a href="#" class="nav-btn px-4 py-2 hover:border-b-2 text-lg">Home</a>
-          <a href="{% url 'reports:found_reports' %}" class="nav-btn px-4 py-2 hover:border-b-2 text-lg">Found Items</a>
-          <a href="{% url 'reports:lost_reports' %}" class="nav-btn px-4 py-2 hover:border-b-2 text-lg">Lost Report</a>
-          <a href="{% url 'reports:inventory' %}" class="nav-btn px-4 py-2 hover:border-b-2 text-lg">Inventory</a>
+          <a href="{% url 'home' %}" class="nav-btn px-4 py-2 text-lg">Home</a>
+          <a href="{% url 'reports:found_reports' %}" class="nav-btn px-4 py-2 text-lg">Found Items</a>
+          <a href="{% url 'reports:lost_reports' %}" class="nav-btn px-4 py-2 text-lg">Lost Report</a>
+          <a href="{% url 'reports:inventory' %}" class="nav-btn px-4 py-2 text-lg">Inventory</a>
         </div>
 
         <!-- Desktop Profile/Login -->
         <div class="hidden md:block" x-data="{ open: false }">
           {% if not user.is_authenticated %}
             <a href="{% url 'user:login' %}" 
-               class="text-white bg-gradient-to-br from-[#1a73e8] border border-gray-50 rounded-lg px-6 py-2 hover:bg-green-400 transition-colors duration-300">
+               class="text-white bg-white/20 backdrop-blur-md border-2 border-white/30 rounded-xl px-6 py-2.5 font-semibold hover:bg-white/30 hover:scale-105 transition-all duration-300 shadow-lg">
               Login
             </a>
           {% else %}
-            <div class="relative border-2 border-blue-50 shadow-lg rounded-full p-1">
+            <div class="relative">
               {% if user.profile %}
+                <div class="profile-ring absolute inset-0 rounded-full border-2 border-white/40"></div>
                 <img @click="open = !open"
                   src="{{ user.profile.profile_picture.url|default:'/static/images/default-avatar.png' }}" 
                   alt="{{ user.username }}" 
-                  class="w-10 h-10 rounded-full object-cover cursor-pointer">
+                  class="relative w-12 h-12 rounded-full object-cover cursor-pointer hover:scale-110 transition-transform duration-300 border-2 border-white shadow-lg">
               {% else %}
-                <div @click="open = !open" class="cursor-pointer">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="40" height="40" class="text-blue-50">
-                    <path fill="currentColor" d="M463 448.2C440.9 409.8 399.4 384 352 384L288 384C240.6 384 199.1 409.8 177 448.2C212.2 487.4 263.2 512 320 512C376.8 512 427.8 487.3 463 448.2zM64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320zM320 336C359.8 336 392 303.8 392 264C392 224.2 359.8 192 320 192C280.2 192 248 224.2 248 264C248 303.8 280.2 336 320 336z"/>
-                  </svg>
+                <div @click="open = !open" class="cursor-pointer hover:scale-110 transition-transform duration-300">
+                  <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md border-2 border-white/40 flex items-center justify-center shadow-lg">
+                    <i class="fa-solid fa-user text-white text-xl"></i>
+                  </div>
                 </div>
               {% endif %}
               <!-- Dropdown -->
-              <div x-show="open" @click.away="open = false"
-                   class="absolute right-0 mt-2 w-48 bg-transparent bg-opacity-80 backdrop-blur-md text-gray-800 rounded-lg shadow-lg z-50">
+              <div x-show="open" 
+                   x-transition:enter="transition ease-out duration-200"
+                   x-transition:enter-start="opacity-0 scale-95"
+                   x-transition:enter-end="opacity-100 scale-100"
+                   x-transition:leave="transition ease-in duration-150"
+                   x-transition:leave-start="opacity-100 scale-100"
+                   x-transition:leave-end="opacity-0 scale-95"
+                   @click.away="open = false"
+                   class="absolute right-0 mt-3 w-56 dropdown-glass text-white rounded-2xl shadow-2xl z-50 overflow-hidden">
                 {% if user.is_staff %}
-                <a href="#" class="block px-4 text-cyan-50 py-2 hover:bg-gradient-to-br from-[#1a73e8]">Pending Approvals</a>
-                <a href="{% url 'user:admin_dashboard' %}" class="block px-4 py-2 text-cyan-50 hover:bg-gradient-to-br from-[#1a73e8]">Admin Panel</a>
+                <a href="#" class="block px-5 py-3 hover:bg-white/20 transition-colors duration-200 font-medium">
+                  <i class="fa-solid fa-bell mr-2"></i> Notifications
+                </a>
+                <a href="{% url 'user:admin_dashboard' %}" class="block px-5 py-3 hover:bg-white/20 transition-colors duration-200 font-medium">
+                  <i class="fa-solid fa-gauge-high mr-2"></i> Admin Panel
+                </a>
                 {% else %}
-                <a href="#" class="block px-4 py-2 text-cyan-50 hover:bg-gradient-to-br from-[#1a73e8]">Dashboard</a>
-                <a href="#" class="block px-4 text-cyan-50 py-2 hover:bg-gradient-to-br from-[#1a73e8]">Profile</a>
+                <a href="#" class="block px-5 py-3 hover:bg-white/20 transition-colors duration-200 font-medium">
+                  <i class="fa-solid fa-gauge mr-2"></i> Dashboard
+                </a>
+                <a href="{% url 'user:profile' %}" class="block px-5 py-3 hover:bg-white/20 transition-colors duration-200 font-medium">
+                  <i class="fa-solid fa-user mr-2"></i> Profile
+                </a>
                 {% endif %}
-                <a href="#" class="block px-4 py-2 text-cyan-50 hover:bg-gradient-to-br from-[#1a73e8]">Settings</a>
-                <a href="{% url 'user:logout' %}" class="block px-4 py-2 text-red-600 hover:bg-bg-gradient-to-br from-[#1a73e8]">Logout</a>
+                <a href="#" class="block px-5 py-3 hover:bg-white/20 transition-colors duration-200 font-medium">
+                  <i class="fa-solid fa-gear mr-2"></i> Settings
+                </a>
+                <div class="border-t border-white/20"></div>
+                <a href="{% url 'user:logout' %}" class="block px-5 py-3 text-red-300 hover:bg-red-500/20 transition-colors duration-200 font-medium">
+                  <i class="fa-solid fa-right-from-bracket mr-2"></i> Logout
+                </a>
               </div>
             </div>
           {% endif %}
@@ -96,14 +266,14 @@
         <!-- Mobile Button -->
         <div class="-mr-2 flex md:hidden">
           <button id="mobile-menu-button" type="button" 
-            class="inline-flex items-center justify-center p-2 rounded-md text-gray-50 hover:bg-gray-200 focus:outline-none"
+            class="inline-flex items-center justify-center p-2 rounded-lg text-white hover:bg-white/20 focus:outline-none transition-colors duration-200"
             aria-controls="mobile-menu" aria-expanded="false">
-            <svg id="hamburger-open" class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" 
+            <svg id="hamburger-open" class="block h-7 w-7" xmlns="http://www.w3.org/2000/svg" fill="none" 
               viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                 d="M4 6h16M4 12h16M4 18h16"/>
             </svg>
-            <svg id="hamburger-close" class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" 
+            <svg id="hamburger-close" class="hidden h-7 w-7" xmlns="http://www.w3.org/2000/svg" fill="none" 
               viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                 d="M6 18L18 6M6 6l12 12"/>
@@ -114,52 +284,52 @@
     </div>
 
     <!-- Mobile Menu -->
-    <div class="hidden md:hidden" id="mobile-menu">
-      <div class="px-3 pt-2 pb-3 space-y-2 sm:px-3">
-        <a href="#" class="mobile-link">Home | </a>
-        <a href="#" class="mobile-link">Found Items | </a>
-        <a href="{% url 'reports:lost_reports' %}" class="mobile-link">Lost Report | </a>
-        <a href="#" class="mobile-link">Inventory</a>
+    <div class="hidden md:hidden dropdown-glass" id="mobile-menu">
+      <div class="px-4 pt-3 pb-3 space-y-2">
+        <a href="#" class="mobile-link"><i class="fa-solid fa-home mr-2"></i> Home</a>
+        <a href="{% url 'reports:found_reports' %}" class="mobile-link"><i class="fa-solid fa-box-open mr-2"></i> Found Items</a>
+        <a href="{% url 'reports:lost_reports' %}" class="mobile-link"><i class="fa-solid fa-magnifying-glass mr-2"></i> Lost Report</a>
+        <a href="{% url 'reports:inventory' %}" class="mobile-link"><i class="fa-solid fa-boxes-stacked mr-2"></i> Inventory</a>
       </div>
 
       <!-- Profile Section -->
       {% if user.is_authenticated %}
-      <div class="pt-4 pb-3 border-t border-gray-300">
+      <div class="pt-4 pb-3 border-t border-white/20">
         <div class="flex items-center px-5 space-x-3">
           {% if user.profile %}
             <img src="{{ user.profile.profile_picture.url|default:'/static/images/default-avatar.png' }}" 
                  alt="{{ user.username }}" 
-                 class="w-10 h-10 rounded-full object-cover border border-gray-300">
+                 class="w-12 h-12 rounded-full object-cover border-2 border-white shadow-lg">
           {% else %}
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="40" height="40" class="text-gray-700">
-              <path fill="currentColor" d="M463 448.2C440.9 409.8 399.4 384 352 384L288 384C240.6 384 199.1 409.8 177 448.2C212.2 487.4 263.2 512 320 512C376.8 512 427.8 487.3 463 448.2zM64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320zM320 336C359.8 336 392 303.8 392 264C392 224.2 359.8 192 320 192C280.2 192 248 224.2 248 264C248 303.8 280.2 336 320 336z"/>
-            </svg>
+            <div class="w-12 h-12 rounded-full bg-white/20 border-2 border-white/40 flex items-center justify-center">
+              <i class="fa-solid fa-user text-white text-xl"></i>
+            </div>
           {% endif %}
           <div>
-            <p class="text-base font-medium text-gray-900">{{ user.username }}</p>
+            <p class="text-base font-semibold text-white">{{ user.username }}</p>
             {% if not user.is_staff %}
-            <a href="{% url 'user:profile' %}" class="text-sm text-blue-50 hover:underline">View Profile</a>
+            <a href="{% url 'user:profile' %}" class="text-sm text-cyan-200 hover:underline">View Profile</a>
             {% else %}
-            <a href="#" class="text-sm text-blue-50 hover:underline">Claim Reports</a>
-
+            <a href="#" class="text-sm text-cyan-200 hover:underline">Claim Reports</a>
             {% endif %}
           </div>
         </div>
         <div class="mt-3 px-3 space-y-1">
           {% if user.is_staff %}
-          <a href="{% url 'user:admin_dashboard' %}" class="mobile-link px-3 py-2">Admin Panel</a>
+          <a href="{% url 'user:admin_dashboard' %}" class="mobile-link"><i class="fa-solid fa-gauge-high mr-2"></i> Admin Panel</a>
           {% else %}
-          <a href="#" class="mobile-link px-3 py-2">Dashboard</a>
+          <a href="#" class="mobile-link"><i class="fa-solid fa-gauge mr-2"></i> Dashboard</a>
           {% endif %}
-          <br>
-          <a href="#" class="mobile-link px-3">Settings</a>
-          <a href="{% url 'user:logout' %}" class="block px-3 rounded-md text-base font-medium text-red-600 hover:bg-red-100">Logout</a>
+          <a href="#" class="mobile-link"><i class="fa-solid fa-gear mr-2"></i> Settings</a>
+          <a href="{% url 'user:logout' %}" class="block px-3 py-2 rounded-lg text-base font-semibold text-red-300 hover:bg-red-500/20 transition-colors">
+            <i class="fa-solid fa-right-from-bracket mr-2"></i> Logout
+          </a>
         </div>
       </div>
       {% else %}
-      <div class="pt-4 pb-3 border-t border-gray-300">
+      <div class="pt-4 pb-3 border-t border-white/20">
         <div class="flex items-center px-5">
-          <a href="{% url 'user:login' %}" class="w-full text-center text-white bg-[#20c997] rounded-lg px-6 py-2 hover:bg-[#1a73e8] transition-colors duration-300">
+          <a href="{% url 'user:login' %}" class="w-full text-center text-white bg-white/20 backdrop-blur-md border-2 border-white/30 rounded-xl px-6 py-3 font-semibold hover:bg-white/30 transition-all duration-300">
             Login
           </a>
         </div>
@@ -170,35 +340,57 @@
 
   <!-- Main Content -->
   {% block content %}
-  <main class="flex-grow px-3 py-3 my-4">
-    <div class="max-w-7xl mx-auto py-20 px-4 sm:px-6 lg:px-8 bg-white bg-opacity-80 backdrop-blur-md rounded-xl shadow-lg">
-      <h1 class="text-4xl font-bold text-center mb-8 text-gray-800">Welcome to FindIt.com</h1>
-      <p class="text-center text-gray-700 text-lg">Your one-stop solution for finding lost and found items. Explore, report, and find items easily with our platform.</p>
+  <main class="flex-grow px-4 py-8 my-6 content-wrapper">
+    <div class="max-w-7xl mx-auto py-20 px-6 sm:px-8 lg:px-12 glass-effect rounded-3xl shadow-2xl floating">
+      <div class="text-center">
+        <h1 class="text-5xl sm:text-6xl font-extrabold mb-6 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent shimmer">
+          Welcome to FindIt.com
+        </h1>
+        <p class="text-gray-700 text-xl sm:text-2xl font-light leading-relaxed max-w-3xl mx-auto">
+          Your one-stop solution for finding lost and found items. Explore, report, and find items easily with our platform.
+        </p>
+        <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="#" class="px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-xl hover:scale-105 transition-transform duration-300 shadow-xl">
+            Get Started
+          </a>
+          <a href="#" class="px-8 py-4 bg-white/50 backdrop-blur-md text-gray-800 font-semibold rounded-xl hover:scale-105 transition-transform duration-300 border-2 border-purple-200">
+            Learn More
+          </a>
+        </div>
+      </div>
     </div>
   </main>
   {% endblock %}
 
   <!-- Footer -->
-  <footer class="bg-gradient-main text-white mt-auto">
-    <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+  <footer class="glass-nav mt-auto content-wrapper">
+    <div class="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
       <div class="flex flex-col items-center sm:flex-row sm:justify-between">
         <div class="flex-shrink-0">
-          <a href="#" class="flex items-center space-x-3">
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 16 16" class="hover:scale-110 transition">
+          <a href="#" class="flex items-center space-x-3 group">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 16 16" class="group-hover:scale-110 transition-transform duration-300">
               <path fill="currentColor" d="m11.271 11.978l3.872 3.873a.502.502 0 0 0 .708 0a.502.502 0 0 0 0-.708l-3.565-3.564c2.38-2.747 2.267-6.923-.342-9.532c-2.73-2.73-7.17-2.73-9.898 0c-2.728 2.729-2.728 7.17 0 9.9a6.955 6.955 0 0 0 4.949 2.05a.5.5 0 0 0 0-1a5.96 5.96 0 0 1-4.242-1.757a6.01 6.01 0 0 1 0-8.486a6.004 6.004 0 0 1 8.484 0a6.01 6.01 0 0 1 0 8.486a.5.5 0 0 0 .034.738"/>
             </svg>
-            <span class="text-gray-50 text-2xl font-bold tracking-wider">FindIt.com</span>
+            <span class="text-white text-2xl font-bold tracking-wider group-hover:text-cyan-200 transition-colors">FindIt.com</span>
           </a>
         </div>
-        <div class="flex space-x-4 mt-4 sm:mt-0">
-          <a href="#" class="social-icon text-2xl hover:scale-110"><i class="fab fa-facebook"></i></a>
-          <a href="#" class="social-icon text-2xl hover:scale-110"><i class="fab fa-instagram"></i></a>
-          <a href="#" class="social-icon text-2xl hover:scale-110"><i class="fab fa-linkedin-in"></i></a>
-          <a href="https://github.com/mostofa89" target="_blank" class="social-icon text-2xl hover:scale-110"><i class="fab fa-github"></i></a>
+        <div class="flex space-x-6 mt-6 sm:mt-0">
+          <a href="#" class="social-icon text-white text-2xl w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center hover:bg-white/30">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="#" class="social-icon text-white text-2xl w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center hover:bg-white/30">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="#" class="social-icon text-white text-2xl w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center hover:bg-white/30">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a href="https://github.com/mostofa89" target="_blank" class="social-icon text-white text-2xl w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center hover:bg-white/30">
+            <i class="fab fa-github"></i>
+          </a>
         </div>
       </div>
-      <div class="mt-8 border-t border-gray-50 pt-4 text-center text-md text-gray-50">
-        <p>&copy; 2024 FindIt.com. All rights reserved.</p>
+      <div class="mt-8 border-t border-white/20 pt-6 text-center text-white/90">
+        <p class="font-medium">&copy; 2024 FindIt.com. All rights reserved.</p>
       </div>
     </div>
   </footer>
@@ -221,4 +413,3 @@
   <script src="//unpkg.com/alpinejs" defer></script>
 </body>
 </html>
-

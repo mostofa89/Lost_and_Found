@@ -1,68 +1,404 @@
 {% block content %}
-    <form method="POST" enctype="multipart/form-data" class="space-y-4">
+<style>
+  .registration-container {
+    animation: fadeInUp 0.6s ease-out;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  }
+
+  .input-field {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+  }
+
+  .input-field:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+  }
+
+  .input-field::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .label-text {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.95);
+  }
+
+  .submit-btn {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+
+  .submit-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+
+  .submit-btn:hover::before {
+    width: 400px;
+    height: 400px;
+  }
+
+  .submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+  }
+
+  .icon-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .form-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .form-full {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .password-toggle {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.7);
+    transition: color 0.3s ease;
+  }
+
+  .password-toggle:hover {
+    color: rgba(255, 255, 255, 1);
+  }
+
+  .input-wrapper {
+    position: relative;
+  }
+
+  .message-alert {
+    animation: slideIn 0.5s ease-out;
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .floating-icon {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @media (max-width: 640px) {
+    .glass-card {
+      padding: 1.5rem;
+    }
+  }
+</style>
+
+<div class="min-h-screen py-8 sm:py-12 flex items-center justify-center px-4">
+  <div class="max-w-4xl w-full glass-card p-6 sm:p-10 rounded-3xl registration-container">
+
+    <!-- Messages -->
+    {% if messages %}
+      <div class="mb-6 space-y-3">
+        {% for message in messages %}
+          <div class="message-alert px-5 py-4 rounded-xl shadow-lg flex items-start gap-3
+                      {% if message.tags == 'error' %}
+                        bg-gradient-to-r from-red-500 to-red-600 text-white
+                      {% elif message.tags == 'success' %}
+                        bg-gradient-to-r from-green-500 to-green-600 text-white
+                      {% elif message.tags == 'warning' %}
+                        bg-gradient-to-r from-yellow-500 to-yellow-600 text-white
+                      {% else %}
+                        bg-gradient-to-r from-blue-500 to-blue-600 text-white
+                      {% endif %}">
+            <div class="icon-wrapper flex-shrink-0 mt-0.5">
+              {% if message.tags == 'error' %}
+                <i class="fa-solid fa-circle-xmark"></i>
+              {% elif message.tags == 'success' %}
+                <i class="fa-solid fa-circle-check"></i>
+              {% elif message.tags == 'warning' %}
+                <i class="fa-solid fa-triangle-exclamation"></i>
+              {% else %}
+                <i class="fa-solid fa-circle-info"></i>
+              {% endif %}
+            </div>
+            <span class="font-medium">{{ message }}</span>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/20 backdrop-blur-md mb-4 floating-icon">
+        <i class="fa-solid fa-user-plus text-4xl text-white"></i>
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-2">
+        Create Account
+      </h2>
+      <p class="text-white/80 text-sm sm:text-base">Join FindIt.com and start exploring</p>
+    </div>
+
+    <!-- Form -->
+    <form method="POST" enctype="multipart/form-data" class="form-grid">
       {% csrf_token %}
 
       <!-- First Name -->
       <div>
-        <label class="block text-white py-1">First Name</label>
-        <input type="text" name="first_name" placeholder="First Name" class="w-full px-4 py-3 border border-white rounded-lg bg-transparent text-white placeholder-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        <label class="block label-text mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-user text-cyan-200"></i>
+          First Name
+        </label>
+        <input 
+          type="text" 
+          name="first_name" 
+          placeholder="Enter first name" 
+          required
+          class="input-field w-full px-5 py-3.5 rounded-xl text-white placeholder-white/60 focus:ring-0 focus:outline-none font-medium">
       </div>
 
       <!-- Last Name -->
       <div>
-        <label class="block text-white py-1">Last Name</label>
-        <input type="text" name="last_name" placeholder="Last Name" class="w-full px-4 py-3 border border-white rounded-lg bg-transparent text-white placeholder-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        <label class="block label-text mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-user text-cyan-200"></i>
+          Last Name
+        </label>
+        <input 
+          type="text" 
+          name="last_name" 
+          placeholder="Enter last name" 
+          required
+          class="input-field w-full px-5 py-3.5 rounded-xl text-white placeholder-white/60 focus:ring-0 focus:outline-none font-medium">
       </div>
 
       <!-- Email -->
       <div>
-        <label class="block text-white py-1">Email</label>
-        <input type="email" name="email" placeholder="Email" class="w-full px-4 py-3 border border-white rounded-lg bg-transparent text-white placeholder-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        <label class="block label-text mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-envelope text-cyan-200"></i>
+          Email Address
+        </label>
+        <input 
+          type="email" 
+          name="email" 
+          placeholder="Enter email address" 
+          required
+          class="input-field w-full px-5 py-3.5 rounded-xl text-white placeholder-white/60 focus:ring-0 focus:outline-none font-medium">
       </div>
 
       <!-- Username -->
       <div>
-        <label class="block text-white py-1">Username</label>
-        <input type="text" name="username" placeholder="Username" class="w-full px-4 py-3 border border-white rounded-lg bg-transparent text-white placeholder-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        <label class="block label-text mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-at text-cyan-200"></i>
+          Username
+        </label>
+        <input 
+          type="text" 
+          name="username" 
+          placeholder="Choose a username" 
+          required
+          class="input-field w-full px-5 py-3.5 rounded-xl text-white placeholder-white/60 focus:ring-0 focus:outline-none font-medium">
       </div>
 
       <!-- Student ID -->
       <div>
-        <label class="block text-white py-1">Student ID</label>
-        <input type="text" name="student_id" placeholder="Student ID" class="w-full px-4 py-3 border border-white rounded-lg bg-transparent text-white placeholder-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        <label class="block label-text mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-id-card text-cyan-200"></i>
+          Student ID
+        </label>
+        <input 
+          type="text" 
+          name="student_id" 
+          placeholder="Enter student ID" 
+          required
+          class="input-field w-full px-5 py-3.5 rounded-xl text-white placeholder-white/60 focus:ring-0 focus:outline-none font-medium">
       </div>
 
       <!-- Phone Number -->
       <div>
-        <label class="block text-white py-1">Phone Number</label>
-        <input type="tel" name="phone" placeholder="Phone Number" class="w-full px-4 py-3 border border-white rounded-lg bg-transparent text-white placeholder-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        <label class="block label-text mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-phone text-cyan-200"></i>
+          Phone Number
+        </label>
+        <input 
+          type="tel" 
+          name="phone" 
+          placeholder="Enter phone number" 
+          required
+          class="input-field w-full px-5 py-3.5 rounded-xl text-white placeholder-white/60 focus:ring-0 focus:outline-none font-medium">
       </div>
 
-      <div>
-        <label class="block text-white py-1">Department</label>
-        <input type="text" name="dept" placeholder="Department" class="w-full px-4 py-3 border border-white rounded-lg bg-transparent text-white placeholder-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+      <!-- Department -->
+      <div class="form-full">
+        <label class="block label-text mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-building text-cyan-200"></i>
+          Department
+        </label>
+        <input 
+          type="text" 
+          name="dept" 
+          placeholder="Enter your department" 
+          required
+          class="input-field w-full px-5 py-3.5 rounded-xl text-white placeholder-white/60 focus:ring-0 focus:outline-none font-medium">
       </div>
 
       <!-- Profile Picture -->
-      <div>
-        <label class="block text-white py-1">Profile Picture</label>
-        <input type="file" name="profile_pic" accept="image/*" class="w-full px-2 py-3 border border-white rounded-lg bg-transparent placeholder-white text-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+      <div class="form-full">
+        <label class="block label-text mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-image text-cyan-200"></i>
+          Profile Picture
+        </label>
+        <input 
+          type="file" 
+          name="profile_pic" 
+          accept="image/*" 
+          class="input-field w-full px-4 py-3.5 rounded-xl text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-white/20 file:text-white hover:file:bg-white/30 file:cursor-pointer focus:ring-0 focus:outline-none">
+        <p class="mt-2 text-white/60 text-xs sm:text-sm flex items-center gap-2">
+          <i class="fa-solid fa-circle-info"></i>
+          Optional - You can upload a profile picture (Max 5MB)
+        </p>
       </div>
 
+      <!-- Password -->
       <div>
-        <label class="block text-white py-1">Enter Password</label>
-        <input type="password" name="password1" placeholder="Enter Password" class="w-full px-4 py-3 border border-white rounded-lg bg-transparent text-white placeholder-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        <label class="block label-text mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-lock text-cyan-200"></i>
+          Password
+        </label>
+        <div class="input-wrapper">
+          <input 
+            type="password" 
+            id="password1"
+            name="password1" 
+            placeholder="Enter password" 
+            required
+            class="input-field w-full px-5 py-3.5 pr-12 rounded-xl text-white placeholder-white/60 focus:ring-0 focus:outline-none font-medium">
+          <i class="fa-solid fa-eye password-toggle" onclick="togglePassword('password1', this)"></i>
+        </div>
       </div>
 
+      <!-- Confirm Password -->
       <div>
-        <label class="block text-white py-1">Confirm Password</label>
-        <input type="password" name="password2" placeholder="Confirm Password" class="w-full px-4 py-3 border border-white rounded-lg bg-transparent text-white placeholder-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        <label class="block label-text mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-lock text-cyan-200"></i>
+          Confirm Password
+        </label>
+        <div class="input-wrapper">
+          <input 
+            type="password" 
+            id="password2"
+            name="password2" 
+            placeholder="Confirm password" 
+            required
+            class="input-field w-full px-5 py-3.5 pr-12 rounded-xl text-white placeholder-white/60 focus:ring-0 focus:outline-none font-medium">
+          <i class="fa-solid fa-eye password-toggle" onclick="togglePassword('password2', this)"></i>
+        </div>
       </div>
 
       <!-- Submit Button -->
-      <div class="mt-4 mb-3">
-        <button type="submit" class="w-full text-white bg-gradient-to-br from-[#1a73e8] border border-gray-50 rounded-lg px-6 py-3 hover:bg-green-400 transition-colors duration-300">Register</button>
+      <div class="form-full pt-4">
+        <button 
+          type="submit" 
+          class="submit-btn w-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-bold py-4 rounded-xl shadow-xl relative overflow-hidden border-2 border-white/30">
+          <span class="relative z-10 flex items-center justify-center gap-2 text-lg">
+            <i class="fa-solid fa-user-plus"></i>
+            Create Account
+          </span>
+        </button>
       </div>
     </form>
 
+    <!-- Login Link -->
+    <div class="text-center mt-8 pt-6 border-t border-white/20">
+      <p class="text-white/90 flex items-center justify-center gap-2 flex-wrap">
+        <span>Already have an account?</span>
+        <a href="{% url 'user:login' %}" class="text-cyan-200 hover:text-cyan-100 font-semibold inline-flex items-center gap-2 hover:underline transition-all">
+          <i class="fa-solid fa-right-to-bracket"></i>
+          Login here
+        </a>
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // Auto-hide messages
+  setTimeout(() => {
+    document.querySelectorAll('.message-alert').forEach(el => {
+      el.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+      el.style.opacity = "0";
+      el.style.transform = "translateX(20px)";
+      setTimeout(() => el.remove(), 600);
+    });
+  }, 5000);
+
+  // Password visibility toggle
+  function togglePassword(fieldId, icon) {
+    const field = document.getElementById(fieldId);
+    if (field.type === 'password') {
+      field.type = 'text';
+      icon.classList.remove('fa-eye');
+      icon.classList.add('fa-eye-slash');
+    } else {
+      field.type = 'password';
+      icon.classList.remove('fa-eye-slash');
+      icon.classList.add('fa-eye');
+    }
+  }
+</script>
 {% endblock %}

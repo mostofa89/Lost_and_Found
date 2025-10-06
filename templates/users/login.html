@@ -1,71 +1,329 @@
 {% extends "users/base.html" %}
 
 {% block content %}
-<div class="min-h-screen py-12 flex items-center justify-center bg-transparent bg-opacity-80 backdrop-blur-md shadow-md rounded-xl">
-  <div class="max-w-sm w-full bg-transparent bg-opacity-80 backdrop-blur-md shadow-md p-8 rounded-xl">
+<style>
+  .login-container {
+    animation: fadeInUp 0.6s ease-out;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  }
+
+  .input-field {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+  }
+
+  .input-field:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+  }
+
+  .input-field::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .label-text {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.95);
+  }
+
+  .submit-btn {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+
+  .submit-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+
+  .submit-btn:hover::before {
+    width: 400px;
+    height: 400px;
+  }
+
+  .submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+  }
+
+  .logo-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    animation: pulse 2s infinite, float 3s ease-in-out infinite;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+    }
+    50% {
+      box-shadow: 0 0 0 15px rgba(255, 255, 255, 0);
+    }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .password-toggle {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.7);
+    transition: color 0.3s ease;
+  }
+
+  .password-toggle:hover {
+    color: rgba(255, 255, 255, 1);
+  }
+
+  .input-wrapper {
+    position: relative;
+  }
+
+  .message-alert {
+    animation: slideIn 0.5s ease-out;
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .icon-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+  }
+
+  .register-link {
+    transition: all 0.3s ease;
+    display: inline-block;
+  }
+
+  .register-link:hover {
+    transform: translateX(5px);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  }
+
+  @media (max-width: 640px) {
+    .glass-card {
+      padding: 1.5rem;
+    }
+  }
+</style>
+
+<div class="min-h-screen py-12 flex items-center justify-center px-4">
+  <div class="max-w-md w-full glass-card p-8 sm:p-10 rounded-3xl login-container">
     
-    <!-- ✅ Messages Section -->
+    <!-- Messages Section -->
     {% if messages %}
-      <div class="message mb-4">
+      <div class="mb-6 space-y-3">
         {% for message in messages %}
-          <div class="px-4 py-3 rounded-lg mb-2 
+          <div class="message-alert px-5 py-4 rounded-xl shadow-lg flex items-start gap-3
                       {% if message.tags == 'error' %}
-                        bg-red-500 text-white
+                        bg-gradient-to-r from-red-500 to-red-600 text-white
                       {% elif message.tags == 'success' %}
-                        bg-green-500 text-white
+                        bg-gradient-to-r from-green-500 to-green-600 text-white
                       {% elif message.tags == 'warning' %}
-                        bg-yellow-500 text-black
+                        bg-gradient-to-r from-yellow-500 to-yellow-600 text-white
                       {% else %}
-                        bg-blue-500 text-white
+                        bg-gradient-to-r from-blue-500 to-blue-600 text-white
                       {% endif %}">
-            {{ message }}
+            <div class="icon-wrapper flex-shrink-0 mt-0.5">
+              {% if message.tags == 'error' %}
+                <i class="fa-solid fa-circle-xmark"></i>
+              {% elif message.tags == 'success' %}
+                <i class="fa-solid fa-circle-check"></i>
+              {% elif message.tags == 'warning' %}
+                <i class="fa-solid fa-triangle-exclamation"></i>
+              {% else %}
+                <i class="fa-solid fa-circle-info"></i>
+              {% endif %}
+            </div>
+            <span class="font-medium">{{ message }}</span>
           </div>
         {% endfor %}
       </div>
     {% endif %}
-    <!-- ✅ End Messages Section -->
 
-    <div class="flex items-center justify-center">
-        <div class="logo text-4xl">🎓</div>
+    <!-- Logo -->
+    <div class="flex items-center justify-center mb-8">
+      <div class="logo-icon">
+        🎓
+      </div>
     </div>
-    <h2 class="text-3xl font-bold text-center mb-6 text-white">Login</h2>
-    <form method="POST" class="space-y-4">
+
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-2">
+        Welcome Back
+      </h2>
+      <p class="text-white/80 text-sm sm:text-base">Sign in to continue to FindIt.com</p>
+    </div>
+
+    <!-- Form -->
+    <form method="POST" class="space-y-6">
       {% csrf_token %}
 
       <!-- Username -->
       <div>
-        <label class="block text-white py-1">Username</label>
-        <input type="text" name="username" placeholder="Enter your username" class="w-full px-4 py-3 border border-white rounded-lg bg-transparent text-white placeholder-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        <label class="block label-text mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-user text-cyan-200"></i>
+          Username
+        </label>
+        <input 
+          type="text" 
+          name="username" 
+          placeholder="Enter your username" 
+          required
+          autofocus
+          class="input-field w-full px-5 py-3.5 rounded-xl text-white placeholder-white/60 focus:ring-0 focus:outline-none font-medium">
       </div>
 
       <!-- Password -->
       <div>
-        <label class="block text-white py-1">Password</label>
-        <input type="password" name="password" placeholder="Enter your password" class="w-full px-4 py-3 border border-white rounded-lg bg-transparent text-white placeholder-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        <label class="block label-text mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-lock text-cyan-200"></i>
+          Password
+        </label>
+        <div class="input-wrapper">
+          <input 
+            type="password" 
+            id="password"
+            name="password" 
+            placeholder="Enter your password" 
+            required
+            class="input-field w-full px-5 py-3.5 pr-12 rounded-xl text-white placeholder-white/60 focus:ring-0 focus:outline-none font-medium">
+          <i class="fa-solid fa-eye password-toggle" onclick="togglePassword()"></i>
+        </div>
+      </div>
+
+      <!-- Forgot Password Link -->
+      <div class="flex items-center justify-end">
+        <a href="#" class="text-cyan-200 hover:text-cyan-100 text-sm font-semibold hover:underline transition-all">
+          Forgot Password?
+        </a>
       </div>
 
       <!-- Submit Button -->
-      <div>
-        <button type="submit" class="w-full text-white bg-gradient-to-br from-[#1a73e8] border border-gray-50 rounded-lg px-6 py-3 hover:bg-green-400 transition-colors duration-300">Login</button>
-      </div>
-
-      <!-- Extra Links -->
-      <div class="text-center mt-4">
-        <p class="text-white">Don't have an account? 
-          <a href="{% url 'user:register' %}" class="text-cyan-50 hover:font-bold">Register here</a>
-        </p>
+      <div class="pt-2">
+        <button 
+          type="submit" 
+          class="submit-btn w-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-bold py-4 rounded-xl shadow-xl relative overflow-hidden border-2 border-white/30">
+          <span class="relative z-10 flex items-center justify-center gap-2 text-lg">
+            <i class="fa-solid fa-right-to-bracket"></i>
+            Sign In
+          </span>
+        </button>
       </div>
     </form>
+
+    <!-- Divider -->
+    <div class="flex items-center my-8">
+      <div class="flex-1 border-t border-white/20"></div>
+      <span class="px-4 text-white/60 text-sm font-medium">OR</span>
+      <div class="flex-1 border-t border-white/20"></div>
+    </div>
+
+    <!-- Register Link -->
+    <div class="text-center">
+      <p class="text-white/90 flex items-center justify-center gap-2 flex-wrap">
+        <span>Don't have an account?</span>
+        <a href="{% url 'user:register' %}" class="register-link text-cyan-200 hover:text-cyan-100 font-semibold inline-flex items-center gap-2">
+          Create Account
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </p>
+    </div>
+
+    <!-- Additional Info -->
+    <div class="mt-8 pt-6 border-t border-white/20 text-center">
+      <p class="text-white/60 text-xs sm:text-sm">
+        <i class="fa-solid fa-shield-halved mr-1"></i>
+        Your information is secure and encrypted
+      </p>
+    </div>
+
   </div>
 </div>
 
-  <script>
-      setTimeout(() => {
-        document.querySelectorAll('.message').forEach(el => {
-          el.style.transition = "opacity 0.6s ease";
-          el.style.opacity = "0";
-          setTimeout(() => el.remove(), 600); // remove fully after fade-out
-        });
-      }, 5000);
-  </script>
+<script>
+  // Auto-hide messages
+  setTimeout(() => {
+    document.querySelectorAll('.message-alert').forEach(el => {
+      el.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+      el.style.opacity = "0";
+      el.style.transform = "translateX(20px)";
+      setTimeout(() => el.remove(), 600);
+    });
+  }, 5000);
+
+  // Password visibility toggle
+  function togglePassword() {
+    const field = document.getElementById('password');
+    const icon = document.querySelector('.password-toggle');
+    
+    if (field.type === 'password') {
+      field.type = 'text';
+      icon.classList.remove('fa-eye');
+      icon.classList.add('fa-eye-slash');
+    } else {
+      field.type = 'password';
+      icon.classList.remove('fa-eye-slash');
+      icon.classList.add('fa-eye');
+    }
+  }
+</script>
 {% endblock %}

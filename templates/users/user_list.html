@@ -9,96 +9,328 @@
   <title>FindIt.com | Manage Users</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
-    body {
-      background: linear-gradient(-45deg, #1a73e8, #20c997, #4a90e2, #50e3c2);
-      background-size: 400% 400%;
-      animation: gradientMove 10s ease infinite;
+    * {
       font-family: 'Inter', sans-serif;
     }
-    @keyframes gradientMove {
-      0% { background-position: 0% 50%; }
+
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+      background-size: 200% 200%;
+      animation: gradientShift 15s ease infinite;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(240, 147, 251, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(118, 75, 162, 0.2) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    }
+
+    .content-wrapper {
+      position: relative;
+      z-index: 1;
+    }
+
+    .page-container {
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    }
+
+    .table-row {
+      transition: all 0.3s ease;
+    }
+
+    .table-row:hover {
+      background: rgba(102, 126, 234, 0.05);
+      transform: scale(1.01);
+    }
+
+    .action-btn {
+      transition: all 0.3s ease;
+    }
+
+    .action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .message-alert {
+      animation: slideIn 0.5s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .back-btn {
+      transition: all 0.3s ease;
+    }
+
+    .back-btn:hover {
+      transform: translateX(-5px);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .floating {
+      animation: floating 3s ease-in-out infinite;
+    }
+
+    @keyframes floating {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .badge {
+      font-weight: 600;
+      font-size: 0.75rem;
+      padding: 0.375rem 0.875rem;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 10px;
+    }
+
+    @media (max-width: 768px) {
+      .table-container {
+        overflow-x: auto;
+      }
     }
   </style>
 </head>
 
 <body class="min-h-screen text-gray-50 flex flex-col">
-  <main class="flex-grow max-w-6xl mx-auto px-6 py-10">
-    <h2 class="text-4xl font-bold mb-8 text-center text-white">User Management</h2>
+  <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 content-wrapper">
+    
+    <!-- Header Section -->
+    <div class="text-center mb-8 page-container">
+      <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/20 backdrop-blur-md mb-4 floating border-2 border-white/30">
+        <i class="fa-solid fa-users-gear text-4xl text-white"></i>
+      </div>
+      <h2 class="text-4xl sm:text-5xl font-extrabold mb-3 text-white drop-shadow-2xl">
+        User Management
+      </h2>
+      <p class="text-lg text-white/90 font-light">Manage and monitor all platform users</p>
+    </div>
 
     <!-- Back Button -->
-   
+    <div class="mb-8 text-center page-container">
+      <a href="{% url 'user:admin_dashboard' %}" 
+         class="back-btn inline-flex items-center bg-white/20 backdrop-blur-md border-2 border-white/30 text-white font-semibold px-6 py-3 rounded-xl hover:bg-white/30 shadow-lg">
+        <i class="fa-solid fa-arrow-left mr-2"></i> Back to Dashboard
+      </a>
+    </div>
 
-    <!-- Message Display -->
+    <!-- Messages -->
     {% if messages %}
-      <div class="space-y-2 mb-6">
+      <div class="space-y-3 mb-8 page-container">
         {% for message in messages %}
-          <div class="px-4 py-3 rounded-lg 
-                      {% if message.tags == 'success' %}bg-green-500 text-white{% endif %}
-                      {% if message.tags == 'error' %}bg-red-500 text-white{% endif %}
-                      {% if message.tags == 'warning' %}bg-yellow-400 text-white{% endif %}">
-            {{ message }}
+          <div class="message-alert px-5 py-4 rounded-xl shadow-lg flex items-start gap-3
+                      {% if message.tags == 'success' %}bg-gradient-to-r from-green-500 to-green-600 text-white{% endif %}
+                      {% if message.tags == 'error' %}bg-gradient-to-r from-red-500 to-red-600 text-white{% endif %}
+                      {% if message.tags == 'warning' %}bg-gradient-to-r from-yellow-500 to-yellow-600 text-white{% endif %}">
+            <div class="flex-shrink-0 mt-0.5">
+              {% if message.tags == 'success' %}
+                <i class="fa-solid fa-circle-check"></i>
+              {% elif message.tags == 'error' %}
+                <i class="fa-solid fa-circle-xmark"></i>
+              {% elif message.tags == 'warning' %}
+                <i class="fa-solid fa-triangle-exclamation"></i>
+              {% endif %}
+            </div>
+            <span class="font-medium">{{ message }}</span>
           </div>
         {% endfor %}
       </div>
     {% endif %}
 
-    <!-- User Table -->
-    <div class="bg-white bg-opacity-90 backdrop-blur-md rounded-xl shadow-lg p-8 overflow-x-auto">
-      <table class="min-w-full border border-gray-200 rounded-lg overflow-hidden">
-        <thead class="bg-gradient-to-r from-blue-500 to-green-500 text-white">
-          <tr>
-            <th class="py-3 px-4 text-left">#</th>
-            <th class="py-3 px-4 text-left">Username</th>
-            <th class="py-3 px-4 text-left">Email</th>
-            <th class="py-3 px-4 text-center">Superuser</th>
-            <th class="py-3 px-4 text-center">Actions</th>
-          </tr>
-        </thead>
-        <tbody class="text-gray-800">
-          {% for user in users %}
-            <tr class="border-b hover:bg-gray-100 transition">
-              <td class="py-3 px-4">{{ forloop.counter }}</td>
-              <td class="py-3 px-4 font-semibold">{{ user.username }}</td>
-              <td class="py-3 px-4">{{ user.email }}</td>
-              <td class="py-3 px-4 text-center">
-                {% if user.is_superuser %}
-                  <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">Yes</span>
-                {% else %}
-                  <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium">No</span>
-                {% endif %}
-              </td>
-              <td class="py-3 px-4 text-center space-x-2">
-                <a href="#" 
-                   class="inline-block bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg transition">
-                   <i class="fa-solid fa-pen"></i>
-                </a>
-                <a href="#" 
-                   onclick="return confirm('Are you sure you want to delete this user?')"
-                   class="inline-block bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg transition">
-                   <i class="fa-solid fa-trash"></i>
-                </a>
-              </td>
-            </tr>
-          {% empty %}
-            <tr>
-              <td colspan="5" class="text-center py-6 text-gray-500">No users found.</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  </main>
-   <div class="mb-6 text-center">
-      <a href="#" 
-         class="inline-flex items-center bg-white text-gray-800 font-semibold px-4 py-2 rounded-lg hover:bg-gray-200 transition">
-        <i class="fa-solid fa-arrow-left mr-2"></i> Back to Dashboard
-      </a>
+    <!-- Stats Summary -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8 page-container">
+      <div class="glass-card rounded-2xl p-6 text-center">
+        <div class="w-14 h-14 mx-auto mb-3 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+          <i class="fa-solid fa-users text-white text-2xl"></i>
+        </div>
+        <h3 class="text-gray-600 text-sm font-semibold uppercase tracking-wide mb-1">Total Users</h3>
+        <p class="text-4xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
+          {{ users.count }}
+        </p>
+      </div>
+
+      <div class="glass-card rounded-2xl p-6 text-center">
+        <div class="w-14 h-14 mx-auto mb-3 rounded-xl bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center">
+          <i class="fa-solid fa-user-shield text-white text-2xl"></i>
+        </div>
+        <h3 class="text-gray-600 text-sm font-semibold uppercase tracking-wide mb-1">Admins</h3>
+        <p class="text-4xl font-bold bg-gradient-to-r from-green-600 to-green-400 bg-clip-text text-transparent">
+          {{ users|length }}
+        </p>
+      </div>
+
+      <div class="glass-card rounded-2xl p-6 text-center">
+        <div class="w-14 h-14 mx-auto mb-3 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center">
+          <i class="fa-solid fa-user-check text-white text-2xl"></i>
+        </div>
+        <h3 class="text-gray-600 text-sm font-semibold uppercase tracking-wide mb-1">Active Users</h3>
+        <p class="text-4xl font-bold bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent">
+          {{ users.count }}
+        </p>
+      </div>
     </div>
 
-  
+    <!-- User Table -->
+    <div class="glass-card rounded-3xl shadow-2xl p-6 sm:p-8 overflow-hidden page-container">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
+          <i class="fa-solid fa-table text-purple-600"></i>
+          User List
+        </h3>
+        <div class="flex items-center gap-2 text-sm text-gray-600">
+          <i class="fa-solid fa-filter"></i>
+          <span>{{ users.count }} Results</span>
+        </div>
+      </div>
+
+      <div class="table-container overflow-x-auto">
+        <table class="min-w-full">
+          <thead>
+            <tr class="border-b-2 border-gray-200">
+              <th class="py-4 px-4 text-left text-gray-700 font-bold text-sm uppercase tracking-wide">#</th>
+              <th class="py-4 px-4 text-left text-gray-700 font-bold text-sm uppercase tracking-wide">Username</th>
+              <th class="py-4 px-4 text-left text-gray-700 font-bold text-sm uppercase tracking-wide">Email</th>
+              <th class="py-4 px-4 text-center text-gray-700 font-bold text-sm uppercase tracking-wide">Admin</th>
+              <th class="py-4 px-4 text-center text-gray-700 font-bold text-sm uppercase tracking-wide">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="text-gray-800">
+            {% for user in users %}
+              <tr class="table-row border-b border-gray-100">
+                <td class="py-4 px-4 font-semibold text-gray-600">{{ forloop.counter }}</td>
+                <td class="py-4 px-4">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold shadow-md">
+                      {{ user.username|slice:":1"|upper }}
+                    </div>
+                    <span class="font-semibold text-gray-900">{{ user.username }}</span>
+                  </div>
+                </td>
+                <td class="py-4 px-4 text-gray-700">
+                  <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-envelope text-gray-400 text-sm"></i>
+                    {{ user.email }}
+                  </div>
+                </td>
+                <td class="py-4 px-4 text-center">
+                  {% if user.is_superuser %}
+                    <span class="badge bg-green-100 text-green-800">
+                      <i class="fa-solid fa-check"></i>
+                      Yes
+                    </span>
+                  {% else %}
+                    <span class="badge bg-gray-100 text-gray-700">
+                      <i class="fa-solid fa-xmark"></i>
+                      No
+                    </span>
+                  {% endif %}
+                </td>
+                <td class="py-4 px-4 text-center">
+                  <div class="flex items-center justify-center gap-2">
+                    <a href="#" 
+                       class="action-btn inline-flex items-center justify-center w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-lg shadow-md"
+                       title="Edit User">
+                       <i class="fa-solid fa-pen text-sm"></i>
+                    </a>
+                    <a href="#" 
+                       onclick="return confirm('Are you sure you want to delete this user?')"
+                       class="action-btn inline-flex items-center justify-center w-10 h-10 bg-gradient-to-br from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-lg shadow-md"
+                       title="Delete User">
+                       <i class="fa-solid fa-trash text-sm"></i>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="5" class="text-center py-12">
+                  <div class="flex flex-col items-center gap-3">
+                    <i class="fa-solid fa-users-slash text-gray-300 text-5xl"></i>
+                    <p class="text-gray-500 text-lg font-medium">No users found.</p>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Auto-hide messages
+    setTimeout(() => {
+      document.querySelectorAll('.message-alert').forEach(el => {
+        el.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        el.style.opacity = "0";
+        el.style.transform = "translateX(20px)";
+        setTimeout(() => el.remove(), 600);
+      });
+    }, 5000);
+  </script>
 </body>
 </html>
 {% endblock %}

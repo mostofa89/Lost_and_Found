@@ -1,81 +1,296 @@
 {% extends "users/base.html" %}
 
 {% block content %}
-<div class="min-h-screen py-12 flex items-center justify-center bg-transparent bg-opacity-80 backdrop-blur-md shadow-md">
-  <div class="max-w-xl w-full bg-transparent bg-opacity-80 backdrop-blur-md shadow-md p-8 rounded-xl">
+<style>
+  .profile-container {
+    animation: fadeInUp 0.6s ease-out;
+  }
 
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  }
+
+  .input-field {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+  }
+
+  .input-field:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+  }
+
+  .input-field::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .profile-image-container {
+    position: relative;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+    }
+    50% {
+      box-shadow: 0 0 0 15px rgba(255, 255, 255, 0);
+    }
+  }
+
+  .submit-btn {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+
+  .submit-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+
+  .submit-btn:hover::before {
+    width: 300px;
+    height: 300px;
+  }
+
+  .submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(34, 197, 94, 0.4);
+  }
+
+  .label-text {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.95);
+  }
+
+  .file-input-wrapper {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .file-input-wrapper input[type="file"] {
+    cursor: pointer;
+  }
+
+  .message-alert {
+    animation: slideIn 0.5s ease-out;
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .icon-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+  }
+
+  .back-link {
+    transition: all 0.3s ease;
+    display: inline-block;
+  }
+
+  .back-link:hover {
+    transform: translateX(-5px);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  }
+
+  @media (max-width: 640px) {
+    .glass-card {
+      padding: 1.5rem;
+    }
+  }
+</style>
+
+<div class="min-h-screen py-8 sm:py-12 flex items-center justify-center px-4">
+  <div class="max-w-2xl w-full glass-card p-6 sm:p-10 rounded-3xl profile-container">
+
+    <!-- Messages -->
     {% if messages %}
-      <div class="message mb-4">
+      <div class="mb-6 space-y-3">
         {% for message in messages %}
-          <div class="px-4 py-3 rounded-lg mb-2 
+          <div class="message-alert px-5 py-4 rounded-xl shadow-lg flex items-start gap-3
                       {% if message.tags == 'error' %}
-                        bg-red-500 text-white
+                        bg-gradient-to-r from-red-500 to-red-600 text-white
                       {% elif message.tags == 'success' %}
-                        bg-green-500 text-white
+                        bg-gradient-to-r from-green-500 to-green-600 text-white
                       {% elif message.tags == 'warning' %}
-                        bg-yellow-500 text-black
+                        bg-gradient-to-r from-yellow-500 to-yellow-600 text-white
                       {% else %}
-                        bg-blue-500 text-white
+                        bg-gradient-to-r from-blue-500 to-blue-600 text-white
                       {% endif %}">
-            {{ message }}
+            <div class="icon-wrapper flex-shrink-0 mt-0.5">
+              {% if message.tags == 'error' %}
+                <i class="fa-solid fa-circle-xmark"></i>
+              {% elif message.tags == 'success' %}
+                <i class="fa-solid fa-circle-check"></i>
+              {% elif message.tags == 'warning' %}
+                <i class="fa-solid fa-triangle-exclamation"></i>
+              {% else %}
+                <i class="fa-solid fa-circle-info"></i>
+              {% endif %}
+            </div>
+            <span class="font-medium">{{ message }}</span>
           </div>
         {% endfor %}
       </div>
     {% endif %}
 
-    <!-- Logo -->
-    <div class="flex items-center justify-center">
-      <div class="logo text-3xl w-32 h-32 rounded-full overflow-hidden"> <img src="{{ user.profile.profile_picture.url }}" alt="Profile Picture" class="w-full h-full object-cover"></div>
+    <!-- Profile Picture -->
+    <div class="flex items-center justify-center mb-8">
+      <div class="profile-image-container w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden border-4 border-white shadow-2xl">
+        <img src="{{ user.profile.profile_picture.url }}" alt="Profile Picture" class="w-full h-full object-cover">
+      </div>
     </div>
 
-    <h2 class="text-3xl font-bold text-center mb-6 text-white">Edit Profile</h2>
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-2 flex items-center justify-center gap-3">
+        <i class="fa-solid fa-user-pen text-cyan-200"></i>
+        Edit Profile
+      </h2>
+      <p class="text-white/80 text-sm sm:text-base">Update your personal information</p>
+    </div>
 
-    <form method="POST" enctype="multipart/form-data" class="space-y-4">
-        {% csrf_token %}
-        <div>
-        <label class="block text-white py-1">Email</label>
-        <input type="email" name="email" placeholder="Email" class="w-full px-4 py-3 border border-white rounded-lg bg-transparent text-white placeholder-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+    <!-- Form -->
+    <form method="POST" enctype="multipart/form-data" class="space-y-6">
+      {% csrf_token %}
+
+      <!-- Email -->
+      <div>
+        <label class="block label-text mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-envelope text-cyan-200"></i>
+          Email Address
+        </label>
+        <input 
+          type="email" 
+          name="email" 
+          placeholder="Enter your email" 
+          value="{{ user.email }}"
+          class="input-field w-full px-5 py-3.5 rounded-xl text-white placeholder-white/60 focus:ring-0 focus:outline-none font-medium">
       </div>
 
       <!-- Phone Number -->
       <div>
-        <label class="block text-white py-1">Phone Number</label>
-        <input type="tel" name="phone" placeholder="Phone Number" class="w-full px-4 py-3 border border-white rounded-lg bg-transparent text-white placeholder-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        <label class="block label-text mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-phone text-cyan-200"></i>
+          Phone Number
+        </label>
+        <input 
+          type="tel" 
+          name="phone" 
+          placeholder="Enter your phone number" 
+          value="{{ user.profile.phone|default:'' }}"
+          class="input-field w-full px-5 py-3.5 rounded-xl text-white placeholder-white/60 focus:ring-0 focus:outline-none font-medium">
       </div>
 
+      <!-- Department -->
       <div>
-        <label class="block text-white py-1">Department</label>
-        <input type="text" name="dept" placeholder="Department" class="w-full px-4 py-3 border border-white rounded-lg bg-transparent text-white placeholder-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        <label class="block label-text mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-building text-cyan-200"></i>
+          Department
+        </label>
+        <input 
+          type="text" 
+          name="dept" 
+          placeholder="Enter your department" 
+          value="{{ user.profile.department|default:'' }}"
+          class="input-field w-full px-5 py-3.5 rounded-xl text-white placeholder-white/60 focus:ring-0 focus:outline-none font-medium">
       </div>
 
       <!-- Profile Picture -->
       <div>
-        <label class="block text-white py-1">Profile Picture</label>
-        <input type="file" name="profile_pic" accept="image/*" class="w-full px-2 py-3 border border-white rounded-lg bg-transparent placeholder-white text-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        <label class="block label-text mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-image text-cyan-200"></i>
+          Profile Picture
+        </label>
+        <div class="file-input-wrapper">
+          <input 
+            type="file" 
+            name="profile_pic" 
+            accept="image/*" 
+            class="input-field w-full px-4 py-3.5 rounded-xl text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-white/20 file:text-white hover:file:bg-white/30 file:cursor-pointer focus:ring-0 focus:outline-none">
+        </div>
+        <p class="mt-2 text-white/60 text-xs sm:text-sm flex items-center gap-2">
+          <i class="fa-solid fa-circle-info"></i>
+          Accepted formats: JPG, PNG, GIF (Max 5MB)
+        </p>
       </div>
 
-      <div class="mt-4 mb-3">
-        <button type="submit" class="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition">Save Changes</button>
+      <!-- Submit Button -->
+      <div class="pt-4">
+        <button 
+          type="submit" 
+          class="submit-btn w-full bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-4 rounded-xl hover:from-green-600 hover:to-green-700 shadow-xl relative overflow-hidden">
+          <span class="relative z-10 flex items-center justify-center gap-2">
+            <i class="fa-solid fa-floppy-disk"></i>
+            Save Changes
+          </span>
+        </button>
       </div>
-
     </form>
 
-    <div class="text-center mt-4">
-      <p class="text-white">Want to go back?
-        <a href="{% url 'user:profile' %}" class="text-cyan-50 hover:font-bold">View Profile</a>
+    <!-- Back Link -->
+    <div class="text-center mt-8 pt-6 border-t border-white/20">
+      <p class="text-white/90 flex items-center justify-center gap-2 flex-wrap">
+        <span>Want to go back?</span>
+        <a href="{% url 'user:profile' %}" class="back-link text-cyan-200 hover:text-cyan-100 font-semibold inline-flex items-center gap-2">
+          <i class="fa-solid fa-arrow-left"></i>
+          View Profile
+        </a>
       </p>
     </div>
 
   </div>
 </div>
 
-  <script>
-    setTimeout(() => {
-      document.querySelectorAll('.message').forEach(el => {
-        el.style.transition = "opacity 0.6s ease";
-        el.style.opacity = "0";
-        setTimeout(() => el.remove(), 600); // remove fully after fade-out
-      });
-    }, 5000);
-  </script>
+<script>
+  setTimeout(() => {
+    document.querySelectorAll('.message-alert').forEach(el => {
+      el.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+      el.style.opacity = "0";
+      el.style.transform = "translateX(20px)";
+      setTimeout(() => el.remove(), 600);
+    });
+  }, 5000);
+</script>
 {% endblock %}

@@ -1,95 +1,368 @@
 {% extends "users/base.html" %}
 
 {% block content %}
-<div class="min-h-screen py-12 flex items-center justify-center bg-transparent bg-opacity-80 shadow-md">
-  <div class="max-w-2xl w-full bg-transparent bg-opacity-80 shadow-md p-8 rounded-xl">
+<style>
+  .profile-container {
+    animation: fadeInUp 0.6s ease-out;
+  }
 
-    <!-- ✅ Messages Section -->
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  }
+
+  .profile-picture-container {
+    position: relative;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7);
+    }
+    50% {
+      box-shadow: 0 0 0 20px rgba(102, 126, 234, 0);
+    }
+  }
+
+  .profile-picture-container:hover .upload-overlay {
+    opacity: 1;
+  }
+
+  .upload-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .info-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  .info-card:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateX(5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  .action-btn {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+
+  .action-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+
+  .action-btn:hover::before {
+    width: 300px;
+    height: 300px;
+  }
+
+  .action-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  .logo-badge {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    animation: float 3s ease-in-out infinite;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+  }
+
+  .message-alert {
+    animation: slideIn 0.5s ease-out;
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .stat-badge {
+    animation: scaleIn 0.5s ease-out;
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .icon-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+  }
+
+  @media (max-width: 640px) {
+    .glass-card {
+      padding: 1.5rem;
+    }
+    
+    .action-buttons {
+      flex-direction: column;
+    }
+    
+    .action-btn {
+      width: 100%;
+    }
+  }
+</style>
+
+<div class="min-h-screen py-8 sm:py-12 flex items-center justify-center px-4">
+  <div class="max-w-3xl w-full glass-card p-6 sm:p-10 rounded-3xl profile-container">
+
+    <!-- Messages Section -->
     {% if messages %}
-      <div class="message mb-4">
+      <div class="mb-6 space-y-3">
         {% for message in messages %}
-          <div class="px-4 py-3 rounded-lg mb-2 
+          <div class="message-alert px-5 py-4 rounded-xl shadow-lg flex items-start gap-3
                       {% if message.tags == 'error' %}
-                        bg-red-500 text-white
+                        bg-gradient-to-r from-red-500 to-red-600 text-white
                       {% elif message.tags == 'success' %}
-                        bg-green-500 text-white
+                        bg-gradient-to-r from-green-500 to-green-600 text-white
                       {% elif message.tags == 'warning' %}
-                        bg-yellow-500 text-black
+                        bg-gradient-to-r from-yellow-500 to-yellow-600 text-white
                       {% else %}
-                        bg-blue-500 text-white
+                        bg-gradient-to-r from-blue-500 to-blue-600 text-white
                       {% endif %}">
-            {{ message }}
+            <div class="icon-wrapper flex-shrink-0 mt-0.5">
+              {% if message.tags == 'error' %}
+                <i class="fa-solid fa-circle-xmark"></i>
+              {% elif message.tags == 'success' %}
+                <i class="fa-solid fa-circle-check"></i>
+              {% elif message.tags == 'warning' %}
+                <i class="fa-solid fa-triangle-exclamation"></i>
+              {% else %}
+                <i class="fa-solid fa-circle-info"></i>
+              {% endif %}
+            </div>
+            <span class="font-medium">{{ message }}</span>
           </div>
         {% endfor %}
       </div>
     {% endif %}
-    <!-- ✅ End Messages Section -->
 
-    <!-- Logo -->
-    <div class="flex items-center justify-center">
-      <div class="logo text-5xl">🎓</div>
+    <!-- Logo Badge -->
+    <div class="flex items-center justify-center mb-6">
+      <div class="logo-badge">
+        🎓
+      </div>
     </div>
-    <h2 class="text-3xl font-bold text-center mb-6 text-white">Student Profile</h2>
 
-    <!-- Profile Card -->
-    <div class="flex flex-col items-center text-center space-y-4">
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-2">
+        Student Profile
+      </h2>
+      <p class="text-white/80 text-sm sm:text-base">View and manage your account information</p>
+    </div>
+
+    <!-- Profile Section -->
+    <div class="flex flex-col items-center text-center space-y-6">
       
-      <!-- Profile Picture Upload -->
-      <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-blue-500 shadow-lg relative">
+      <!-- Profile Picture -->
+      <div class="profile-picture-container relative">
         <form method="post" enctype="multipart/form-data" action="#">
           {% csrf_token %}
           
-          {% if user.profile.profile_picture %}
-            <!-- Show existing profile picture -->
-            <label for="profile-pic" class="cursor-pointer block w-full h-full">
-              <img src="{{ user.profile.profile_picture.url }}" 
-                   alt="Profile Picture" 
-                   class="w-full h-full object-cover">
-            </label>
-          {% else %}
-            <!-- Show upload icon if no profile picture -->
-            <label for="profile-pic" 
-                  class="cursor-pointer w-full h-full flex items-center justify-center rounded-full bg-gray-800 hover:scale-110 transition duration-300 ease-in-out">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="w-full h-full text-zinc-50">
-                <path fill="currentColor" d="M463 448.2C440.9 409.8 399.4 384 352 384L288 384C240.6 384 199.1 409.8 177 448.2C212.2 487.4 263.2 512 320 512C376.8 512 427.8 487.3 463 448.2zM64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320zM320 336C359.8 336 392 303.8 392 264C392 224.2 359.8 192 320 192C280.2 192 248 224.2 248 264C248 303.8 280.2 336 320 336z"/>
-              </svg>
-            </label>
-          {% endif %}
+          <div class="w-40 h-40 sm:w-48 sm:h-48 rounded-full overflow-hidden border-4 border-white/30 shadow-2xl relative">
+            {% if user.profile.profile_picture %}
+              <label for="profile-pic" class="cursor-pointer block w-full h-full">
+                <img src="{{ user.profile.profile_picture.url }}" 
+                     alt="Profile Picture" 
+                     class="w-full h-full object-cover">
+                <div class="upload-overlay">
+                  <div class="text-white flex flex-col items-center gap-2">
+                    <i class="fa-solid fa-camera text-3xl"></i>
+                    <span class="text-sm font-semibold">Change Photo</span>
+                  </div>
+                </div>
+              </label>
+            {% else %}
+              <label for="profile-pic" 
+                    class="cursor-pointer w-full h-full flex items-center justify-center bg-white/10 hover:bg-white/20 transition-all duration-300">
+                <div class="text-white flex flex-col items-center gap-3">
+                  <i class="fa-solid fa-user text-6xl text-white/60"></i>
+                  <span class="text-sm font-semibold">Upload Photo</span>
+                </div>
+              </label>
+            {% endif %}
+          </div>
 
-          <!-- Hidden File Input -->
           <input type="file" id="profile-pic" name="profile_picture" class="hidden" accept="image/*" onchange="this.form.submit()">
         </form>
       </div>
 
       <!-- User Info -->
-      <div>
-        <h3 class="text-2xl font-semibold text-white">{{ user.first_name }} {{ user.last_name }}</h3>
-        <p class="text-blue-300">@{{ user.username }}</p>
+      <div class="space-y-2">
+        <h3 class="text-2xl sm:text-3xl font-bold text-white">
+          {{ user.first_name }} {{ user.last_name }}
+        </h3>
+        <p class="text-cyan-200 text-lg flex items-center justify-center gap-2">
+          <i class="fa-solid fa-at"></i>
+          {{ user.username }}
+        </p>
       </div>
 
-      <!-- Details -->
-      <div class="w-full text-left mt-6 space-y-3 text-white text-center">
-        <p><span class="font-semibold">Email:</span> {{ user.email }}</p>
-        <p><span class="font-semibold">Student ID:</span> {{ user.profile.student_id }}</p>
-        <p><span class="font-semibold">Phone:</span> +880{{ user.profile.phone }}</p>
-        <p><span class="font-semibold">Department:</span> {{ user.profile.dept }}</p>
+      <!-- Stats Badges -->
+      <div class="flex flex-wrap justify-center gap-4 py-4">
+        <div class="stat-badge px-6 py-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
+          <span class="text-white/70 text-xs font-semibold uppercase">Member Since</span>
+          <p class="text-white font-bold">{{ user.date_joined|date:"M Y" }}</p>
+        </div>
+        <div class="stat-badge px-6 py-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
+          <span class="text-white/70 text-xs font-semibold uppercase">Status</span>
+          <p class="text-green-300 font-bold flex items-center gap-2">
+            <i class="fa-solid fa-circle-check"></i>
+            Active
+          </p>
+        </div>
+      </div>
+
+      <!-- Details Cards -->
+      <div class="w-full mt-6 space-y-4">
+        <div class="info-card rounded-2xl p-5 flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center flex-shrink-0">
+            <i class="fa-solid fa-envelope text-white text-xl"></i>
+          </div>
+          <div class="text-left flex-1">
+            <p class="text-white/70 text-sm font-semibold uppercase">Email Address</p>
+            <p class="text-white font-semibold text-lg">{{ user.email }}</p>
+          </div>
+        </div>
+
+        <div class="info-card rounded-2xl p-5 flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center flex-shrink-0">
+            <i class="fa-solid fa-id-card text-white text-xl"></i>
+          </div>
+          <div class="text-left flex-1">
+            <p class="text-white/70 text-sm font-semibold uppercase">Student ID</p>
+            <p class="text-white font-semibold text-lg">{{ user.profile.student_id }}</p>
+          </div>
+        </div>
+
+        <div class="info-card rounded-2xl p-5 flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center flex-shrink-0">
+            <i class="fa-solid fa-phone text-white text-xl"></i>
+          </div>
+          <div class="text-left flex-1">
+            <p class="text-white/70 text-sm font-semibold uppercase">Phone Number</p>
+            <p class="text-white font-semibold text-lg">+880{{ user.profile.phone }}</p>
+          </div>
+        </div>
+
+        <div class="info-card rounded-2xl p-5 flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center flex-shrink-0">
+            <i class="fa-solid fa-building text-white text-xl"></i>
+          </div>
+          <div class="text-left flex-1">
+            <p class="text-white/70 text-sm font-semibold uppercase">Department</p>
+            <p class="text-white font-semibold text-lg">{{ user.profile.dept }}</p>
+          </div>
+        </div>
       </div>
 
       <!-- Action Buttons -->
-      <div class="flex space-x-4 mt-6">
-        <a href="{% url 'user:edit_profile' %}" class="px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition">Edit Profile</a>
-        <a href="{% url 'user:logout' %}" class="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">Logout</a>
+      <div class="flex flex-col sm:flex-row gap-4 mt-8 w-full sm:w-auto action-buttons">
+        <a href="{% url 'user:edit_profile' %}" 
+           class="action-btn px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold rounded-xl shadow-xl relative overflow-hidden flex items-center justify-center gap-2">
+          <span class="relative z-10 flex items-center gap-2">
+            <i class="fa-solid fa-user-pen"></i>
+            Edit Profile
+          </span>
+        </a>
+        
+        <a href="{% url 'user:logout' %}" 
+           class="action-btn px-8 py-4 bg-gradient-to-r from-red-500 to-red-600 text-white font-bold rounded-xl shadow-xl relative overflow-hidden flex items-center justify-center gap-2">
+          <span class="relative z-10 flex items-center gap-2">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Logout
+          </span>
+        </a>
+      </div>
+
+      <!-- Additional Info -->
+      <div class="mt-6 pt-6 border-t border-white/20 text-center w-full">
+        <p class="text-white/60 text-xs sm:text-sm flex items-center justify-center gap-2">
+          <i class="fa-solid fa-shield-halved"></i>
+          Your data is private and secure
+        </p>
       </div>
     </div>
+
   </div>
 </div>
 
 <!-- Fade-out messages -->
 <script>
   setTimeout(() => {
-    document.querySelectorAll('.message').forEach(el => {
-      el.style.transition = "opacity 0.6s ease";
+    document.querySelectorAll('.message-alert').forEach(el => {
+      el.style.transition = "opacity 0.6s ease, transform 0.6s ease";
       el.style.opacity = "0";
+      el.style.transform = "translateX(20px)";
       setTimeout(() => el.remove(), 600);
     });
   }, 5000);
