@@ -155,35 +155,9 @@
       </div>
     </div>
 
-    <!-- Header -->
-    <div class="text-center mb-8">
-      <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-2 flex items-center justify-center gap-3">
-        <i class="fa-solid fa-user-plus text-cyan-200"></i>
-        Create Account
-      </h2>
-      <p class="text-white/80 text-sm sm:text-base">Join FindIt.com and start your journey</p>
-    </div>
-
     <!-- Include Form -->
     {% include "users/form.html" %}
 
-    <!-- Divider -->
-    <div class="flex items-center my-8">
-      <div class="flex-1 border-t border-white/20"></div>
-      <span class="px-4 text-white/60 text-sm font-medium">OR</span>
-      <div class="flex-1 border-t border-white/20"></div>
-    </div>
-
-    <!-- Login Link -->
-    <div class="text-center">
-      <p class="text-white/90 flex items-center justify-center gap-2 flex-wrap">
-        <span>Already have an account?</span>
-        <a href="{% url 'user:login' %}" class="login-link text-cyan-200 hover:text-cyan-100 font-semibold inline-flex items-center gap-2">
-          Sign In
-          <i class="fa-solid fa-arrow-right"></i>
-        </a>
-      </p>
-    </div>
 
     <!-- Additional Info -->
     <div class="mt-8 pt-6 border-t border-white/20 text-center">
