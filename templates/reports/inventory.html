@@ -2,6 +2,20 @@
 {% block content %}
 <main class="flex-grow px-3 py-12">
 
+    {% if messages %}
+        <div class="message space-y-2 mb-4">
+          {% for message in messages %}
+            <div
+              class="px-4 py-3 rounded-lg 
+                    {% if message.tags == 'success' %}bg-green-500 text-white{% endif %}
+                    {% if message.tags == 'error' %}bg-red-500 text-white{% endif %}
+                    {% if message.tags == 'warning' %}bg-yellow-400 text-white{% endif %}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
   <!-- Lost Item Reports -->
   <div class="max-w-4xl my-6 mx-auto bg-transparent bg-opacity-80 rounded-xl shadow-lg p-8 " style="box-shadow: 0 -4px 6px -1px rgba(0,0,0,0.1), 0 -2px 4px -2px rgba(0,0,0,0.6);">
     <h2 class="text-3xl font-bold text-center mb-6 text-red-400">Lost Item Reports</h2>
@@ -34,6 +48,9 @@
             <p class="text-sm mt-1">{{ report.item_description }}</p>
             <p class="text-sm mt-1">Found on: {{ report.date_found }} | Location: {{ report.location_found }}</p>
             <p class="text-sm mt-1">Contact: {{ report.contact }}</p>
+            <div class="flex space-x-4 mt-6 aligin-center justify-center">
+              <a href="{% url 'reports:claim' report.id %}" class="w-48 text-lg bg-green-500 text-white py-3 rounded-lg hover:bg-gradient-to-br from-[#1a73e8] via-[#20c997] via-[#4a90e2] to-[#50e3c2] transition transform duration-300">Claim</a>
+          </div>
           </div>
         {% endfor %}
       </div>

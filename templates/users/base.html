@@ -79,11 +79,12 @@
               <!-- Dropdown -->
               <div x-show="open" @click.away="open = false"
                    class="absolute right-0 mt-2 w-48 bg-transparent bg-opacity-80 backdrop-blur-md text-gray-800 rounded-lg shadow-lg z-50">
-                <a href="{% url 'user:profile' %}" class="block px-4 text-cyan-50 py-2 hover:bg-gradient-to-br from-[#1a73e8]">Profile</a>
                 {% if user.is_staff %}
-                <a href="#" class="block px-4 py-2 text-cyan-50 hover:bg-gradient-to-br from-[#1a73e8]">Admin Panel</a>
+                <a href="#" class="block px-4 text-cyan-50 py-2 hover:bg-gradient-to-br from-[#1a73e8]">Pending Approvals</a>
+                <a href="{% url 'user:admin_dashboard' %}" class="block px-4 py-2 text-cyan-50 hover:bg-gradient-to-br from-[#1a73e8]">Admin Panel</a>
                 {% else %}
                 <a href="#" class="block px-4 py-2 text-cyan-50 hover:bg-gradient-to-br from-[#1a73e8]">Dashboard</a>
+                <a href="#" class="block px-4 text-cyan-50 py-2 hover:bg-gradient-to-br from-[#1a73e8]">Profile</a>
                 {% endif %}
                 <a href="#" class="block px-4 py-2 text-cyan-50 hover:bg-gradient-to-br from-[#1a73e8]">Settings</a>
                 <a href="{% url 'user:logout' %}" class="block px-4 py-2 text-red-600 hover:bg-bg-gradient-to-br from-[#1a73e8]">Logout</a>
@@ -136,12 +137,17 @@
           {% endif %}
           <div>
             <p class="text-base font-medium text-gray-900">{{ user.username }}</p>
+            {% if not user.is_staff %}
             <a href="{% url 'user:profile' %}" class="text-sm text-blue-50 hover:underline">View Profile</a>
+            {% else %}
+            <a href="#" class="text-sm text-blue-50 hover:underline">Claim Reports</a>
+
+            {% endif %}
           </div>
         </div>
         <div class="mt-3 px-3 space-y-1">
           {% if user.is_staff %}
-          <a href="#" class="mobile-link px-3 py-2">Admin Panel</a>
+          <a href="{% url 'user:admin_dashboard' %}" class="mobile-link px-3 py-2">Admin Panel</a>
           {% else %}
           <a href="#" class="mobile-link px-3 py-2">Dashboard</a>
           {% endif %}

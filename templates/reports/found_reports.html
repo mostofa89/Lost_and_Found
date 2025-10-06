@@ -86,10 +86,7 @@
             <p class="text-sm mt-1">Found on: {{ report.date_found }} | Location: {{ report.location }}</p>
             <p class="text-sm mt-1">Contact: {{ report.contact }}</p>
             <div class="flex space-x-4 mt-6 aligin-center justify-center">
-              <a href="{% url reports:claim %}" class="w-48 text-lg bg-green-500 text-white py-3 rounded-lg hover:bg-gradient-to-br from-[#1a73e8] via-[#20c997] via-[#4a90e2] to-[#50e3c2] transition transform duration-300">Claim</a>
-
-            <div></div>
-            
+              <a href="{% url 'reports:claim' report.id %}" class="w-48 text-lg bg-green-500 text-white py-3 rounded-lg hover:bg-gradient-to-br from-[#1a73e8] via-[#20c997] via-[#4a90e2] to-[#50e3c2] transition transform duration-300">Claim</a>
           </div>
         {% endfor %}
       </div>
