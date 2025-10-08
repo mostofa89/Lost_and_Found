@@ -22,7 +22,7 @@ class Found_reports(models.Model):
     item_description = models.TextField()
     item_image = models.ImageField(upload_to='Found_items/', blank=True, null=True)
     location = models.CharField(max_length=255)
-    date_lost = models.DateField()
+    found_date = models.DateField()
     contact = models.CharField(max_length=100)
     reported_at = models.DateTimeField(auto_now_add=True)
 

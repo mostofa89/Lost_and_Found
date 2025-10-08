@@ -43,6 +43,17 @@ def lost_reports_view(request):
 
 
 
+def lost_items_view(request):
+    lost_reports = Lost_reports.objects.filter(user=request.user).order_by('-reported_at')
+    return render(request, 'reports/lost_items.html', {'lost_reports': lost_reports })
+
+
+def found_items_view(request):
+    reports = Found_reports.objects.filter(user=request.user).order_by('-reported_at')
+    return render(request, 'reports/found_items.html', {'reports': reports})
+
+
+@login_required
 def found_reports_view(request):
     if request.method == "POST":
         user = request.user
@@ -54,7 +65,7 @@ def found_reports_view(request):
         item_image = request.FILES.get('item_image')
         try:
             date_lost = datetime.strptime(date_str, "%Y-%m-%d").date()
-            report = Found_reports(
+            found_reports = Found_reports(
             user=user,
             item_name=item_name,
             item_description=item_description,
@@ -64,17 +75,22 @@ def found_reports_view(request):
             item_image=item_image
             )
 
-            report.save()
+            found_reports.save()
             messages.success(request, "Your found item report has been submitted successfully.")
             return redirect('reports:found_reports')
         
 
         except ValueError:
             messages.error(request, "Invalid date format. Use DD/MM/YYYY.")
-            return redirect('reports:found_reports')
+            return redirect('found_reports:found_reports')
     
-    reports = Found_reports.objects.filter(user=request.user).order_by('-reported_at')
-    return render(request, 'reports/found_reports.html', {'reports': reports})
+    if request.user.is_authenticated:
+        found_reports = Found_reports.objects.filter(user=request.user).order_by('-reported_at')
+
+    else:
+        found_reports = Found_reports.objects.none()  # empty queryset
+
+    return render(request, 'reports/found_reports.html', {'found_reports': found_reports})
 
 
 
@@ -83,6 +99,10 @@ def inventory_view(request):
     found_reports = Found_reports.objects.all().order_by('-reported_at')
     return render(request, 'reports/inventory.html', {'lost_reports': lost_reports, 'found_reports': found_reports})
 
+
+def found_items_view(request):
+    found_reports = Found_reports.objects.filter(user=request.user).order_by('-reported_at')
+    return render(request, 'reports/found_items.html', {'found_reports': found_reports})
 
 
 def claim_view(request, pk):

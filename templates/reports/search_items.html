@@ -1,0 +1,366 @@
+{% extends "users/base.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+  * {
+    font-family: 'Inter', sans-serif;
+  }
+
+  body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 15s ease infinite;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: 
+      radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(240, 147, 251, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 40% 20%, rgba(118, 75, 162, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .content-wrapper {
+    position: relative;
+    z-index: 1;
+  }
+
+  .page-container {
+    animation: fadeInUp 0.6s ease-out;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Transparent glass style */
+  .glass-card {
+    background: rgba(255, 255, 255, 0); /* fully transparent */
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.15); /* subtle border */
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.05); /* subtle shadow */
+  }
+
+  .item-card {
+    background: rgba(255, 255, 255, 0);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    color: white; /* make text white for visibility */
+  }
+
+  .item-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .action-btn {
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.1); /* light transparent button background */
+    color: white;
+  }
+
+  .action-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+  }
+
+  .message-alert {
+    animation: slideIn 0.5s ease-out;
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .filter-btn {
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .filter-btn.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    color: white;
+    transform: scale(1.05);
+  }
+
+  .filter-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+  }
+
+  .floating {
+    animation: floating 3s ease-in-out infinite;
+  }
+
+  @keyframes floating {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .search-box {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: all 0.3s ease;
+    color: white;
+  }
+
+  .search-box input {
+    background: transparent;
+    color: white;
+  }
+
+  .search-box:focus-within {
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 10px;
+  }
+
+  .badge {
+    font-weight: 600;
+    font-size: 0.75rem;
+    padding: 0.375rem 0.875rem;
+    border-radius: 9999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+  }
+
+  .image-placeholder {
+    width: 100%;
+    height: 200px;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px 12px 0 0;
+  }
+
+  h2, h3, p, span, label, option {
+    color: white; /* making text visible */
+  }
+</style>
+
+<main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 content-wrapper">
+
+  <!-- Header Section -->
+  <div class="text-center mb-8 page-container">
+    <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/10 backdrop-blur-md mb-4 floating border-2 border-white/20">
+      <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+      </svg>
+    </div>
+    <h2 class="text-4xl sm:text-5xl font-extrabold mb-3 drop-shadow-lg text-white">
+      Find Items
+    </h2>
+    <p class="text-lg font-light text-white/90">Discover lost and found items in our inventory</p>
+  </div>
+
+  <!-- Search and Filter Section -->
+  <div class="glass-card rounded-2xl p-6 mb-8 page-container">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+      <!-- Search Box -->
+      <div class="search-box col-span-1 sm:col-span-2 rounded-xl p-4 flex items-center gap-3">
+        <svg class="w-5 h-5 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+        <input type="text" placeholder="Search items..." class="flex-1 bg-transparent outline-none placeholder-white/50 font-medium">
+      </div>
+
+      <!-- Category Filter -->
+      <select class="bg-transparent text-white rounded-xl px-4 py-3 font-semibold border border-white/20 hover:border-white/40 transition focus:outline-none focus:border-purple-400">
+        <option value="" class="bg-gradient-to-br from-purple-800 to-purple-900 text-white">All Categories</option>
+        <option value="electronics" class="bg-transparent text-white">Electronics</option>
+        <option value="accessories" class="bg-transparent text-white">Accessories</option>
+        <option value="documents" class="bg-transparent text-white">Documents</option>
+        <option value="other" class="bg-transparent text-white">Other</option>
+      </select>
+    </div>
+
+    <!-- Filter Tags -->
+    <div class="flex flex-wrap gap-2">
+      <button class="filter-btn active px-4 py-2 rounded-full font-semibold">
+        All Items
+      </button>
+      <button class="filter-btn px-4 py-2 rounded-full font-semibold">
+        <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        Found Items
+      </button>
+      <button class="filter-btn px-4 py-2 rounded-full font-semibold">
+        <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        Lost Items
+      </button>
+    </div>
+  </div>
+
+  <!-- Stats Section -->
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8 page-container">
+    <div class="glass-card rounded-2xl p-6 text-center">
+      <div class="w-14 h-14 mx-auto mb-3 rounded-xl bg-gradient-to-br from-blue-700 to-blue-800 flex items-center justify-center">
+        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-1.414 0l-2.414-2.414a1 1 0 00-.707-.293h-2.586"/>
+        </svg>
+      </div>
+      <h3 class="text-sm font-semibold uppercase tracking-wide mb-1 text-white/80">Total Items</h3>
+      <p class="text-4xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">247</p>
+    </div>
+
+    <div class="glass-card rounded-2xl p-6 text-center">
+      <div class="w-14 h-14 mx-auto mb-3 rounded-xl bg-gradient-to-br from-green-700 to-green-800 flex items-center justify-center">
+        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+      </div>
+      <h3 class="text-sm font-semibold uppercase tracking-wide mb-1 text-white/80">Found Items</h3>
+      <p class="text-4xl font-bold bg-gradient-to-r from-green-600 to-green-400 bg-clip-text text-transparent">156</p>
+    </div>
+
+    <div class="glass-card rounded-2xl p-6 text-center">
+      <div class="w-14 h-14 mx-auto mb-3 rounded-xl bg-gradient-to-br from-purple-700 to-purple-800 flex items-center justify-center">
+        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+      </div>
+      <h3 class="text-sm font-semibold uppercase tracking-wide mb-1 text-white/80">Lost Items</h3>
+      <p class="text-4xl font-bold bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent">91</p>
+    </div>
+  </div>
+
+  <!-- Items Grid -->
+  <div class="page-container">
+    <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6z"/>
+      </svg>
+      Available Items
+    </h3>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Item Card 1 -->
+      <div class="item-card rounded-2xl overflow-hidden">
+        <div class="image-placeholder">
+          <svg class="w-16 h-16 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-1.414 0l-2.414-2.414a1 1 0 00-.707-.293h-2.586"/>
+          </svg>
+        </div>
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-lg font-bold text-white">Black Wallet</h3>
+            <span class="badge bg-green-900/20 text-green-300">
+              <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+              </svg>
+              Found
+            </span>
+          </div>
+          <p class="text-white text-sm mb-4">Leather wallet with multiple card slots found near downtown area</p>
+          <div class="space-y-2 text-sm text-white/70 mb-4">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+              <span>Dec 15, 2024</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+              </svg>
+              <span>Downtown Area</span>
+            </div>
+          </div>
+          <button class="action-btn w-full bg-green-700 hover:bg-green-800 py-3 rounded-lg font-semibold">
+            <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Claim This Item
+          </button>
+        </div>
+      </div>
+
+      <!-- Additional item cards similarly styled -->
+      <!-- ... -->
+
+    </div>
+  </div>
+
+  <!-- Empty State (hidden by default) -->
+  <div class="page-container hidden text-center py-16">
+    <svg class="w-24 h-24 text-white/20 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-1.414 0l-2.414-2.414a1 1 0 00-.707-.293h-2.586"/>
+    </svg>
+    <p class="text-white/80 text-xl font-medium mb-2">No items found</p>
+    <p class="text-white/60">Try adjusting your search or filter criteria</p>
+  </div>
+</main>
+
+<script>
+  // Filter buttons
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  // Message auto-hide
+  setTimeout(() => {
+    document.querySelectorAll('.message-alert').forEach(el => {
+      el.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+      el.style.opacity = "0";
+      el.style.transform = "translateX(20px)";
+      setTimeout(() => el.remove(), 600);
+    });
+  }, 5000);
+</script>
+
+{% endblock %}

@@ -118,12 +118,22 @@ def logout_view(request):
     message.success(request, 'Logout successful')
     return redirect('user:login')
 
+
 def user_list(request):
     if not request.user.is_superuser:
         return redirect('user:profile_view')
 
     users = User.objects.all()
-    return render(request, 'users/user_list.html', {'users': users})
+    total_admin = User.objects.filter(is_superuser=True).count()
+    regular_users = users.count() - total_admin  # ✅ Compute here
+
+    context = {
+        'users': users,
+        'total_admin': total_admin,
+        'regular_users': regular_users
+    }
+    return render(request, 'users/user_list.html', context)
+
 
 
 

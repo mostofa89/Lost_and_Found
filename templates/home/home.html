@@ -3,6 +3,42 @@
 {% block content %}
 
 <style>
+  * {
+    font-family: 'Inter', sans-serif;
+  }
+
+  body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 15s ease infinite;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.3) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(240, 147, 251, 0.3) 0%, transparent 50%),
+      radial-gradient(circle at 40% 20%, rgba(118, 75, 162, 0.2) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .content-wrapper {
+    position: relative;
+    z-index: 1;
+  }
+
   .register-container {
     animation: fadeInUp 0.6s ease-out;
   }
@@ -40,12 +76,8 @@
   }
 
   @keyframes pulse {
-    0%, 100% {
-      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
-    }
-    50% {
-      box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);
-    }
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
+    50% { box-shadow: 0 0 0 20px rgba(255, 255, 255, 0); }
   }
 
   @keyframes float {
@@ -110,6 +142,38 @@
   .stat-badge:hover {
     transform: scale(1.05);
     background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .icon-box {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    transition: all 0.3s ease;
+  }
+
+  .feature-card:hover .icon-box {
+    transform: scale(1.15) rotate(10deg);
+  }
+
+  .section-title {
+    position: relative;
+    display: inline-block;
+  }
+
+  .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    border-radius: 2px;
   }
 
   @media (max-width: 640px) {
@@ -121,17 +185,17 @@
   }
 </style>
 
-<main class="flex-grow">
+<main class="flex-grow content-wrapper">
   
   <!-- Hero Section -->
-  <section class="px-4 py-12 sm:py-20">
+  <section class="px-4 py-12 sm:py-24">
     <div class="max-w-6xl mx-auto">
-      <div class="glass-card p-8 sm:p-16 rounded-3xl register-container text-center">
+      <div class="glass-card p-8 sm:p-20 rounded-3xl register-container text-center">
         
         <!-- Hero Badge -->
         <div class="flex items-center justify-center mb-8">
           <div class="hero-badge">
-            🔍
+            <i class="fa-solid fa-magnifying-glass text-white"></i>
           </div>
         </div>
 
@@ -141,26 +205,22 @@
         </h1>
         
         <!-- Hero Subtitle -->
-        <p class="text-lg sm:text-xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed">
-          Lost something? Found something? We're here to help reunite items with their owners. 
-          Join our community and make a difference today.
+        <p class="text-lg sm:text-xl text-white/90 mb-10 max-w-3xl mx-auto leading-relaxed">
+          Lost something precious? Found an item? We're here to help reunite items with their owners. 
+          Join our community and make a real difference today.
         </p>
 
         <!-- CTA Buttons -->
         <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <a href="{% url 'reports:lost_reports' %}" 
-             class="cta-button w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-gradient-to-r from-red-500 via-pink-500 to-purple-600 text-white py-4 px-8 rounded-xl font-bold text-lg shadow-xl">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-            </svg>
+             class="cta-button w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-gradient-to-r from-red-500 via-pink-500 to-purple-600 text-white py-4 px-8 rounded-xl font-bold text-lg shadow-xl border-2 border-white/20">
+            <i class="fa-solid fa-binoculars text-xl"></i>
             Report Lost Item
           </a>
           
           <a href="{% url 'reports:found_reports' %}" 
-             class="cta-button w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 text-white py-4 px-8 rounded-xl font-bold text-lg shadow-xl">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-            </svg>
+             class="cta-button w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 text-white py-4 px-8 rounded-xl font-bold text-lg shadow-xl border-2 border-white/20">
+            <i class="fa-solid fa-check-double text-xl"></i>
             Report Found Item
           </a>
         </div>
@@ -174,24 +234,36 @@
     <div class="max-w-6xl mx-auto">
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         
-        <div class="stat-badge p-6 rounded-2xl text-center">
-          <div class="text-4xl sm:text-5xl font-bold text-white mb-2">500+</div>
-          <p class="text-white/80 text-sm sm:text-base">Items Reunited</p>
+        <div class="stat-badge p-6 rounded-2xl text-center register-container">
+          <div class="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-green-300 to-emerald-300 bg-clip-text text-transparent mb-2">500+</div>
+          <p class="text-white/80 text-sm sm:text-base flex items-center justify-center gap-2">
+            <i class="fa-solid fa-handshake text-green-300"></i>
+            Items Reunited
+          </p>
         </div>
 
-        <div class="stat-badge p-6 rounded-2xl text-center">
-          <div class="text-4xl sm:text-5xl font-bold text-white mb-2">1.2K</div>
-          <p class="text-white/80 text-sm sm:text-base">Active Reports</p>
+        <div class="stat-badge p-6 rounded-2xl text-center register-container">
+          <div class="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent mb-2">1.2K</div>
+          <p class="text-white/80 text-sm sm:text-base flex items-center justify-center gap-2">
+            <i class="fa-solid fa-list-check text-blue-300"></i>
+            Active Reports
+          </p>
         </div>
 
-        <div class="stat-badge p-6 rounded-2xl text-center">
-          <div class="text-4xl sm:text-5xl font-bold text-white mb-2">3K+</div>
-          <p class="text-white/80 text-sm sm:text-base">Happy Users</p>
+        <div class="stat-badge p-6 rounded-2xl text-center register-container">
+          <div class="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent mb-2">3K+</div>
+          <p class="text-white/80 text-sm sm:text-base flex items-center justify-center gap-2">
+            <i class="fa-solid fa-users text-purple-300"></i>
+            Happy Users
+          </p>
         </div>
 
-        <div class="stat-badge p-6 rounded-2xl text-center">
-          <div class="text-4xl sm:text-5xl font-bold text-white mb-2">24/7</div>
-          <p class="text-white/80 text-sm sm:text-base">Support</p>
+        <div class="stat-badge p-6 rounded-2xl text-center register-container">
+          <div class="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent mb-2">24/7</div>
+          <p class="text-white/80 text-sm sm:text-base flex items-center justify-center gap-2">
+            <i class="fa-solid fa-headset text-yellow-300"></i>
+            Support
+          </p>
         </div>
 
       </div>
@@ -199,16 +271,16 @@
   </section>
 
   <!-- Features Section -->
-  <section class="px-4 py-12">
+  <section class="px-4 py-16">
     <div class="max-w-6xl mx-auto">
       
       <!-- Section Header -->
-      <div class="text-center mb-12">
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4 section-title">
           How It Works
         </h2>
         <p class="text-white/80 text-lg">
-          Simple steps to find or return lost items
+          Simple, secure steps to find or return lost items
         </p>
       </div>
 
@@ -216,80 +288,68 @@
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         
         <!-- Feature 1 -->
-        <div class="feature-card p-8 rounded-2xl">
-          <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-blue-500/20 flex items-center justify-center">
-            <svg class="w-8 h-8 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-            </svg>
+        <div class="feature-card p-8 rounded-2xl text-center">
+          <div class="icon-box bg-gradient-to-br from-blue-500/30 to-blue-600/30 mx-auto mb-6">
+            <i class="fa-solid fa-pen-to-square text-blue-300"></i>
           </div>
-          <h3 class="text-xl font-bold text-white text-center mb-3">Report an Item</h3>
-          <p class="text-white/70 text-center text-sm">
-            Lost or found something? Create a detailed report with description and location to help others identify the item.
+          <h3 class="text-xl font-bold text-white mb-3">Report an Item</h3>
+          <p class="text-white/70 text-sm leading-relaxed">
+            Lost or found something? Create a detailed report with description, location, and photos to help others identify it.
           </p>
         </div>
 
         <!-- Feature 2 -->
-        <div class="feature-card p-8 rounded-2xl">
-          <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-purple-500/20 flex items-center justify-center">
-            <svg class="w-8 h-8 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-            </svg>
+        <div class="feature-card p-8 rounded-2xl text-center">
+          <div class="icon-box bg-gradient-to-br from-purple-500/30 to-purple-600/30 mx-auto mb-6">
+            <i class="fa-solid fa-magnifying-glass text-purple-300"></i>
           </div>
-          <h3 class="text-xl font-bold text-white text-center mb-3">Search & Match</h3>
-          <p class="text-white/70 text-center text-sm">
-            Browse through reports to find matches. Our system helps connect lost items with their rightful owners quickly.
+          <h3 class="text-xl font-bold text-white mb-3">Search & Match</h3>
+          <p class="text-white/70 text-sm leading-relaxed">
+            Browse through comprehensive reports to find matches. Our system helps connect lost items with owners quickly and efficiently.
           </p>
         </div>
 
         <!-- Feature 3 -->
-        <div class="feature-card p-8 rounded-2xl">
-          <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-green-500/20 flex items-center justify-center">
-            <svg class="w-8 h-8 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
+        <div class="feature-card p-8 rounded-2xl text-center">
+          <div class="icon-box bg-gradient-to-br from-green-500/30 to-green-600/30 mx-auto mb-6">
+            <i class="fa-solid fa-check-circle text-green-300"></i>
           </div>
-          <h3 class="text-xl font-bold text-white text-center mb-3">Claim & Reunite</h3>
-          <p class="text-white/70 text-center text-sm">
+          <h3 class="text-xl font-bold text-white mb-3">Claim & Reunite</h3>
+          <p class="text-white/70 text-sm leading-relaxed">
             Found your item? Submit a claim with proof of ownership and we'll help arrange the safe return of your belongings.
           </p>
         </div>
 
         <!-- Feature 4 -->
-        <div class="feature-card p-8 rounded-2xl">
-          <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-yellow-500/20 flex items-center justify-center">
-            <svg class="w-8 h-8 text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-            </svg>
+        <div class="feature-card p-8 rounded-2xl text-center">
+          <div class="icon-box bg-gradient-to-br from-yellow-500/30 to-yellow-600/30 mx-auto mb-6">
+            <i class="fa-solid fa-shield-halved text-yellow-300"></i>
           </div>
-          <h3 class="text-xl font-bold text-white text-center mb-3">Secure Process</h3>
-          <p class="text-white/70 text-center text-sm">
-            All claims are verified for authenticity. Your personal information is protected throughout the process.
+          <h3 class="text-xl font-bold text-white mb-3">Secure Process</h3>
+          <p class="text-white/70 text-sm leading-relaxed">
+            All claims are verified for authenticity. Your personal information is protected and secure throughout the entire process.
           </p>
         </div>
 
         <!-- Feature 5 -->
-        <div class="feature-card p-8 rounded-2xl">
-          <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-pink-500/20 flex items-center justify-center">
-            <svg class="w-8 h-8 text-pink-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
-            </svg>
+        <div class="feature-card p-8 rounded-2xl text-center">
+          <div class="icon-box bg-gradient-to-br from-pink-500/30 to-pink-600/30 mx-auto mb-6">
+            <i class="fa-solid fa-people-group text-pink-300"></i>
           </div>
-          <h3 class="text-xl font-bold text-white text-center mb-3">Community Driven</h3>
-          <p class="text-white/70 text-center text-sm">
-            Join thousands of helpful people making a difference by returning lost items to their rightful owners.
+          <h3 class="text-xl font-bold text-white mb-3">Community Driven</h3>
+          <p class="text-white/70 text-sm leading-relaxed">
+            Join thousands of helpful people making a real difference by returning lost items to their rightful owners every day.
           </p>
         </div>
 
         <!-- Feature 6 -->
-        <div class="feature-card p-8 rounded-2xl">
-          <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-cyan-500/20 flex items-center justify-center">
-            <svg class="w-8 h-8 text-cyan-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-            </svg>
+        <div class="feature-card p-8 rounded-2xl text-center">
+          <div class="icon-box bg-gradient-to-br from-cyan-500/30 to-cyan-600/30 mx-auto mb-6">
+            <i class="fa-solid fa-rocket text-cyan-300"></i>
           </div>
-          <h3 class="text-xl font-bold text-white text-center mb-3">Fast & Easy</h3>
-          <p class="text-white/70 text-center text-sm">
-            Quick registration, simple reporting process, and instant notifications when potential matches are found.
+          <h3 class="text-xl font-bold text-white mb-3">Fast & Easy</h3>
+          <p class="text-white/70 text-sm leading-relaxed">
+            Quick registration, simple reporting process, and instant notifications when potential matches are discovered.
           </p>
         </div>
 
@@ -298,39 +358,37 @@
   </section>
 
   <!-- CTA Section -->
-  <section class="px-4 py-12 sm:py-16">
+  <section class="px-4 py-16">
     <div class="max-w-4xl mx-auto">
-      <div class="glass-card p-8 sm:p-12 rounded-3xl text-center register-container">
+      <div class="glass-card p-8 sm:p-16 rounded-3xl text-center register-container">
+        <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/20 backdrop-blur-md mb-6 border-2 border-white/30">
+          <i class="fa-solid fa-star text-3xl text-yellow-300"></i>
+        </div>
+        
         <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">
           Ready to Get Started?
         </h2>
-        <p class="text-white/80 text-lg mb-8">
-          Join our community today and help reunite lost items with their owners
+        <p class="text-white/80 text-lg mb-10">
+          Join our community today and help reunite lost items with their owners. Make an impact!
         </p>
         
         <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
           {% if not user.is_authenticated %}
           <a href="{% url 'user:register' %}" 
-             class="cta-button w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-gradient-to-r from-purple-600 via-purple-700 to-indigo-700 text-white py-4 px-8 rounded-xl font-bold text-lg shadow-xl">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
-            </svg>
+             class="cta-button w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-gradient-to-r from-purple-600 via-purple-700 to-indigo-700 text-white py-4 px-8 rounded-xl font-bold text-lg shadow-xl border-2 border-white/20">
+            <i class="fa-solid fa-user-plus text-xl"></i>
             Sign Up Now
           </a>
           
           <a href="{% url 'user:login' %}" 
-             class="cta-button w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-gradient-to-r from-cyan-500 via-blue-500 to-blue-600 text-white py-4 px-8 rounded-xl font-bold text-lg shadow-xl">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
-            </svg>
+             class="cta-button w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-gradient-to-r from-cyan-500 via-blue-500 to-blue-600 text-white py-4 px-8 rounded-xl font-bold text-lg shadow-xl border-2 border-white/20">
+            <i class="fa-solid fa-right-to-bracket text-xl"></i>
             Sign In
           </a>
           {% else %}
           <a href="{% url 'reports:inventory' %}" 
-             class="cta-button w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-gradient-to-r from-purple-600 via-purple-700 to-indigo-700 text-white py-4 px-8 rounded-xl font-bold text-lg shadow-xl">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
-            </svg>
+             class="cta-button w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-gradient-to-r from-purple-600 via-purple-700 to-indigo-700 text-white py-4 px-8 rounded-xl font-bold text-lg shadow-xl border-2 border-white/20">
+            <i class="fa-solid fa-boxes-stacked text-xl"></i>
             Go to Inventory
           </a>
           {% endif %}

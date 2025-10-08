@@ -2,7 +2,166 @@
 {% block content %}
 
 <style>
-  .register-container {
+      .register-container {
+        animation: fadeInUp 0.6s ease-out;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .glass-card {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(25px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+      }
+
+      .logo-badge {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        animation: pulse 2s infinite, float 3s ease-in-out infinite;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+      }
+
+      @keyframes pulse {
+        0%, 100% {
+          box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+        }
+        50% {
+          box-shadow: 0 0 0 15px rgba(255, 255, 255, 0);
+        }
+      }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+      }
+
+      .message-alert {
+        animation: slideIn 0.5s ease-out;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .icon-wrapper {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+      }
+
+      .report-card {
+        background: rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .report-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        background: rgba(255, 255, 255, 0.18);
+        border-color: rgba(255, 255, 255, 0.4);
+      }
+
+      .claim-btn {
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .claim-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        transition: left 0.6s;
+      }
+
+      .claim-btn:hover::before {
+        left: 100%;
+      }
+
+      .claim-btn:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+      }
+
+      @media (max-width: 640px) {
+        .glass-card {
+          padding: 1.5rem;
+        }
+        
+        .logo-badge {
+          width: 60px;
+          height: 60px;
+          font-size: 2rem;
+        }
+      }
+
+
+  * {
+    font-family: 'Inter', sans-serif;
+  }
+
+  body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 15s ease infinite;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: 
+      radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.3) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(240, 147, 251, 0.3) 0%, transparent 50%),
+      radial-gradient(circle at 40% 20%, rgba(118, 75, 162, 0.2) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .content-wrapper {
+    position: relative;
+    z-index: 1;
+  }
+
+  .page-container {
     animation: fadeInUp 0.6s ease-out;
   }
 
@@ -18,38 +177,32 @@
   }
 
   .glass-card {
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(25px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
   }
 
-  .logo-badge {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3rem;
-    animation: pulse 2s infinite, float 3s ease-in-out infinite;
-    border: 2px solid rgba(255, 255, 255, 0.3);
+  .item-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
   }
 
-  @keyframes pulse {
-    0%, 100% {
-      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
-    }
-    50% {
-      box-shadow: 0 0 0 15px rgba(255, 255, 255, 0);
-    }
+  .item-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
   }
 
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
+  .action-btn {
+    transition: all 0.3s ease;
+  }
+
+  .action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   }
 
   .message-alert {
@@ -67,287 +220,151 @@
     }
   }
 
-  .icon-wrapper {
+  .filter-btn {
+    transition: all 0.3s ease;
+  }
+
+  .filter-btn.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    color: white;
+    transform: scale(1.05);
+  }
+
+  .filter-btn:hover {
+    transform: scale(1.05);
+  }
+
+  .floating {
+    animation: floating 3s ease-in-out infinite;
+  }
+
+  @keyframes floating {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .search-box {
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+  }
+
+  .search-box:focus-within {
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 10px;
+  }
+
+  .badge {
+    font-weight: 600;
+    font-size: 0.75rem;
+    padding: 0.375rem 0.875rem;
+    border-radius: 9999px;
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
+    gap: 0.375rem;
   }
 
-  .report-card {
-    background: rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .report-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-    background: rgba(255, 255, 255, 0.18);
-    border-color: rgba(255, 255, 255, 0.4);
-  }
-
-  .claim-btn {
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .claim-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
+  .image-placeholder {
     width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: left 0.6s;
+    height: 200px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(240, 147, 251, 0.1) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px 12px 0 0;
   }
+  </style>
 
-  .claim-btn:hover::before {
-    left: 100%;
-  }
+    <main class="flex-grow px-4 py-8 sm:py-12">
+      <!-- Messages Section -->
+      {% include 'messages/messages.html' %}
 
-  .claim-btn:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-  }
-
-  @media (max-width: 640px) {
-    .glass-card {
-      padding: 1.5rem;
-    }
-    
-    .logo-badge {
-      width: 60px;
-      height: 60px;
-      font-size: 2rem;
-    }
-  }
-</style>
-
-<main class="flex-grow px-4 py-8 sm:py-12">
-  
-  <!-- Messages Section -->
-  {% if messages %}
-    <div class="max-w-6xl mx-auto mb-6 space-y-3">
-      {% for message in messages %}
-        <div class="message-alert px-5 py-4 rounded-xl shadow-lg flex items-start gap-3
-                    {% if message.tags == 'error' %}
-                      bg-gradient-to-r from-red-500 to-red-600 text-white
-                    {% elif message.tags == 'success' %}
-                      bg-gradient-to-r from-green-500 to-green-600 text-white
-                    {% elif message.tags == 'warning' %}
-                      bg-gradient-to-r from-yellow-500 to-yellow-600 text-white
-                    {% else %}
-                      bg-gradient-to-r from-blue-500 to-blue-600 text-white
-                    {% endif %}">
-          <div class="icon-wrapper flex-shrink-0 mt-0.5">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-              {% if message.tags == 'error' %}
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
-              {% elif message.tags == 'success' %}
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-              {% else %}
-                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
-              {% endif %}
-            </svg>
-          </div>
-          <span class="font-medium">{{ message }}</span>
-        </div>
-      {% endfor %}
-    </div>
-  {% endif %}
-
-  <!-- Lost Item Reports Section -->
-  <div class="max-w-6xl mx-auto mb-12">
-    <div class="glass-card p-6 sm:p-10 rounded-3xl register-container">
-      
-      <!-- Section Header -->
-      <div class="text-center mb-10">
-        <div class="flex items-center justify-center mb-4">
-          <div class="logo-badge" style="width: 70px; height: 70px; font-size: 2.5rem;">
-            🔍
-          </div>
-        </div>
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-2 flex items-center justify-center gap-3">
-          <svg class="w-8 h-8 sm:w-10 sm:h-10 text-red-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+      <!-- Header Section -->
+      <div class="text-center mb-8 page-container">
+        <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/20 backdrop-blur-md mb-4 floating border-2 border-white/30">
+          <svg class="w-8 h-8 sm:w-10 sm:h-10 text-orange-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
           </svg>
-          Lost Item Reports
+
+        </div>
+        <h2 class="text-4xl sm:text-5xl font-extrabold mb-3 text-white drop-shadow-2xl">
+          Welcome to the Inventory
         </h2>
-        <p class="text-white/80 text-sm sm:text-base">Items waiting to be found</p>
+        <p class="text-lg text-white/90 font-light">Discover lost and found items in our inventory</p>
       </div>
 
-      <!-- Lost Reports Grid -->
-      {% if lost_reports %}
-        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {% for report in lost_reports %}
-            <div class="report-card rounded-2xl p-6">
-              <!-- Item Icon -->
-              <div class="w-full h-40 bg-gradient-to-br from-red-500/20 to-pink-500/20 rounded-xl mb-4 flex items-center justify-center border border-white/20">
-                <svg class="w-20 h-20 text-red-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                </svg>
-              </div>
-
-              <!-- Item Details -->
-              <div class="space-y-3">
-                <h3 class="text-xl font-bold text-white flex items-center gap-2">
-                  <svg class="w-5 h-5 text-red-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
-                  </svg>
-                  {{ report.item_name }}
-                </h3>
-                
-                <p class="text-white/70 text-sm line-clamp-2">{{ report.item_description }}</p>
-                
-                <div class="flex items-center gap-2 text-sm text-white/60">
-                  <svg class="w-4 h-4 text-red-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                  </svg>
-                  <span>Lost: {{ report.date_lost }}</span>
-                </div>
-
-                <div class="flex items-center gap-2 text-sm text-white/60">
-                  <svg class="w-4 h-4 text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                  </svg>
-                  <span>{{ report.location }}</span>
-                </div>
-
-                <div class="pt-3 border-t border-white/20">
-                  <p class="text-xs text-white/50 flex items-center gap-1">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                    </svg>
-                    Contact: {{ report.contact }}
-                  </p>
-                </div>
-              </div>
-            </div>
-          {% endfor %}
-        </div>
-      {% else %}
-        <div class="text-center py-16">
-          <svg class="w-24 h-24 text-white/20 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          </svg>
-          <p class="text-white/80 text-xl font-medium mb-2">No lost reports found</p>
-          <p class="text-white/60 text-sm">Check back later for new reports</p>
-        </div>
-      {% endif %}
-
-    </div>
-  </div>
-
-  <!-- Found Item Reports Section -->
-  <div class="max-w-6xl mx-auto">
-    <div class="glass-card p-6 sm:p-10 rounded-3xl register-container">
-      
-      <!-- Section Header -->
-      <div class="text-center mb-10">
-        <div class="flex items-center justify-center mb-4">
-          <div class="logo-badge" style="width: 70px; height: 70px; font-size: 2.5rem;">
-            ✅
-          </div>
-        </div>
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-2 flex items-center justify-center gap-3">
-          <svg class="w-8 h-8 sm:w-10 sm:h-10 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          </svg>
-          Found Item Reports
-        </h2>
-        <p class="text-white/80 text-sm sm:text-base">Items waiting to be claimed</p>
+      <!-- Search and Filter Section -->
+  <div class="glass-card rounded-2xl p-6 mb-8 mx-12 page-container">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+      <!-- Search Box -->
+      <div class="search-box text-cyan-200 col-span-1 sm:col-span-2 rounded-3xl p-4 border border-gray-200 flex items-center gap-3 hover:border-gray-300 transition focus:outline-none focus:border-purple-500">
+        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+        <input type="text" placeholder="Search items..." class="flex-1 bg-transparent outline-none text-gray-800 placeholder-gray-400 font-medium">
       </div>
 
-      <!-- Found Reports Grid -->
-      {% if found_reports %}
-        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {% for report in found_reports %}
-            <div class="report-card rounded-2xl p-6">
-              <!-- Item Icon -->
-              <div class="w-full h-40 bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-xl mb-4 flex items-center justify-center border border-white/20">
-                <svg class="w-20 h-20 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                </svg>
-              </div>
+      <!-- Category Filter -->
+      <select class="bg-cyan-50/20 text-gray-800 rounded-xl px-4 py-3 font-semibold border border-gray-200 hover:border-gray-300 transition focus:outline-none focus:border-purple-500">
+        <option value="">All Categories</option>
+        <option value="electronics">Electronics</option>
+        <option value="accessories">Accessories</option>
+        <option value="documents">Documents</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
 
-              <!-- Item Details -->
-              <div class="space-y-3">
-                <h3 class="text-xl font-bold text-white flex items-center gap-2">
-                  <svg class="w-5 h-5 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
-                  </svg>
-                  {{ report.item_name }}
-                </h3>
-                
-                <p class="text-white/70 text-sm line-clamp-2">{{ report.item_description }}</p>
-                
-                <div class="flex items-center gap-2 text-sm text-white/60">
-                  <svg class="w-4 h-4 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                  </svg>
-                  <span>Found: {{ report.date_found }}</span>
-                </div>
-
-                <div class="flex items-center gap-2 text-sm text-white/60">
-                  <svg class="w-4 h-4 text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                  </svg>
-                  <span>{{ report.location_found }}</span>
-                </div>
-
-                <div class="pt-3 border-t border-white/20">
-                  <p class="text-xs text-white/50 flex items-center gap-1 mb-4">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                    </svg>
-                    Contact: {{ report.contact }}
-                  </p>
-
-                  <!-- Claim Button -->
-                  <a href="{% url 'reports:claim' report.id %}" 
-                     class="claim-btn w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 text-white py-3 px-6 rounded-xl font-bold text-base shadow-xl">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-                    </svg>
-                    Claim Item
-                  </a>
-                </div>
-              </div>
-            </div>
-          {% endfor %}
-        </div>
-      {% else %}
-        <div class="text-center py-16">
-          <svg class="w-24 h-24 text-white/20 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          </svg>
-          <p class="text-white/80 text-xl font-medium mb-2">No found reports available</p>
-          <p class="text-white/60 text-sm">Check back later for newly found items</p>
-        </div>
-      {% endif %}
-
+    <!-- Filter Tags -->
+    <div class="flex flex-wrap gap-2">
+      <button class="filter-btn active bg-white text-gray-800 px-4 py-2 rounded-full font-semibold border border-gray-200 hover:border-gray-300">
+        All Items
+      </button>
+      <button class="filter-btn bg-white text-gray-800 px-4 py-2 rounded-full font-semibold border border-gray-200 hover:border-gray-300">
+        <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        Found Items
+      </button>
+      <button class="filter-btn bg-white text-gray-800 px-4 py-2 rounded-full font-semibold border border-gray-200 hover:border-gray-300">
+        <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        Lost Items
+      </button>
     </div>
   </div>
+      
+      
+      <!-- Lost Item Reports Section -->
+      {% include 'reports/lost_item.html' %}
 
-</main>
+      <!-- Found Item Reports Section -->
+      {% include 'reports/found_item.html' %}
 
-<script>
-  // Auto-hide messages
-  setTimeout(() => {
-    document.querySelectorAll('.message-alert').forEach(el => {
-      el.style.transition = "opacity 0.6s ease, transform 0.6s ease";
-      el.style.opacity = "0";
-      el.style.transform = "translateX(20px)";
-      setTimeout(() => el.remove(), 600);
-    });
-  }, 5000);
-</script>
+    </main>
+
+    <script>
+      // Filter buttons
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+        });
+      });
+    </script>
 
 {% endblock %}

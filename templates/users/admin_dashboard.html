@@ -180,6 +180,8 @@
 </head>
 
 <body class="min-h-screen text-gray-50 flex flex-col">
+  <!--Messages Section-->
+  {% include 'messages/messages.html' %}
 
   <!-- Main Dashboard -->
   <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 content-wrapper">
@@ -219,6 +221,7 @@
 
       <!-- Lost Reports Card -->
       <div class="stat-card glass-effect rounded-2xl p-6 sm:p-8 text-gray-800 cursor-pointer group">
+        <a href="{% url 'reports:lost_items' %}" class="absolute inset-0 z-10"></a>
         <div class="flex items-start justify-between mb-4">
           <div>
             <h3 class="text-sm sm:text-base font-semibold text-gray-600 mb-1 uppercase tracking-wide">Lost Reports</h3>
@@ -240,6 +243,7 @@
 
       <!-- Found Reports Card -->
       <div class="stat-card glass-effect rounded-2xl p-6 sm:p-8 text-gray-800 cursor-pointer group">
+        <a href="{% url 'reports:found_items' %}" class="absolute inset-0 z-10"></a>
         <div class="flex items-start justify-between mb-4">
           <div>
             <h3 class="text-sm sm:text-base font-semibold text-gray-600 mb-1 uppercase tracking-wide">Found Reports</h3>
@@ -329,7 +333,7 @@
         </a>
 
         <!-- Manage Inventory -->
-        <a href="" class="manage-card relative p-8 bg-gradient-to-br from-pink-500 via-pink-600 to-pink-700 text-white rounded-2xl shadow-xl flex flex-col items-center justify-center text-center group">
+        <a href="{% url 'reports:inventory' %}" class="manage-card relative p-8 bg-gradient-to-br from-pink-500 via-pink-600 to-pink-700 text-white rounded-2xl shadow-xl flex flex-col items-center justify-center text-center group">
           <div class="w-20 h-20 mb-5 rounded-full bg-white/20 flex items-center justify-center group-hover:rotate-12 transition-transform duration-300">
             <i class="fa-solid fa-database text-4xl"></i>
           </div>

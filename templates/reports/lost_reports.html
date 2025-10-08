@@ -68,84 +68,6 @@
     }
   }
 
-  .icon-wrapper {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-  }
-
-  .input-field {
-    background: rgba(255, 255, 255, 0.1) !important;
-    border: 2px solid rgba(255, 255, 255, 0.3) !important;
-    transition: all 0.3s ease;
-    color: white !important;
-  }
-
-  .input-field::placeholder {
-    color: rgba(255, 255, 255, 0.6);
-  }
-
-  .input-field:focus {
-    background: rgba(255, 255, 255, 0.15) !important;
-    border-color: rgba(255, 255, 255, 0.6) !important;
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3) !important;
-    outline: none;
-  }
-
-  .label-text {
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.95);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .file-upload-area {
-    background: rgba(255, 255, 255, 0.1);
-    border: 2px dashed rgba(255, 255, 255, 0.3);
-    transition: all 0.3s ease;
-    cursor: pointer;
-  }
-
-  .file-upload-area:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.5);
-    transform: scale(1.02);
-  }
-
-  .submit-btn {
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .submit-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: left 0.6s;
-  }
-
-  .submit-btn:hover::before {
-    left: 100%;
-  }
-
-  .submit-btn:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-  }
-
   .report-card {
     background: rgba(255, 255, 255, 0.12);
     backdrop-filter: blur(20px);
@@ -160,8 +82,60 @@
     border-color: rgba(255, 255, 255, 0.4);
   }
 
-  .section-divider {
-    margin: 3rem 0;
+  .claim-btn {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .claim-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.6s;
+  }
+
+  .claim-btn:hover::before {
+    left: 100%;
+  }
+
+  .claim-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+  }
+
+  .filter-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px);
+  }
+
+  .search-input {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    color: white;
+  }
+
+  .search-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .search-input:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.6);
+    outline: none;
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
   }
 
   @media (max-width: 640px) {
@@ -177,252 +151,158 @@
   }
 </style>
 
-<div class="min-h-screen py-8 sm:py-12 px-4">
+<main class="flex-grow px-4 py-8 sm:py-12">
   
-  <!-- Form Section -->
-  {% if user.is_authenticated %}
-  <div class="max-w-4xl mx-auto mb-12">
-    <div class="glass-card p-6 sm:p-10 rounded-3xl register-container">
-      
-      <!-- Messages Section -->
-      {% if messages %}
-        <div class="mb-6 space-y-3">
-          {% for message in messages %}
-            <div class="message-alert px-5 py-4 rounded-xl shadow-lg flex items-start gap-3
-                        {% if message.tags == 'error' %}
-                          bg-gradient-to-r from-red-500 to-red-600 text-white
-                        {% elif message.tags == 'success' %}
-                          bg-gradient-to-r from-green-500 to-green-600 text-white
-                        {% elif message.tags == 'warning' %}
-                          bg-gradient-to-r from-yellow-500 to-yellow-600 text-white
-                        {% else %}
-                          bg-gradient-to-r from-blue-500 to-blue-600 text-white
-                        {% endif %}">
-              <div class="icon-wrapper flex-shrink-0 mt-0.5">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                  {% if message.tags == 'error' %}
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
-                  {% elif message.tags == 'success' %}
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                  {% else %}
-                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
-                  {% endif %}
-                </svg>
-              </div>
-              <span class="font-medium">{{ message }}</span>
-            </div>
-          {% endfor %}
-        </div>
-      {% endif %}
-
-      <!-- Logo Badge -->
-      <div class="flex items-center justify-center mb-6">
-        <div class="logo-badge">
-          🔍
-        </div>
-      </div>
-
-      <!-- Header -->
-      <div class="text-center mb-8">
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-2 flex items-center justify-center gap-3">
-          <svg class="w-8 h-8 sm:w-10 sm:h-10 text-cyan-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-          </svg>
-          Report Lost Item
-        </h2>
-        <p class="text-white/80 text-sm sm:text-base">Help us help you find your lost belongings</p>
-      </div>
-
-      <!-- Form -->
-      <form action="{% url 'reports:lost_reports' %}" method="POST" enctype="multipart/form-data" class="space-y-6">
-        {% csrf_token %}
-
-        <!-- Item Name -->
-        <div>
-          <label class="label-text">
-            <svg class="w-5 h-5 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+  <!-- Messages Section -->
+  {% if messages %}
+    <div class="max-w-7xl mx-auto mb-6 space-y-3">
+      {% for message in messages %}
+        <div class="message-alert px-5 py-4 rounded-xl shadow-lg flex items-start gap-3
+                    {% if message.tags == 'error' %}
+                      bg-gradient-to-r from-red-500 to-red-600 text-white
+                    {% elif message.tags == 'success' %}
+                      bg-gradient-to-r from-green-500 to-green-600 text-white
+                    {% elif message.tags == 'warning' %}
+                      bg-gradient-to-r from-yellow-500 to-yellow-600 text-white
+                    {% else %}
+                      bg-gradient-to-r from-blue-500 to-blue-600 text-white
+                    {% endif %}">
+          <div class="flex-shrink-0 mt-0.5">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              {% if message.tags == 'error' %}
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+              {% elif message.tags == 'success' %}
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              {% else %}
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+              {% endif %}
             </svg>
-            Item Name *
-          </label>
-          <input 
-            type="text" 
-            name="item_name" 
-            required
-            placeholder="e.g., Black Leather Wallet"
-            class="input-field w-full px-4 py-3 rounded-xl"
-          >
-        </div>
-
-        <!-- Item Description -->
-        <div>
-          <label class="label-text">
-            <svg class="w-5 h-5 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/>
-            </svg>
-            Item Description *
-          </label>
-          <textarea 
-            name="item_description" 
-            required
-            rows="4"
-            placeholder="Provide detailed description of your lost item..."
-            class="input-field w-full px-4 py-3 rounded-xl resize-none"
-          ></textarea>
-        </div>
-
-        <!-- Date and Location Row -->
-        <div class="grid sm:grid-cols-2 gap-6">
-          <!-- Date Lost -->
-          <div>
-            <label class="label-text">
-              <svg class="w-5 h-5 text-red-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-              </svg>
-              Date Lost *
-            </label>
-            <input 
-              type="date" 
-              name="date_lost" 
-              required
-              class="input-field w-full px-4 py-3 rounded-xl"
-            >
           </div>
-
-          <!-- Location -->
-          <div>
-            <label class="label-text">
-              <svg class="w-5 h-5 text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-              </svg>
-              Location *
-            </label>
-            <input 
-              type="text" 
-              name="location" 
-              required
-              placeholder="e.g., Central Park, NY"
-              class="input-field w-full px-4 py-3 rounded-xl"
-            >
-          </div>
+          <span class="font-medium">{{ message }}</span>
         </div>
-
-        <!-- Contact -->
-        <div>
-          <label class="label-text">
-            <svg class="w-5 h-5 text-pink-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-            </svg>
-            Contact Information *
-          </label>
-          <input 
-            type="text" 
-            name="contact" 
-            required
-            placeholder="Email or Phone Number"
-            class="input-field w-full px-4 py-3 rounded-xl"
-          >
-        </div>
-
-        <!-- Upload Image -->
-        <div>
-          <label class="label-text">
-            <svg class="w-5 h-5 text-cyan-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-            </svg>
-            Upload Image (Optional)
-          </label>
-          <div class="file-upload-area rounded-xl p-8 text-center" onclick="document.getElementById('fileInput').click()">
-            <svg class="w-12 h-12 text-white/60 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
-            </svg>
-            <p class="text-white/80 font-medium mb-1">Click to upload or drag and drop</p>
-            <p class="text-white/60 text-sm">PNG, JPG, GIF up to 10MB</p>
-            <input type="file" name="item_image" accept="image/*" class="hidden" id="fileInput">
-          </div>
-        </div>
-
-        <!-- Submit Button -->
-        <div class="pt-4">
-          <button 
-            type="submit" 
-            class="submit-btn w-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 text-white py-4 px-6 rounded-xl font-bold text-lg shadow-xl flex items-center justify-center gap-3"
-          >
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-            Submit Lost Report
-          </button>
-        </div>
-      </form>
-
-      <!-- Additional Info -->
-      <div class="mt-8 pt-6 border-t border-white/20 text-center">
-        <p class="text-white/60 text-xs sm:text-sm flex items-center justify-center gap-2 flex-wrap">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-          </svg>
-          <span>Your information is secure and will only be used for item recovery</span>
-        </p>
-      </div>
-
+      {% endfor %}
     </div>
-  </div>
   {% endif %}
 
-  <!-- Reports Section -->
-  <div class="max-w-6xl mx-auto">
-    <div class="glass-card p-6 sm:p-10 rounded-3xl register-container">
-      
-      <!-- Section Header -->
-      <div class="text-center mb-10">
-        <div class="flex items-center justify-center mb-4">
-          <div class="logo-badge" style="width: 60px; height: 60px; font-size: 2rem;">
-            📋
+  <div class="max-w-7xl mx-auto">
+    
+    <!-- Header Section -->
+    <div class="text-center mb-12 register-container">
+      <div class="flex items-center justify-center mb-6">
+        <div class="logo-badge">
+          ✅
+        </div>
+      </div>
+      <h1 class="text-4xl sm:text-5xl font-extrabold text-white mb-4">
+        Found Items
+      </h1>
+      <p class="text-white/90 text-lg sm:text-xl mb-8">
+        Browse items that have been found and are waiting to be claimed
+      </p>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <a href="{% url 'reports:found_reports' %}" 
+           class="claim-btn inline-flex items-center justify-center gap-3 bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 text-white py-3 px-8 rounded-xl font-bold text-base shadow-xl">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+          </svg>
+          Report Found Item
+        </a>
+      </div>
+    </div>
+
+    <!-- Search and Filter Section -->
+    <div class="glass-card p-6 rounded-3xl mb-8 register-container">
+      <div class="flex flex-col lg:flex-row gap-4 items-center">
+        <!-- Search Bar -->
+        <div class="flex-1 w-full">
+          <div class="relative">
+            <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+            <input 
+              type="text" 
+              placeholder="Search for items..." 
+              class="search-input w-full pl-12 pr-4 py-3 rounded-xl"
+              id="searchInput"
+            >
           </div>
         </div>
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-2 flex items-center justify-center gap-3">
-          <svg class="w-8 h-8 sm:w-10 sm:h-10 text-cyan-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+
+        <!-- Filter Buttons -->
+        <div class="flex flex-wrap gap-3 justify-center">
+          <button class="filter-btn active px-4 py-2 rounded-lg text-white font-medium text-sm">
+            All Items
+          </button>
+          <button class="filter-btn px-4 py-2 rounded-lg text-white font-medium text-sm">
+            Electronics
+          </button>
+          <button class="filter-btn px-4 py-2 rounded-lg text-white font-medium text-sm">
+            Accessories
+          </button>
+          <button class="filter-btn px-4 py-2 rounded-lg text-white font-medium text-sm">
+            Documents
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Items Grid -->
+    <div class="glass-card p-6 sm:p-10 rounded-3xl register-container">
+      
+      <!-- Stats Bar -->
+      <div class="flex flex-wrap items-center justify-between mb-8 pb-6 border-b border-white/20">
+        <div>
+          <p class="text-white text-lg font-semibold">
+            <span class="text-green-300">{{ found_items.count }}</span> Found Items Available
+          </p>
+        </div>
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
-          Lost Item Reports
-        </h2>
-        <p class="text-white/80 text-sm sm:text-base">Browse all reported lost items</p>
+          <span class="text-white/70 text-sm">Updated daily</span>
+        </div>
       </div>
 
-      <!-- Reports Grid -->
-      {% if reports %}
+      <!-- Items Grid -->
+      {% if found_items %}
         <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {% for report in reports %}
+          {% for item in found_items %}
             <div class="report-card rounded-2xl p-6">
               <!-- Item Image -->
-              <div class="w-full h-48 bg-gradient-to-br from-purple-500/20 to-indigo-500/20 rounded-xl mb-4 flex items-center justify-center overflow-hidden border border-white/20">
-                {% if report.item_image %}
-                  <img src="{{ report.item_image.url }}" alt="{{ report.item_name }}" class="w-full h-full object-cover">
+              <div class="w-full h-48 bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-xl mb-4 flex items-center justify-center overflow-hidden border border-white/20">
+                {% if item.item_image %}
+                  <img src="{{ item.item_image.url }}" alt="{{ item.item_name }}" class="w-full h-full object-cover">
                 {% else %}
-                  <svg class="w-20 h-20 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                  <svg class="w-20 h-20 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                   </svg>
                 {% endif %}
               </div>
 
               <!-- Item Details -->
               <div class="space-y-3">
-                <h3 class="text-xl font-bold text-white flex items-center gap-2">
-                  <svg class="w-5 h-5 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
-                  </svg>
-                  {{ report.item_name }}
-                </h3>
+                <div class="flex items-start justify-between">
+                  <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                    <svg class="w-5 h-5 text-green-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                    </svg>
+                    <span class="line-clamp-1">{{ item.item_name }}</span>
+                  </h3>
+                  <span class="px-2 py-1 bg-green-500/20 text-green-200 rounded-full text-xs font-semibold whitespace-nowrap">
+                    Available
+                  </span>
+                </div>
                 
-                <p class="text-white/70 text-sm line-clamp-2">{{ report.item_description }}</p>
+                <p class="text-white/70 text-sm line-clamp-2">{{ item.item_description }}</p>
                 
                 <div class="flex items-center gap-2 text-sm text-white/60">
-                  <svg class="w-4 h-4 text-red-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-4 h-4 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                   </svg>
-                  <span>{{ report.date_lost }}</span>
+                  <span>Found: {{ item.date_found }}</span>
                 </div>
 
                 <div class="flex items-center gap-2 text-sm text-white/60">
@@ -430,61 +310,78 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                   </svg>
-                  <span>{{ report.location }}</span>
+                  <span class="line-clamp-1">{{ item.location }}</span>
                 </div>
 
                 <div class="pt-3 border-t border-white/20">
-                  <p class="text-xs text-white/50 flex items-center gap-1">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                  <div class="flex items-center justify-between mb-4">
+                    <p class="text-xs text-white/50 flex items-center gap-1">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                      </svg>
+                      Found by: <span class="font-semibold text-white/70">{{ item.user.username }}</span>
+                    </p>
+                  </div>
+
+                  <!-- Claim Button -->
+                  <a href="{% url 'reports:claim' item.id %}" 
+                     class="claim-btn w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 text-white py-3 px-6 rounded-xl font-bold text-base shadow-xl">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                     </svg>
-                    Contact: {{ report.contact }}
-                  </p>
+                    Claim This Item
+                  </a>
                 </div>
               </div>
             </div>
           {% endfor %}
         </div>
+
+        <!-- Pagination (Optional) -->
+        <div class="mt-12 flex justify-center">
+          <div class="flex gap-2">
+            <button class="filter-btn px-4 py-2 rounded-lg text-white font-medium">
+              Previous
+            </button>
+            <button class="filter-btn active px-4 py-2 rounded-lg text-white font-medium">
+              1
+            </button>
+            <button class="filter-btn px-4 py-2 rounded-lg text-white font-medium">
+              2
+            </button>
+            <button class="filter-btn px-4 py-2 rounded-lg text-white font-medium">
+              3
+            </button>
+            <button class="filter-btn px-4 py-2 rounded-lg text-white font-medium">
+              Next
+            </button>
+          </div>
+        </div>
+
       {% else %}
         <div class="text-center py-16">
           <svg class="w-24 h-24 text-white/20 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
-          <p class="text-white/80 text-xl font-medium mb-2">No lost reports found</p>
-          <p class="text-white/60 text-sm">Be the first to report a lost item</p>
+          <p class="text-white/80 text-xl font-medium mb-2">No found items yet</p>
+          <p class="text-white/60 text-sm mb-6">Be the first to report a found item</p>
+          <a href="{% url 'reports:found_reports' %}" 
+             class="claim-btn inline-flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 text-white py-3 px-6 rounded-xl font-bold text-base shadow-xl">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            Report Found Item
+          </a>
         </div>
       {% endif %}
 
     </div>
+
   </div>
-</div>
+
+</main>
 
 <script>
-  // File upload handler
-  const fileInput = document.getElementById('fileInput');
-  if (fileInput) {
-    fileInput.addEventListener('change', function(e) {
-      if (e.target.files.length > 0) {
-        const fileName = e.target.files[0].name;
-        const uploadArea = document.querySelector('.file-upload-area');
-        uploadArea.innerHTML = `
-          <svg class="w-12 h-12 text-green-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          </svg>
-          <p class="text-white/80 font-medium">${fileName}</p>
-          <p class="text-white/60 text-sm mt-1">Click to change</p>
-        `;
-      }
-    });
-  }
-
-  // Set max date to today
-  const dateInput = document.querySelector('input[type="date"]');
-  if (dateInput) {
-    const today = new Date().toISOString().split('T')[0];
-    dateInput.setAttribute('max', today);
-  }
-
   // Auto-hide messages
   setTimeout(() => {
     document.querySelectorAll('.message-alert').forEach(el => {
@@ -494,6 +391,32 @@
       setTimeout(() => el.remove(), 600);
     });
   }, 5000);
+
+  // Filter buttons
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  // Search functionality (basic client-side filtering)
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) {
+    searchInput.addEventListener('input', function(e) {
+      const searchTerm = e.target.value.toLowerCase();
+      const cards = document.querySelectorAll('.report-card');
+      
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        if (text.includes(searchTerm)) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  }
 </script>
 
 {% endblock %}

@@ -1,0 +1,89 @@
+{% block content %}
+    <div class="max-w-6xl mx-auto my-10">
+        <div class="glass-card p-6 sm:p-10 rounded-3xl register-container">
+          <!-- Section Header -->
+            <div class="text-center m-10 mb-10">
+                <div class="flex items-center justify-center mb-4">
+                <div class="logo-badge" style="width: 70px; height: 70px; font-size: 2.5rem;">
+                    🔍
+                </div>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-2 flex items-center justify-center gap-3">
+                <svg class="w-8 h-8 sm:w-10 sm:h-10 text-red-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+                Lost Item Reports
+                </h2>
+                <p class="text-white/80 text-sm sm:text-base">Items waiting to be found</p>
+            </div>
+
+            <!-- Lost Reports Grid -->
+            {% if lost_reports %}
+                <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {% for report in lost_reports %}
+                    <div class="report-card rounded-2xl p-6">
+                    <!-- Item Icon -->
+                    <div class="w-full h-60 bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-xl mb-4 flex items-center justify-center border border-white/20">
+                        {% if report.item_image %}
+                            <img src="{{ report.item_image.url }}" class="w-full h-full"/>
+                        {% else %}
+                            <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M4 5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5z" />
+                            <circle cx="8.5" cy="8.5" r="1.5" />
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M21 15l-5-5L5 21" />
+                            </svg>
+                        {% endif %}
+                    </div>
+
+                    <!-- Item Details -->
+                    <div class="space-y-3">
+                        <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                        <svg class="w-5 h-5 text-red-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                        </svg>
+                        {{ report.item_name }}
+                        </h3>
+                        
+                        
+                        <div class="flex items-center gap-2 text-sm text-white/60">
+                        <svg class="w-4 h-4 text-red-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        <span>Lost: {{ report.date_lost }}</span>
+                        </div>
+
+                        <div class="flex items-center gap-2 text-sm text-white/60">
+                        <svg class="w-4 h-4 text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        <span>{{ report.location }}</span>
+                        </div>
+
+                        <div class="pt-3 border-t border-white/20">
+                        <p class="text-xs text-white/50 flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                            Contact: {{ report.contact }}
+                        </p>
+                        </div>
+                    </div>
+                    </div>
+                {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-16">
+                <svg class="w-24 h-24 text-white/20 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <p class="text-white/80 text-xl font-medium mb-2">No lost reports found</p>
+                <p class="text-white/60 text-sm">Check back later for new reports</p>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+{% endblock %}

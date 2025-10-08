@@ -1,0 +1,268 @@
+{% extends "users/base.html" %}
+
+{% block content %}
+
+<style>
+  .register-container {
+    animation: fadeInUp 0.6s ease-out;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  }
+
+  .stat-card {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .stat-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.4);
+  }
+
+  .floating {
+    animation: floating 3s ease-in-out infinite;
+  }
+
+  @keyframes floating {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .action-card {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .action-card:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .table-row {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .table-row:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  @media (max-width: 640px) {
+    .glass-card {
+      padding: 1.5rem;
+    }
+  }
+</style>
+
+<main class="flex-grow px-4 py-8 sm:py-12">
+  <div class="max-w-7xl mx-auto">
+    
+    <!-- Dashboard Header -->
+    <div class="text-center mb-12 register-container">
+      <h1 class="text-4xl sm:text-5xl font-extrabold text-cyan-50 mb-4 floating">
+        Hello, {{ user.first_name|default:user.username }}!
+      </h1>
+      <p class="text-white/90 text-lg sm:text-xl">
+        Here's what's happening in your world today
+      </p>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12 register-container">
+      
+      <!-- Lost Reports Card -->
+      <div class="stat-card p-6 rounded-2xl text-center">
+        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-blue-500/20 flex items-center justify-center">
+          <svg class="w-8 h-8 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+        </div>
+        <p class="text-lg font-semibold text-white/90 mb-2">Lost Reports</p>
+        <p class="text-4xl font-bold text-white">24</p>
+      </div>
+
+      <!-- Found Items Card -->
+      <div class="stat-card p-6 rounded-2xl text-center">
+        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-purple-500/20 flex items-center justify-center">
+          <svg class="w-8 h-8 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+          </svg>
+        </div>
+        <p class="text-lg font-semibold text-white/90 mb-2">Found Items</p>
+        <p class="text-4xl font-bold text-white">18</p>
+      </div>
+
+      <!-- Users Card -->
+      <div class="stat-card p-6 rounded-2xl text-center">
+        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-pink-500/20 flex items-center justify-center">
+          <svg class="w-8 h-8 text-pink-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+          </svg>
+        </div>
+        <p class="text-lg font-semibold text-white/90 mb-2">Users</p>
+        <p class="text-4xl font-bold text-white">120</p>
+      </div>
+
+      <!-- Approved Claims Card -->
+      <div class="stat-card p-6 rounded-2xl text-center">
+        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-green-500/20 flex items-center justify-center">
+          <svg class="w-8 h-8 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+          </svg>
+        </div>
+        <p class="text-lg font-semibold text-white/90 mb-2">Approved Claims</p>
+        <p class="text-4xl font-bold text-white">47</p>
+      </div>
+
+    </div>
+
+    <!-- Recent Activity Section -->
+    <div class="glass-card p-6 sm:p-8 rounded-3xl mb-12 register-container">
+      <div class="flex items-center gap-3 mb-6">
+        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+        </svg>
+        <h3 class="text-2xl sm:text-3xl font-bold text-white">Recent Activity</h3>
+      </div>
+      
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-left">
+          <thead>
+            <tr class="border-b border-white/20">
+              <th class="py-4 px-4 text-white/90 font-semibold text-sm sm:text-base">Date</th>
+              <th class="py-4 px-4 text-white/90 font-semibold text-sm sm:text-base">User</th>
+              <th class="py-4 px-4 text-white/90 font-semibold text-sm sm:text-base">Action</th>
+              <th class="py-4 px-4 text-white/90 font-semibold text-sm sm:text-base">Item</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Example Rows (Use Django loop here) -->
+            <tr class="table-row">
+              <td class="py-4 px-4 text-white/80 text-sm">Oct 5, 2025</td>
+              <td class="py-4 px-4 text-white/80 text-sm font-medium">johndoe</td>
+              <td class="py-4 px-4 text-white/80 text-sm">
+                <span class="inline-flex items-center gap-1 px-3 py-1 bg-red-500/20 text-red-200 rounded-full text-xs font-semibold">
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                  </svg>
+                  Lost Item
+                </span>
+              </td>
+              <td class="py-4 px-4 text-white font-semibold text-sm">Black Wallet</td>
+            </tr>
+            <tr class="table-row">
+              <td class="py-4 px-4 text-white/80 text-sm">Oct 4, 2025</td>
+              <td class="py-4 px-4 text-white/80 text-sm font-medium">admin</td>
+              <td class="py-4 px-4 text-white/80 text-sm">
+                <span class="inline-flex items-center gap-1 px-3 py-1 bg-green-500/20 text-green-200 rounded-full text-xs font-semibold">
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  Approved
+                </span>
+              </td>
+              <td class="py-4 px-4 text-white font-semibold text-sm">Dell Laptop</td>
+            </tr>
+            <tr class="table-row">
+              <td class="py-4 px-4 text-white/80 text-sm">Oct 3, 2025</td>
+              <td class="py-4 px-4 text-white/80 text-sm font-medium">sarahk</td>
+              <td class="py-4 px-4 text-white/80 text-sm">
+                <span class="inline-flex items-center gap-1 px-3 py-1 bg-blue-500/20 text-blue-200 rounded-full text-xs font-semibold">
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                  </svg>
+                  Returned
+                </span>
+              </td>
+              <td class="py-4 px-4 text-white font-semibold text-sm">iPhone 14</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Action Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 register-container">
+      
+      <!-- Submit Lost Report -->
+      <a href="{% url 'reports:lost_reports' %}" class="action-card p-6 rounded-2xl group">
+        <div class="flex items-center justify-between">
+          <div class="flex-1">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center">
+                <svg class="w-6 h-6 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+              </div>
+              <h4 class="text-xl font-bold text-white">Submit Lost Report</h4>
+            </div>
+            <p class="text-white/70 text-sm">
+              Quickly report an item you've lost
+            </p>
+          </div>
+          <svg class="w-8 h-8 text-purple-300 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+          </svg>
+        </div>
+      </a>
+
+      <!-- View Found Items -->
+      <a href="{% url 'reports:found_reports' %}" class="action-card p-6 rounded-2xl group">
+        <div class="flex items-center justify-between">
+          <div class="flex-1">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center">
+                <svg class="w-6 h-6 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+              </div>
+              <h4 class="text-xl font-bold text-white">View Found Items</h4>
+            </div>
+            <p class="text-white/70 text-sm">
+              Check if your lost item has been found
+            </p>
+          </div>
+          <svg class="w-8 h-8 text-blue-300 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+          </svg>
+        </div>
+      </a>
+
+    </div>
+
+  </div>
+</main>
+
+{% endblock %}

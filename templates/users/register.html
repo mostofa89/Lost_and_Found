@@ -118,35 +118,7 @@
   <div class="max-w-4xl w-full glass-card p-6 sm:p-10 rounded-3xl register-container">
     
     <!-- Messages Section -->
-    {% if messages %}
-      <div class="mb-6 space-y-3">
-        {% for message in messages %}
-          <div class="message-alert px-5 py-4 rounded-xl shadow-lg flex items-start gap-3
-                      {% if message.tags == 'error' %}
-                        bg-gradient-to-r from-red-500 to-red-600 text-white
-                      {% elif message.tags == 'success' %}
-                        bg-gradient-to-r from-green-500 to-green-600 text-white
-                      {% elif message.tags == 'warning' %}
-                        bg-gradient-to-r from-yellow-500 to-yellow-600 text-white
-                      {% else %}
-                        bg-gradient-to-r from-blue-500 to-blue-600 text-white
-                      {% endif %}">
-            <div class="icon-wrapper flex-shrink-0 mt-0.5">
-              {% if message.tags == 'error' %}
-                <i class="fa-solid fa-circle-xmark"></i>
-              {% elif message.tags == 'success' %}
-                <i class="fa-solid fa-circle-check"></i>
-              {% elif message.tags == 'warning' %}
-                <i class="fa-solid fa-triangle-exclamation"></i>
-              {% else %}
-                <i class="fa-solid fa-circle-info"></i>
-              {% endif %}
-            </div>
-            <span class="font-medium">{{ message }}</span>
-          </div>
-        {% endfor %}
-      </div>
-    {% endif %}
+    {% include 'messages/messages.html' %}
 
     <!-- Logo Badge -->
     <div class="flex items-center justify-center mb-6">
@@ -170,15 +142,4 @@
   </div>
 </div>
 
-<script>
-  // Auto-hide messages
-  setTimeout(() => {
-    document.querySelectorAll('.message-alert').forEach(el => {
-      el.style.transition = "opacity 0.6s ease, transform 0.6s ease";
-      el.style.opacity = "0";
-      el.style.transform = "translateX(20px)";
-      setTimeout(() => el.remove(), 600);
-    });
-  }, 5000);
-</script>
 {% endblock %}
