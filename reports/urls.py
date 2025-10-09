@@ -10,5 +10,6 @@ urlpatterns = [
     path('found_items/', views.found_items_view, name='found_items'),
     path('inventory/', views.inventory_view, name='inventory'),
     path('claim/<int:pk>/', views.claim_view, name='claim'),
+    path('claim_management/', views.claim_management_view, name='claim_management'),
 
 ]

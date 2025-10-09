@@ -1,0 +1,400 @@
+{% extends "users/base.html" %}
+{% load static %}
+{% block content %}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FindIt.com | Claim Management</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+      background-size: 200% 200%;
+      animation: gradientShift 15s ease infinite;
+      position: relative;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.4) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(240, 147, 251, 0.4) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(118, 75, 162, 0.3) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .glass-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    }
+
+    .glass-card-hover {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .glass-card-hover:hover {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.25) 100%);
+      transform: translateY(-5px);
+      box-shadow: 0 15px 45px 0 rgba(31, 38, 135, 0.25);
+    }
+
+    .glass-stat {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.25) 100%);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+    }
+
+    .glass-dark {
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.15) 100%);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    .glass-button {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.2) 100%);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .glass-button:hover {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.3) 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .glass-input {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+    }
+
+    .glass-input:focus {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.5);
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+    }
+
+    .glass-badge {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.2) 100%);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .glass-pending {
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.3) 0%, rgba(251, 191, 36, 0.2) 100%);
+      border: 1px solid rgba(251, 191, 36, 0.4);
+    }
+
+    .glass-approved {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.3) 0%, rgba(34, 197, 94, 0.2) 100%);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+    }
+
+    .glass-rejected {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.3) 0%, rgba(239, 68, 68, 0.2) 100%);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+    }
+
+    .floating {
+      animation: floating 3s ease-in-out infinite;
+    }
+
+    @keyframes floating {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .pulse-glow {
+      animation: pulse-glow 2s infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(251, 191, 36, 0.4); }
+      50% { box-shadow: 0 0 40px rgba(251, 191, 36, 0.6); }
+    }
+
+    .icon-glass {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .content-wrapper {
+      position: relative;
+      z-index: 1;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen text-gray-50 flex flex-col">
+  {% include 'messages/messages.html' %}
+
+  <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 content-wrapper">
+    
+    <!-- Header Section -->
+    <div class="text-center mb-12 floating">
+      <div class="glass-dark rounded-3xl p-8 inline-block">
+        <h2 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-4 text-white drop-shadow-2xl">
+          <i class="fa-solid fa-clipboard-check mr-4 text-white/80"></i>
+          Claim Management
+        </h2>
+        <p class="text-lg sm:text-xl text-white/90 font-light">Review and manage all pending claim requests</p>
+      </div>
+    </div>
+
+    <!-- Stats Overview -->
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-12">
+      
+      <!-- Calculate counts using JavaScript to avoid server errors -->
+      <div class="glass-stat rounded-2xl p-6 sm:p-8 hover:transform hover:scale-105 transition-all duration-300">
+        <div class="flex items-start justify-between mb-4">
+          <div>
+            <h3 class="text-sm sm:text-base font-semibold text-white/70 mb-1 uppercase tracking-wide">Pending</h3>
+            <p class="text-4xl sm:text-5xl font-bold text-yellow-300 drop-shadow-lg" id="pending">{{ pending }}</p>
+          </div>
+          <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl icon-glass flex items-center justify-center">
+            <i class="fa-solid fa-clock text-yellow-300 text-2xl sm:text-3xl"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-stat rounded-2xl p-6 sm:p-8 hover:transform hover:scale-105 transition-all duration-300">
+        <div class="flex items-start justify-between mb-4">
+          <div>
+            <h3 class="text-sm sm:text-base font-semibold text-white/70 mb-1 uppercase tracking-wide">Approved</h3>
+            <p class="text-4xl sm:text-5xl font-bold text-green-300 drop-shadow-lg" id="approved">{{ approved }}</p>
+          </div>
+          <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl icon-glass flex items-center justify-center">
+            <i class="fa-solid fa-check-circle text-green-300 text-2xl sm:text-3xl"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-stat rounded-2xl p-6 sm:p-8 hover:transform hover:scale-105 transition-all duration-300">
+        <div class="flex items-start justify-between mb-4">
+          <div>
+            <h3 class="text-sm sm:text-base font-semibold text-white/70 mb-1 uppercase tracking-wide">Rejected</h3>
+            <p class="text-4xl sm:text-5xl font-bold text-red-300 drop-shadow-lg" id="rejected">{{ rejected }}</p>
+          </div>
+          <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl icon-glass flex items-center justify-center">
+            <i class="fa-solid fa-times-circle text-red-300 text-2xl sm:text-3xl"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-stat rounded-2xl p-6 sm:p-8 hover:transform hover:scale-105 transition-all duration-300">
+        <div class="flex items-start justify-between mb-4">
+          <div>
+            <h3 class="text-sm sm:text-base font-semibold text-white/70 mb-1 uppercase tracking-wide">Total Claims</h3>
+            <p class="text-4xl sm:text-5xl font-bold text-blue-300 drop-shadow-lg">{{ claims.count }}</p>
+          </div>
+          <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl icon-glass flex items-center justify-center">
+            <i class="fa-solid fa-chart-line text-blue-300 text-2xl sm:text-3xl"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters Section -->
+    <div class="glass-dark rounded-3xl shadow-2xl p-6 sm:p-8 mb-8">
+      <form method="GET" class="flex flex-col lg:flex-row gap-4 items-center justify-between">
+        
+        <div class="w-full lg:w-1/3">
+          <div class="relative">
+            <input type="text" 
+                   name="search"
+                   placeholder="Search claims..." 
+                   class="glass-input w-full px-6 py-3 pl-12 rounded-xl focus:outline-none transition-all">
+            <i class="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-white/60"></i>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-3">
+          <a href="?status=pending" class="glass-button px-6 py-3 rounded-xl text-white font-semibold">
+            <i class="fa-solid fa-clock mr-2"></i> Pending
+          </a>
+          <a href="?status=approved" class="glass-button px-6 py-3 rounded-xl text-white font-semibold">
+            <i class="fa-solid fa-check mr-2"></i> Approved
+          </a>
+          <a href="?status=rejected" class="glass-button px-6 py-3 rounded-xl text-white font-semibold">
+            <i class="fa-solid fa-times mr-2"></i> Rejected
+          </a>
+          <a href="{% url 'reports:claim_management' %}" class="glass-button px-6 py-3 rounded-xl text-white font-semibold">
+            <i class="fa-solid fa-list mr-2"></i> All
+          </a>
+        </div>
+      </form>
+    </div>
+
+    <!-- Claims List -->
+    <div class="space-y-6">
+      {% for claim in claims %}
+      <div class="glass-card glass-card-hover rounded-2xl p-6 sm:p-8">
+        <div class="flex flex-col lg:flex-row gap-6">
+          
+          <div class="lg:w-48 h-48 rounded-xl overflow-hidden flex-shrink-0 glass-card">
+            {% if claim.item.image %}
+            <img src="{{ claim.item.image.url }}" alt="Item" class="w-full h-full object-cover">
+            {% else %}
+            <div class="w-full h-full flex items-center justify-center">
+              <i class="fa-solid fa-image text-4xl text-white/40"></i>
+            </div>
+            {% endif %}
+          </div>
+
+          <div class="flex-grow">
+            <div class="flex flex-col sm:flex-row justify-between items-start mb-4">
+              <div>
+                <h3 class="text-2xl font-bold text-white mb-2">{{ claim.item_name }}</h3>
+                <div class="flex flex-wrap gap-3 text-sm">
+                  <span class="glass-badge px-3 py-1 rounded-full text-white">
+                    <i class="fa-solid fa-tag mr-1"></i> {{ claim.category }}
+                  </span>
+                  <span class="glass-badge px-3 py-1 rounded-full text-white">
+                    <i class="fa-solid fa-location-dot mr-1"></i> {{ claim.location }}
+                  </span>
+                  <span class="glass-badge px-3 py-1 rounded-full text-white">
+                    <i class="fa-solid fa-calendar mr-1"></i> {{ claim.claimed_at|date:"M d, Y" }}
+                  </span>
+                </div>
+              </div>
+              
+              <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold text-white glass-pending">
+                <i class="fa-solid fa-clock mr-2"></i> Pending
+              </span>
+            </div>
+
+            <div class="grid sm:grid-cols-2 gap-4 mb-4">
+              <div class="glass-card rounded-xl p-4">
+                <h4 class="text-sm font-semibold text-white/70 mb-2 uppercase tracking-wide">Claimant Info</h4>
+                <p class="text-white font-semibold">Name: {{ claim.name }}</p>
+                <p class="text-white/80 text-sm">Contract: {{ claim.contact }}</p>
+                <p class="text-white/80 text-sm">Description: {{ claim.description }}</p>
+              </div>
+              
+              <div class="glass-card rounded-xl p-4">
+                <h4 class="text-sm font-semibold text-white/70 mb-2 uppercase tracking-wide">Item Info</h4>
+                <p class="text-white/90 text-sm">Found: {{ claim.found_report.found_date|date:"M d, Y" }}</p>
+                <p class="text-white/90 text-sm">By: {{ claim.found_report.user.username }}</p>
+                <p class="text-white/80 text-sm">Description: {{ claim.found_report.item_description }}</p>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-3 mt-6">
+              <button class="glass-button glass-approved px-6 py-3 rounded-xl text-white font-semibold">
+                <i class="fa-solid fa-check-circle mr-2"></i> Approve
+              </button>
+              <button class="glass-button glass-rejected px-6 py-3 rounded-xl text-white font-semibold">
+                <i class="fa-solid fa-times-circle mr-2"></i> Reject
+              </button>
+              <button class="glass-button px-6 py-3 rounded-xl text-white font-semibold">
+                <i class="fa-solid fa-eye mr-2"></i> View Details
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="glass-card rounded-3xl p-12 text-center">
+        <div class="w-32 h-32 mx-auto mb-6 rounded-full icon-glass flex items-center justify-center">
+          <i class="fa-solid fa-inbox text-5xl text-white/50"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-white mb-2">No Claims Found</h3>
+        <p class="text-white/70">There are no claim requests to display.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </main>
+
+  <!-- Count statistics with JavaScript -->
+  <script>
+document.addEventListener('DOMContentLoaded', function() {
+  const pendingCount = document.getElementById('pending-count');
+  const approvedCount = document.getElementById('approved-count');
+  const rejectedCount = document.getElementById('rejected-count');
+
+  // Initial counts from DOM
+  updateCounters();
+
+  // Add click listeners to all buttons
+  document.querySelectorAll('.approve-btn, .reject-btn').forEach(button => {
+    button.addEventListener('click', function() {
+      const row = this.closest('tr');
+      const claimId = row.dataset.claimId;
+      const newStatus = this.classList.contains('approve-btn') ? 'Approved' : 'Rejected';
+      
+      // Send AJAX request to backend
+      fetch("#", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "X-CSRFToken": "{{ csrf_token }}"
+        },
+        body: `id=${claimId}&status=${newStatus}`
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // Update the status in the table
+          row.querySelector('.status').textContent = data.new_status;
+          // Refresh counters
+          updateCounters();
+        } else {
+          alert("Error: " + data.error);
+        }
+      })
+      .catch(err => console.error("Request failed:", err));
+    });
+  });
+
+  function updateCounters() {
+    let pending = 0, approved = 0, rejected = 0;
+
+    document.querySelectorAll('#claims-table .status').forEach(statusCell => {
+      const status = statusCell.textContent.trim();
+      if (status === 'Pending') pending++;
+      else if (status === 'Approved') approved++;
+      else if (status === 'Rejected') rejected++;
+    });
+
+    pendingCount.textContent = pending;
+    approvedCount.textContent = approved;
+    rejectedCount.textContent = rejected;
+  }
+});
+</script>
+</body>
+{% endblock %}

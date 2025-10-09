@@ -1,8 +1,6 @@
 {% extends "users/base.html" %}
 {% load static %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -224,7 +222,7 @@
         <a href="{% url 'reports:lost_items' %}" class="absolute inset-0 z-10"></a>
         <div class="flex items-start justify-between mb-4">
           <div>
-            <h3 class="text-sm sm:text-base font-semibold text-gray-600 mb-1 uppercase tracking-wide">Lost Reports</h3>
+            <h3 class="text-sm sm:text-base font-semibold text-gray-600 mb-1 uppercase tracking-wide">Lost items</h3>
             <p class="text-4xl sm:text-5xl font-bold number-counter bg-gradient-to-r from-green-600 to-green-400 bg-clip-text text-transparent">
               {{ lost_reports.count }}
             </p>
@@ -246,7 +244,7 @@
         <a href="{% url 'reports:found_items' %}" class="absolute inset-0 z-10"></a>
         <div class="flex items-start justify-between mb-4">
           <div>
-            <h3 class="text-sm sm:text-base font-semibold text-gray-600 mb-1 uppercase tracking-wide">Found Reports</h3>
+            <h3 class="text-sm sm:text-base font-semibold text-gray-600 mb-1 uppercase tracking-wide">Found items</h3>
             <p class="text-4xl sm:text-5xl font-bold number-counter bg-gradient-to-r from-yellow-600 to-yellow-400 bg-clip-text text-transparent">
               {{ found_reports.count }}
             </p>
@@ -265,15 +263,16 @@
 
       <!-- Pending Approvals Card -->
       <div class="stat-card glass-effect rounded-2xl p-6 sm:p-8 text-gray-800 cursor-pointer group pulse-glow">
+        <a href="{% url 'reports:claim_management' %}" class="absolute inset-0 z-10"></a>
         <div class="flex items-start justify-between mb-4">
           <div>
-            <h3 class="text-sm sm:text-base font-semibold text-gray-600 mb-1 uppercase tracking-wide">Pending Approvals</h3>
+            <h3 class="text-sm sm:text-base font-semibold text-gray-600 mb-1 uppercase tracking-wide">Claim Requests</h3>
             <p class="text-4xl sm:text-5xl font-bold number-counter bg-gradient-to-r from-red-600 to-red-400 bg-clip-text text-transparent">
               {{ claimed_items.count }}
             </p>
           </div>
           <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300 icon-bounce">
-            <i class="fa-solid fa-clock text-white text-2xl sm:text-3xl"></i>
+            <i class="fa-solid fa-file-lines text-white text-2xl sm:text-3xl"></i>
           </div>
         </div>
         <div class="flex items-center text-sm text-gray-500 mt-4">
@@ -354,5 +353,4 @@
   </main>
 
 </body>
-</html>
 {% endblock %}
